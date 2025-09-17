@@ -6,14 +6,14 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:10:12 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/17 18:45:12 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/17 18:52:29 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "../../libft/inc/libft.h"
+# include "../libft/inc/libft.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
