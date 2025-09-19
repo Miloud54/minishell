@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:20 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/18 17:31:19 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/19 14:27:28 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@
  */
 
 #include "minishell.h"
-#include <errno.h>
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 long	ft_atol(const char *str, int *error)
 {
@@ -61,7 +57,7 @@ long	ft_atol(const char *str, int *error)
 	return (result * sign);
 }
 
-int	ft_exit(int argc, char **argv, int last_status)
+int	ft_exit(char **argv, int last_status)
 {
 	int		error;
 	long	val;
@@ -76,7 +72,7 @@ int	ft_exit(int argc, char **argv, int last_status)
 		val = ft_atol(argv[1], &error);
 		if (error)
 		{
-			ft_putstr_fd("minishel: exit ", 2);
+			ft_putstr_fd("minishell: exit ", 2);
 			ft_putstr_fd(argv[1], 2);
 			ft_putstr_fd(": numeric argument required", 2);
 			write(1, "exit\n", 5);
@@ -88,9 +84,26 @@ int	ft_exit(int argc, char **argv, int last_status)
 			exit((unsigned char)val);
 		}
 	}
-	if (argc > 2)
+	if (argv[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
+}
+
+int	main(void)
+{
+	char	*argv1[] = {"exit", "1", "2", NULL};
+	int		result1;
+	char	*argv2[] = {"exit", "abc", NULL};
+
+	printf("Test 1: exit avec trop d'arguments\n");
+	result1 = ft_exit(3, argv1, 42);
+	printf("Code de retour: %d\n\n", result1);
+	
+	printf("Test 2: exit avec argument invalide - va quitter!\n");
+	ft_exit(2, argv2, 42);
+	
+	printf("Cette ligne ne devrait pas s'afficher\n");
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:17 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/18 17:14:20 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/19 12:25:57 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@
  * - Succès: return 0.
  */
 #include "minishell.h"
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 int	ft_pwd(char **argv)
 {
