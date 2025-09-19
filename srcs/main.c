@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/19 15:50:28 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/19 16:58:33 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,21 @@ int		main(int ac, char **av, char **envp)
 			printf("exit\n");
 			break;
 		}
+		//Debut du test de tokenization
 		printf("Vous avez tape: %s\n", line);
+		t_token	*tokens = tokenize(line);
+		if (tokens)
+		{
+			print_tokens(tokens);
+			free_tokens(&tokens);
+		}
+		else
+			printf("Erreur: impossible de tokenizer la ligne.\n");
+		//Fin du test de tokenization
 		free(line);
 	}
 	rl_clear_history();
 	return (0);
 }
+
+
