@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:51:50 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/18 18:32:51 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/19 12:26:40 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ $> hello world%
 /*                               ECHO - Function                              */
 /* ************************************************************************** */
 
-#include <stdio.h> // for printf()
-#include <unistd.h> // for write()
-#include <stdbool.h> // for booleans
-#include "../libft/inc/libft.h" // for ft_strcmp() for 2nd version of ft_echo
+#include "minishell.h" // for ft_strcmp() for 2nd version of ft_echo
 
 /*The function is_n_option takes an argument of the echo command as a string and
 returns a boolean ; either the argument is a valid option (e.g. '-n' or '-nnnn')
