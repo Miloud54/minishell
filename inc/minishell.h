@@ -6,20 +6,23 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/19 18:45:10 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/21 18:43:10 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "../libft/inc/libft.h"
-#include <errno.h>
-#include <limits.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+# include "../libft/inc/libft.h"
+# include <errno.h>
+# include <limits.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -31,43 +34,80 @@
 #define TOKEN_CMD 6           // Command
 #define TOKEN_WORD 7		  // Word
 
-typedef struct s_token
+/* ************************************************************************** */
+
+/*Ajout bru 21/09/25: */
+
+# define MAX_PATH 4096
+
+extern int	g_signal_status;
+
+typedef struct s_data
 {
-	char			*value;
-	int				type;
-	struct s_token	*prev;
-	struct s_token	*next;
-}					t_token;
+	char	**envp;
+	int		exit_status;
+	char	*pwd;
+	char	*oldpwd;
+	int		stdin_backup;
+	int		stdout_backup;
+}	t_data;
 
-typedef struct s_cmd
-{
-	char			**args;
-	char			*input_file;
-	char			*output_file;
-	int				append; // 1 si >>, 0 si >
-	struct s_cmd	*prev;
-	struct s_cmd	*next;
-}					t_cmd;
+/* utils/exits.c: */
+void	error_exit(char *msg, int exit_code);
 
-typedef struct s_minishell
-{
-	char	**env;
-	t_token	*tokens;
-	t_cmd	*commands;
-	int		last_status;
-}			t_minishell;
+/* utils/init_data.c: */
+void	init_data(t_data *data, char **envp);
 
-/*Utils*/
-void		free_array(char **array);
+/* utils/init_signals.c: */
+void	init_signals(void);
 
-/*Tokenization*/
-void		free_tokens(t_token **head);
-t_token		*tokenize(char *line);
-int			append_token(t_token **head, char *value, int type);
-bool		is_operator(char *word);
-int			get_token_type(char *word);
+/* ************************************************************************** */
 
-/*Debug*/
-void		print_tokens(t_token *head);
+
+
+
+
+
+
+/*before 21/09 : */
+
+// typedef struct s_token
+// {
+// 	char			*value;
+// 	int				type;
+// 	struct s_token	*prev;
+// 	struct s_token	*next;
+// }					t_token;
+
+// typedef struct s_cmd
+// {
+// 	char			**args;
+// 	char			*input_file;
+// 	char			*output_file;
+// 	int				append; // 1 si >>, 0 si >
+// 	struct s_cmd	*prev;
+// 	struct s_cmd	*next;
+// }					t_cmd;
+
+// typedef struct s_minishell
+// {
+// 	char	**env;
+// 	t_token	*tokens;
+// 	t_cmd	*commands;
+// 	int		last_status;
+// }			t_minishell;
+
+// /*Utils*/
+// void		free_array(char **array);
+
+// /*Tokenization*/
+// void		free_tokens(t_token **head);
+// t_token		*tokenize(char *line);
+// int			append_token(t_token **head, char *value, int type);
+// bool		is_operator(char *word);
+// // int			get_token_type(char *word);
+
+// /*Debug*/
+// void		print_tokens(t_token *head);
 
 #endif	
