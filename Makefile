@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/21 18:47:20 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/09/21 20:06:55 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,9 @@ PARSING_SRC =	srcs/parsing/expansion.c\
 				srcs/parsing/parser.c\
 				srcs/parsing/quotes.c\
 				srcs/parsing/tokens.c\
-				srcs/parsing/validation.c
+				srcs/parsing/validation.c\
+				src/parsing/validation_pipe.c\
+				src/parsing/validation_redirection.c
 
 UTILS_SRC = 	srcs/utils/cleanup.c\
 				srcs/utils/init_data.c\
@@ -97,20 +99,8 @@ fclean: clean
 # Rebuild everything
 re: fclean all
 
-# Test rule (optional)
-test: $(NAME)
-	@echo "$(BLUE)Running basic test...$(RESET)"
-	@echo "echo hello" | ./$(NAME)
+# # Debug rule (optional)
+# debug: CFLAGS += -fsanitize=address
+# debug: $(NAME)
 
-# Test signals specifically
-test_signals:
-	@echo "$(BLUE)Testing signals...$(RESET)"
-	@$(CC) $(CFLAGS) $(INCLUDES) test_signals.c srcs/utils/init_signals.c srcs/utils/globals.c $(LIBFT_DIR)/libft.a $(READLINE_FLAGS) -o test_signals
-	@./test_signals
-	@rm -f test_signals
-
-# Debug rule (optional)
-debug: CFLAGS += -fsanitize=address
-debug: $(NAME)
-
-.PHONY: all clean fclean re test debug
+# .PHONY: all clean fclean re test debug

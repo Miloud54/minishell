@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/21 18:34:31 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/21 19:19:37 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,68 @@ static int	validate_args(int ac)
 	return (0);
 }
 
+static void	process_input(t_data *data, char *input)
+{
+	t_token	*tokens;
+	t_cmd	**commands;
+	char	*expanded_input;
+	int		cmd_count;
+	int		i;
+
+	if (!input || !*input)
+		return ;
+	if (!validate_syntax(input))
+	{
+		data->exit_status = 2;
+		return ;
+	}
+	expanded_input = expand_variables(input, data);
+	if (!expanded_input)
+		return ;
+	tokens = lexer(expanded_input);
+	if (!tokens)
+	{
+		free(expanded_input);
+		return ;
+	}
+	commands = parser(tokens, &cmd_count);
+	if (!commands)
+	{
+		free_tokens(tokens);
+		free(expanded_input);
+		return ;
+	}
+	//TODO : executer les commandes.
+	i = 0;
+	while (i < cmd_count)
+	{
+		free_cmd(commands[i]);
+		i++;
+	}
+	free(commands);
+	free_tokens(tokens);
+	free(expanded_input);
+}
+
+static void	main_loop(t_data *data)
+{
+	char	*input;
+
+	while (1)
+	{
+		if (g_signal_status == SIGINT)
+		{
+			data->exit_status = 130;
+			g_signal_status = 0;
+		}
+		input = readline(PROMPT);
+		if (!input)
+			add_history(input);
+		process_input(data, input);
+		free(input);
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_data	data;
@@ -31,6 +93,7 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	init_data(&data, envp);
 	init_signals();
+	main_loop(&data);
 }
 
 /*The main function should :
