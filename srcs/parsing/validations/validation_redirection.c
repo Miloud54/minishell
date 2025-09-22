@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validation_pipe.c                                  :+:      :+:    :+:   */
+/*   validation_redirection.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 20:07:10 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/21 20:15:27 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:11:24 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 static int	skip_redirect_filename(char *input, int start)
 {

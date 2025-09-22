@@ -6,11 +6,11 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:52:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 15:03:28 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:23:33 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 t_token_type	get_redirect_type(char *input, int *i)
 {

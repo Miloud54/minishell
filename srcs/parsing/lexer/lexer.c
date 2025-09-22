@@ -6,11 +6,11 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:28:52 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 15:03:03 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:23:38 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 int	is_special_char(char c)
 {
