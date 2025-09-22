@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/21 20:06:55 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/09/22 14:28:35 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ MAIN_SRC = srcs/main.c
 
 PARSING_SRC =	srcs/parsing/expansion.c\
 				srcs/parsing/lexer.c\
+				srcs/parsing/lexer_utils.c\
 				srcs/parsing/parser.c\
 				srcs/parsing/quotes.c\
 				srcs/parsing/tokens.c\
