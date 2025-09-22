@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/22 15:23:51 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/09/22 16:06:24 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ PARSING_SRC =	srcs/parsing/expansion/expansion.c\
 				src/parsing/validations/validation_pipe.c\
 				src/parsing/validations/validation_redirection.c
 
-UTILS_SRC = 	srcs/utils/cleanup.c\
+UTILS_SRC = 	srcs/utils/cleanup1.c\
+				srcs/utils/cleanup2.c\
 				srcs/utils/init_data.c\
 				srcs/utils/init_signals.c\
 				srcs/utils/frees.c\
