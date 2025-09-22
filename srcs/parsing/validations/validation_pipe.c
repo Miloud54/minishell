@@ -6,11 +6,11 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:07:28 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 14:19:55 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:11:08 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 static int	has_content_before(char *input, int pipe_pos)
 {

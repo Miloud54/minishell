@@ -6,11 +6,11 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 19:31:03 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/21 19:35:46 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:11:21 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
 int	validate_syntax(char *input)
 {
