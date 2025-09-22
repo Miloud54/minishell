@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 16:08:10 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:35:52 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,19 +134,7 @@ void				add_token(t_token **tokens, t_token *new_token);
 /* parsing/validation_redirection.c: */
 int					validate_redirect_syntax(char *input);
 
-/* utils/cleanup1.c: *//* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 16:05:34 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 16:05:35 by edidier          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
+/* utils/cleanup1.c: */
 void				free_data(t_data *data);
 void				free_tokens(t_token *tokens);
 
@@ -185,9 +173,6 @@ void				handle_variable_expansion(char *input, t_data *data, int *i,
 int					calculate_expanded_size(char *input, t_data *data);
 
 /* parsing/expansion/expansion_process.c: */
-int					handle_quotes_expansion(char c, t_quote_params *params);
-void				process_variable_expansion(t_expand_params *params);
-
 char				*perform_expansion(char *input, t_data *data,
 						int expanded_size);
 
@@ -202,6 +187,35 @@ t_token_type		get_redirect_type(char *input, int *i);
 t_token				*handle_pipe_token(int *i);
 t_token				*handle_redirect_token(char *input, int *i);
 t_token				*handle_word_token(char *input, int *i);
+
+/* parsing/parser.c */
+t_cmd				**parser(t_token *tokens, int *cmd_count);
+
+/* parsing/parser_validation.c */
+int					validate_token_sequence(t_token *tokens);
+
+/* parsing/parser_counter.c */
+int					count_commands(t_token *tokens);
+int					count_args_in_cmd(t_token *start, t_token *end);
+int					count_redirect_in_cmd(t_token *start, t_token *end);
+t_token				*find_next_pipe(t_token *tokens);
+
+/* parsing/parser_memory.c */
+void				init_cmd_defaults(t_cmd *cmd);
+int					allocate_cmd_args(t_cmd *cmd, int arg_count);
+int					allocate_cmd_redirects(t_cmd *cmd, int redir_count);
+int					allocate_cmd_memory(t_cmd *cmd, int arg_count,
+						int redir_count);
+
+/* parsing/parser_processing.c */
+int					parse_redirects(t_cmd *cmd, t_token *start, t_token *end);
+t_cmd				*parse_single_cmd(t_token *start, t_token *end);
+
+/* parsing/parser_args.c */
+int					parse_args(t_cmd *cmd, t_token *start, t_token *end);
+t_cmd				*create_new_cmd(void);
+int					fill_cmd_content(t_cmd *cmd, t_token *start, t_token *end);
+void				cleanup_commands_on_error(t_cmd **commands, int count);
 
 /* ************************************************************************** */
 
