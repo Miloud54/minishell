@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/21 19:19:37 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:59:37 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,22 @@ static void	main_loop(t_data *data)
 			g_signal_status = 0;
 		}
 		input = readline(PROMPT);
-		if (!input)
+		if (!input)  // Ctrl+D
+		{
+			printf("exit\n");
+			break;
+		}
+		if (*input)  // Si la ligne n'est pas vide
 			add_history(input);
+		
+		// // Commande exit ??????
+		// if (ft_strcmp(input, "exit") == 0)
+		// {
+		// 	free(input);
+		// 	printf("exit\n");
+		// 	break;
+		// }
+		
 		process_input(data, input);
 		free(input);
 	}
