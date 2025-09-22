@@ -101,29 +101,23 @@ typedef struct s_data
 	int				stdout_backup;
 }					t_data;
 
-typedef struct s_quote_params
+typedef struct s_copy_context
 {
+	char			*input;
+	t_data			*data;
 	char			*result;
-	int				*in_single_quotes;
-	int				*j;
 	int				*i;
-}					t_quote_params;
+	int				*j;
+}					t_copy_context;
 
-typedef struct s_expand_params
+typedef struct s_size_context
 {
 	char			*input;
 	t_data			*data;
 	int				*i;
-	char			*result;
-	int				*j;
-}					t_expand_params;
-
-typedef struct s_expansion_vars
-{
-	int					i;
-	int					j;
-	int					in_single_quotes;
-}						t_expansion_vars;
+	int				*size;
+	int				*in_single_quotes;
+}					t_size_context;
 
 /* parsing/validation.c: */
 int					validate_syntax(char *input);
@@ -140,7 +134,19 @@ void				add_token(t_token **tokens, t_token *new_token);
 /* parsing/validation_redirection.c: */
 int					validate_redirect_syntax(char *input);
 
-/* utils/cleanup1.c: */
+/* utils/cleanup1.c: *//* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/22 16:05:34 by edidier           #+#    #+#             */
+/*   Updated: 2025/09/22 16:05:35 by edidier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 void				free_data(t_data *data);
 void				free_tokens(t_token *tokens);
 
@@ -168,6 +174,9 @@ int					should_expand_int_quotes(char *input, int i,
 						int in_single_quotes);
 void				copy_variable_value(char *var_value, char *result, int *j);
 
+/* parsing/expansion_size.c: */
+int					calculate_expanded_size(char *input, t_data *data);
+
 /* parsing/expansion/expansion_size.c: */
 int					handle_quotes(char c, int *in_single_quotes, int *size,
 						int *i);
@@ -178,6 +187,7 @@ int					calculate_expanded_size(char *input, t_data *data);
 /* parsing/expansion/expansion_process.c: */
 int					handle_quotes_expansion(char c, t_quote_params *params);
 void				process_variable_expansion(t_expand_params *params);
+
 char				*perform_expansion(char *input, t_data *data,
 						int expanded_size);
 

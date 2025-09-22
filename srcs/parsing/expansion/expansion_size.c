@@ -6,32 +6,28 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 14:56:39 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:15:30 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_quotes(char c, int *in_single_quotes, int *size, int *i)
+static int	handle_quote_char_size(char c, int *in_single_quotes)
 {
 	if (c == '\'' && !(*in_single_quotes))
 	{
 		*in_single_quotes = 1;
-		(*size)++;
-		(*i)++;
 		return (1);
 	}
 	else if (c == '\'' && *in_single_quotes)
 	{
 		*in_single_quotes = 0;
-		(*size)++;
-		(*i)++;
 		return (1);
 	}
 	return (0);
 }
 
-void	handle_variable_expansion(char *input, t_data *data, int *i, int *size)
+static void	add_variable_size(char *input, t_data *data, int *i, int *size)
 {
 	char	*var_name;
 	char	*var_value;
@@ -47,27 +43,42 @@ void	handle_variable_expansion(char *input, t_data *data, int *i, int *size)
 	*i = temp_i;
 }
 
+static void	process_char_for_size(t_size_context *ctx)
+{
+	if (handle_quote_char_size(ctx->input[*(ctx->i)], ctx->in_single_quotes))
+	{
+		(*(ctx->size))++;
+		(*(ctx->i))++;
+	}
+	else if (ctx->input[*(ctx->i)] == '$'
+		&& should_expand_int_quotes(ctx->input, *(ctx->i),
+			*(ctx->in_single_quotes)))
+		add_variable_size(ctx->input, ctx->data, ctx->i, ctx->size);
+	else
+	{
+		(*(ctx->size))++;
+		(*(ctx->i))++;
+	}
+}
+
 int	calculate_expanded_size(char *input, t_data *data)
 {
-	int	i;
-	int	size;
-	int	in_single_quotes;
+	int				i;
+	int				size;
+	int				in_single_quotes;
+	t_size_context	ctx;
 
+	if (!input || !data)
+		return (-1);
 	i = 0;
 	size = 0;
 	in_single_quotes = 0;
+	ctx.input = input;
+	ctx.data = data;
+	ctx.i = &i;
+	ctx.size = &size;
+	ctx.in_single_quotes = &in_single_quotes;
 	while (input[i])
-	{
-		if (handle_quotes(input[i], &in_single_quotes, &size, &i))
-			continue ;
-		else if (input[i] == '$' && should_expand_int_quotes(input, i,
-				in_single_quotes))
-			handle_variable_expansion(input, data, &i, &size);
-		else
-		{
-			size++;
-			i++;
-		}
-	}
+		process_char_for_size(&ctx);
 	return (size);
 }

@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:30 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 14:56:39 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:11:26 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*get_var_name(char *input, int *i)
 	int	start;
 	int	end;
 
+	if (!input || !i || *i < 0)
+		return (ft_strdup(""));
 	start = *i;
 	if (input[*i] == '?')
 	{
@@ -36,7 +38,7 @@ char	*get_var_value(char *var_name, t_data *data)
 	char	*value;
 	char	*exit_code_str;
 
-	if (!var_name)
+	if (!var_name || !data)
 		return (ft_strdup(""));
 	if (ft_strncmp(var_name, "?", 2) == 0)
 	{
@@ -62,6 +64,8 @@ void	copy_variable_value(char *var_value, char *result, int *j)
 {
 	int	k;
 
+	if (!var_value || !result || !j)
+		return ;
 	k = 0;
 	while (var_value[k])
 		result[(*j)++] = var_value[k++];
