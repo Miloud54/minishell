@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 15:46:52 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:08:10 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,16 @@ void				add_token(t_token **tokens, t_token *new_token);
 /* parsing/validation_redirection.c: */
 int					validate_redirect_syntax(char *input);
 
+/* utils/cleanup1.c: */
+void				free_data(t_data *data);
+void				free_tokens(t_token *tokens);
+
+/* utils/cleanup2.c: */
+void				free_cmd(t_cmd *cmd);
+
 /* utils/exits.c: */
 void				error_exit(char *msg, int exit_code);
+void				perror_exit(char *msg, int exit_code);
 
 /* utils/init_data.c: */
 void				init_data(t_data *data, char **envp);
