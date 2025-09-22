@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 15:15:30 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:08:10 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,35 @@ int					find_quote_end(char *str, int start, char quote);
 char				*remove_quotes(char *str);
 int					has_unclosed_quotes(char *input);
 
+/* parsing/tokens.c: */
+t_token				*create_token(char *value, t_token_type type);
+void				add_token(t_token **tokens, t_token *new_token);
+
 /* parsing/validation_redirection.c: */
 int					validate_redirect_syntax(char *input);
 
+/* utils/cleanup1.c: *//* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/22 16:05:34 by edidier           #+#    #+#             */
+/*   Updated: 2025/09/22 16:05:35 by edidier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+void				free_data(t_data *data);
+void				free_tokens(t_token *tokens);
+
+/* utils/cleanup2.c: */
+void				free_cmd(t_cmd *cmd);
+
 /* utils/exits.c: */
 void				error_exit(char *msg, int exit_code);
+void				perror_exit(char *msg, int exit_code);
 
 /* utils/init_data.c: */
 void				init_data(t_data *data, char **envp);
@@ -140,10 +164,10 @@ char				*get_env_var(char **envp, char *name);
 /* utils/init_signals.c: */
 void				init_signals(void);
 
-/* parsing/expansion.c: */
+/* parsing/expansion/expansion.c: */
 char				*expand_variables(char *input, t_data *data);
 
-/* parsing/expansion_vars.c: */
+/* parsing/expansion/expansion_vars.c: */
 char				*get_var_name(char *input, int *i);
 char				*get_var_value(char *var_name, t_data *data);
 int					should_expand_int_quotes(char *input, int i,
@@ -153,9 +177,31 @@ void				copy_variable_value(char *var_value, char *result, int *j);
 /* parsing/expansion_size.c: */
 int					calculate_expanded_size(char *input, t_data *data);
 
-/* parsing/expansion_process.c: */
+/* parsing/expansion/expansion_size.c: */
+int					handle_quotes(char c, int *in_single_quotes, int *size,
+						int *i);
+void				handle_variable_expansion(char *input, t_data *data, int *i,
+						int *size);
+int					calculate_expanded_size(char *input, t_data *data);
+
+/* parsing/expansion/expansion_process.c: */
+int					handle_quotes_expansion(char c, t_quote_params *params);
+void				process_variable_expansion(t_expand_params *params);
+
 char				*perform_expansion(char *input, t_data *data,
 						int expanded_size);
+
+/* parsing/lexer/lexer.c: */
+int					is_special_char(char c);
+int					skip_quotes(char *input, int i, char quote);
+char				*extract_word(char *input, int *i);
+t_token				*lexer(char *input);
+
+/* parsing/lexer/lexer_utils.c*/
+t_token_type		get_redirect_type(char *input, int *i);
+t_token				*handle_pipe_token(int *i);
+t_token				*handle_redirect_token(char *input, int *i);
+t_token				*handle_word_token(char *input, int *i);
 
 /* ************************************************************************** */
 

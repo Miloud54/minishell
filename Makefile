@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/21 20:06:55 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/09/22 16:06:24 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,16 +32,21 @@ MAIN_SRC = srcs/main.c
 # Source files
 MAIN_SRC = srcs/main.c
 
-PARSING_SRC =	srcs/parsing/expansion.c\
-				srcs/parsing/lexer.c\
+PARSING_SRC =	srcs/parsing/expansion/expansion.c\
+				srcs/parsing/expansion/expansion_process.c\
+				srcs/parsing/expansion/expansion_size.c\
+				srcs/parsing/expansion/expansion_vars.c\
+				srcs/parsing/lexer/lexer.c\
+				srcs/parsing/lexer/lexer_utils.c\
 				srcs/parsing/parser.c\
 				srcs/parsing/quotes.c\
 				srcs/parsing/tokens.c\
-				srcs/parsing/validation.c\
-				src/parsing/validation_pipe.c\
-				src/parsing/validation_redirection.c
+				srcs/parsing/validations/validation.c\
+				src/parsing/validations/validation_pipe.c\
+				src/parsing/validations/validation_redirection.c
 
-UTILS_SRC = 	srcs/utils/cleanup.c\
+UTILS_SRC = 	srcs/utils/cleanup1.c\
+				srcs/utils/cleanup2.c\
 				srcs/utils/init_data.c\
 				srcs/utils/init_signals.c\
 				srcs/utils/frees.c\
