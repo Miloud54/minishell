@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 15:01:10 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:27:14 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,18 @@ int					handle_quotes_expansion(char c, t_quote_params *params);
 void				process_variable_expansion(t_expand_params *params);
 char				*perform_expansion(char *input, t_data *data,
 						int expanded_size);
+
+/* parsing/lexer/lexer.c: */
+int					is_special_char(char c);
+int					skip_quotes(char *input, int i, char quote);
+char				*extract_word(char *input, int *i);
+t_token				*lexer(char *input);
+
+/* parsing/lexer/lexer_utils.c*/
+t_token_type		get_redirect_type(char *input, int *i);
+t_token				*handle_pipe_token(int *i);
+t_token				*handle_redirect_token(char *input, int *i);
+t_token				*handle_word_token(char *input, int *i);
 
 /* ************************************************************************** */
 
