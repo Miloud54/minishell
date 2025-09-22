@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 16:59:37 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:00:18 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ static void	process_input(t_data *data, char *input)
 
 	if (!input || !*input)
 		return ;
+	
+	// Gestion de la commande exit // a degager qund le builtin sera fait.
+	if (ft_strcmp(input, "exit") == 0)
+	{
+		printf("exit\n");
+		exit(data->exit_status);
+	}
+	
 	if (!validate_syntax(input))
 	{
 		data->exit_status = 2;
@@ -53,6 +61,7 @@ static void	process_input(t_data *data, char *input)
 		free(expanded_input);
 		return ;
 	}
+	
 	//TODO : executer les commandes.
 	i = 0;
 	while (i < cmd_count)
