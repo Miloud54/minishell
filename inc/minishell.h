@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 15:27:14 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/22 15:46:52 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,10 @@ int					find_quote_end(char *str, int start, char quote);
 char				*remove_quotes(char *str);
 int					has_unclosed_quotes(char *input);
 
+/* parsing/tokens.c: */
+t_token				*create_token(char *value, t_token_type type);
+void				add_token(t_token **tokens, t_token *new_token);
+
 /* parsing/validation_redirection.c: */
 int					validate_redirect_syntax(char *input);
 
@@ -146,24 +150,24 @@ char				*get_env_var(char **envp, char *name);
 /* utils/init_signals.c: */
 void				init_signals(void);
 
-/* parsing/expansion.c: */
+/* parsing/expansion/expansion.c: */
 char				*expand_variables(char *input, t_data *data);
 
-/* parsing/expansion_vars.c: */
+/* parsing/expansion/expansion_vars.c: */
 char				*get_var_name(char *input, int *i);
 char				*get_var_value(char *var_name, t_data *data);
 int					should_expand_int_quotes(char *input, int i,
 						int in_single_quotes);
 void				copy_variable_value(char *var_value, char *result, int *j);
 
-/* parsing/expansion_size.c: */
+/* parsing/expansion/expansion_size.c: */
 int					handle_quotes(char c, int *in_single_quotes, int *size,
 						int *i);
 void				handle_variable_expansion(char *input, t_data *data, int *i,
 						int *size);
 int					calculate_expanded_size(char *input, t_data *data);
 
-/* parsing/expansion_process.c: */
+/* parsing/expansion/expansion_process.c: */
 int					handle_quotes_expansion(char c, t_quote_params *params);
 void				process_variable_expansion(t_expand_params *params);
 char				*perform_expansion(char *input, t_data *data,
