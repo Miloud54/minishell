@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/22 17:04:11 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/09/22 17:48:29 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,11 +86,25 @@ test: $(NAME)
 	@echo "$(BLUE)Running basic test...$(RESET)"
 	@echo "echo hello" | ./$(NAME)
 
+test_all: $(NAME)
+	@echo "$(BLUE)Running complete test suite...$(RESET)"
+	@chmod +x test_minishell.sh
+	@./test_minishell.sh
+
+test_stress: $(NAME)
+	@echo "$(BLUE)Running stress tests...$(RESET)"
+	@chmod +x stress_test.sh
+	@./stress_test.sh
+
 test_signals:
 	@echo "$(BLUE)Testing signals...$(RESET)"
 	@$(CC) $(CFLAGS) $(INCLUDE_DIRS) test_signals.c $(SRC_DIR)/utils/init_signals.c $(SRC_DIR)/utils/globals.c $(LIBFT) $(READLINE_FLAGS) -o test_signals
 	@./test_signals
 	@rm -f test_signals
+
+valgrind: $(NAME)
+	@echo "$(BLUE)Running with valgrind...$(RESET)"
+	@echo "echo hello" | valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 debug: CFLAGS += -fsanitize=address
 debug: $(NAME)
@@ -115,4 +129,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re objs test test_signals debug
+.PHONY: all clean fclean re objs test test_all test_stress test_signals debug valgrind
