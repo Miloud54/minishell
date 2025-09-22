@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:09:18 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 15:11:26 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:51:30 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../inc/minishell.h"
 
 char	*expand_variables(char *input, t_data *data)
 {

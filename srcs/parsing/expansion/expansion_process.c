@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_process.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:40 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 15:16:13 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:51:19 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../inc/minishell.h"
 
 static int	handle_quote_char(char c, int *in_single_quotes)
 {

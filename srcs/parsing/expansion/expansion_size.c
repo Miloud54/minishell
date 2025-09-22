@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_size.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 15:15:30 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:51:23 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../inc/minishell.h"
 
 static int	handle_quote_char_size(char c, int *in_single_quotes)
 {

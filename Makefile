@@ -3,114 +3,116 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edidier <edidier@student.42.fr>            +#+  +:+       +#+         #
+#    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/22 16:38:56 by edidier          ###   ########.fr        #
+#    Updated: 2025/09/22 17:04:11 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Program name
-NAME = minishell
+NAME			= minishell
+CC				= cc
+CFLAGS			= -Wall -Wextra -Werror -g
+INCLUDE_DIRS	= -I./inc -I./libft/inc
+READLINE_FLAGS	= -lreadline
 
-# Compiler and flags
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-INCLUDES = -I./inc -I./libft/inc
+LIBFT_DIR		= libft
+LIBFT			= $(LIBFT_DIR)/libft.a
 
-# Readline flags
-READLINE_FLAGS = -lreadline
+SRC_DIR			= srcs
+SRCS			= \
+	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/parsing/expansion/expansion.c \
+	$(SRC_DIR)/parsing/expansion/expansion_process.c \
+	$(SRC_DIR)/parsing/expansion/expansion_size.c \
+	$(SRC_DIR)/parsing/expansion/expansion_vars.c \
+	$(SRC_DIR)/parsing/lexer/lexer.c \
+	$(SRC_DIR)/parsing/lexer/lexer_utils.c \
+	$(SRC_DIR)/parsing/parser/parser.c \
+	$(SRC_DIR)/parsing/parser/parser_args.c \
+	$(SRC_DIR)/parsing/parser/parser_counter.c \
+	$(SRC_DIR)/parsing/parser/parser_memory.c \
+	$(SRC_DIR)/parsing/parser/parser_processing.c \
+	$(SRC_DIR)/parsing/parser/parser_validation.c \
+	$(SRC_DIR)/parsing/quotes.c \
+	$(SRC_DIR)/parsing/tokens.c \
+	$(SRC_DIR)/parsing/validations/validation.c \
+	$(SRC_DIR)/parsing/validations/validation_pipe.c \
+	$(SRC_DIR)/parsing/validations/validation_redirection.c \
+	$(SRC_DIR)/utils/cleanup1.c \
+	$(SRC_DIR)/utils/cleanup2.c \
+	$(SRC_DIR)/utils/exits.c \
+	$(SRC_DIR)/utils/globals.c \
+	$(SRC_DIR)/utils/init_data.c \
+	$(SRC_DIR)/utils/init_signals.c
 
-# Directories
-SRC_DIR = srcs
-LIBFT_DIR = libft
-OBJ_DIR = obj
+OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-# Source files
-MAIN_SRC = srcs/main.c
-
-# Source files
-MAIN_SRC = srcs/main.c
-
-PARSING_SRC =	srcs/parsing/expansion/expansion.c\
-				srcs/parsing/expansion/expansion_process.c\
-				srcs/parsing/expansion/expansion_size.c\
-				srcs/parsing/expansion/expansion_vars.c\
-				srcs/parsing/lexer/lexer.c\
-				srcs/parsing/lexer/lexer_utils.c\
-				srcs/parsing/parser/parser.c\
-				srcs/parsing/parser/parser_args.c\
-				srcs/parsing/parser/parser_counter.c\
-				srcs/parsing/parser/parser_memory.c\
-				srcs/parsing/parser/parser_processing.c\
-				srcs/parsing/parser/parser_validation.c\
-				srcs/parsing/quotes.c\
-				srcs/parsing/tokens.c\
-				srcs/parsing/validations/validation.c\
-				src/parsing/validations/validation_pipe.c\
-				src/parsing/validations/validation_redirection.c
-
-UTILS_SRC = 	srcs/utils/cleanup1.c\
-				srcs/utils/cleanup2.c\
-				srcs/utils/init_data.c\
-				srcs/utils/init_signals.c\
-				srcs/utils/frees.c\
-				srcs/utils/exits.c\
-				srcs/utils/globals.c
-
-# All source files
-SRCS = $(MAIN_SRC) $(UTILS_SRC) $(PARSING_SRC)
-
-# Object files
-OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+OBJ_DIR			= objs
+OBJ_DIRS		= $(OBJ_DIR)/$(SRC_DIR) \
+				  $(OBJ_DIR)/$(SRC_DIR)/parsing \
+				  $(OBJ_DIR)/$(SRC_DIR)/parsing/expansion \
+				  $(OBJ_DIR)/$(SRC_DIR)/parsing/lexer \
+				  $(OBJ_DIR)/$(SRC_DIR)/parsing/parser \
+				  $(OBJ_DIR)/$(SRC_DIR)/parsing/validations \
+				  $(OBJ_DIR)/$(SRC_DIR)/utils
 
 # Colors
-GREEN = \033[0;32m
-RED = \033[0;31m
-BLUE = \033[0;34m
-YELLOW = \033[0;33m
-RESET = \033[0m
+GREEN			= \033[0;32m
+RED				= \033[0;31m
+BLUE			= \033[0;34m
+YELLOW			= \033[0;33m
+RESET			= \033[0m
 
-# Main rule
 all: $(NAME)
 
-# Create object directory
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
-	@mkdir -p $(OBJ_DIR)/srcs/utils
-	@mkdir -p $(OBJ_DIR)/srcs/parsing
-	@mkdir -p $(OBJ_DIR)/srcs/builtins
-	@mkdir -p $(OBJ_DIR)/srcs/execution
+objs:
+	@mkdir -p $(OBJ_DIRS)
 
-#Compile object files
-$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.c | objs
 	@echo "$(BLUE)Compiling: $(YELLOW)$<$(RESET)"
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
 
-# Link the program
-$(NAME): $(OBJS)
-	@echo "$(GREEN)Building libft...$(RESET)"
-	@$(MAKE) -C $(LIBFT_DIR)
+$(NAME): $(OBJS) $(LIBFT)
 	@echo "$(GREEN)Linking: $(YELLOW)$(NAME)$(RESET)"
-	@$(CC) $(OBJS) $(LIBFT_DIR)/libft.a $(READLINE_FLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(READLINE_FLAGS) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(RESET)"
 
-# Clean object files
+$(LIBFT):
+	@echo "$(GREEN)Building libft...$(RESET)"
+	@$(MAKE) -C $(LIBFT_DIR)
+
+test: $(NAME)
+	@echo "$(BLUE)Running basic test...$(RESET)"
+	@echo "echo hello" | ./$(NAME)
+
+test_signals:
+	@echo "$(BLUE)Testing signals...$(RESET)"
+	@$(CC) $(CFLAGS) $(INCLUDE_DIRS) test_signals.c $(SRC_DIR)/utils/init_signals.c $(SRC_DIR)/utils/globals.c $(LIBFT) $(READLINE_FLAGS) -o test_signals
+	@./test_signals
+	@rm -f test_signals
+
+debug: CFLAGS += -fsanitize=address
+debug: $(NAME)
+
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"
+	@echo "Current directory contents:"
+	@ls -la | grep -E "(objs|obj)"
+	@echo "Removing directory: $(OBJ_DIR)"
+	@$(MAKE) -C $(LIBFT_DIR) clean
 	@rm -rf $(OBJ_DIR)
+	@rm -rf objs
+	@rm -rf obj
+	@find . -name "*.o" -delete 2>/dev/null || true
+	@echo "Cleanup complete"
 
-# Clean everything
 fclean: clean
 	@echo "$(RED)Cleaning executable...$(RESET)"
-	@rm -f $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME)
+	@echo "Executable removed"
 
-# Rebuild everything
 re: fclean all
 
-# # Debug rule (optional)
-# debug: CFLAGS += -fsanitize=address
-# debug: $(NAME)
-
-# .PHONY: all clean fclean re test debug
+.PHONY: all clean fclean re objs test test_signals debug
