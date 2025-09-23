@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 16:53:45 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/23 12:57:05 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,9 @@ typedef struct s_size_context
 	int				*size;
 	int				*in_single_quotes;
 }					t_size_context;
+
+/* builtins/*.c: */
+void				ft_env(t_data *data, t_cmd *cmd);
 
 /* parsing/validation.c: */
 int					validate_syntax(char *input);
