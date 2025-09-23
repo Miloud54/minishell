@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:09:18 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 16:51:30 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/23 11:54:55 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
+
+/*Main entry point for variable expansion. It first calculates the size needed for 
+the expanded string (using calculate_expanded_size). If successful, it then performs 
+the actual expansion (using perform_expansion) and returns the expanded string. If any 
+step fails, it returns NULL*/
 
 char	*expand_variables(char *input, t_data *data)
 {

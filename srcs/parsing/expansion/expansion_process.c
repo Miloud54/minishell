@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_process.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:40 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 16:51:19 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/23 11:49:39 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
+
+/*Manage the sate (opening/closing) of single quotes in the input 
+string to know if we are inside or outside signle quotes */
 
 static int	handle_quote_char(char c, int *in_single_quotes)
 {
@@ -27,6 +30,9 @@ static int	handle_quote_char(char c, int *in_single_quotes)
 	return (0);
 }
 
+/*Retrieves the name of an environment variable after a $,
+gets its value, and copies this value into the result string*/
+
 static void	expand_and_copy_variable(t_copy_context *ctx)
 {
 	char	*var_name;
@@ -39,6 +45,9 @@ static void	expand_and_copy_variable(t_copy_context *ctx)
 	free(var_name);
 	free(var_value);
 }
+
+/*Initializes the context structure used for expansion,setting up 
+pointers needed to iterate through the input and write the result*/
 
 static void	init_expansion_context(t_copy_context *ctx, char *input,
 		t_data *data, char *result)
@@ -54,6 +63,9 @@ static void	init_expansion_context(t_copy_context *ctx, char *input,
 	ctx->i = &i;
 	ctx->j = &j;
 }
+
+/*Iterates through the input string character by character, handles quotes, triggers 
+variable expansion if needed, and copies characters or values into the result */
 
 static void	process_expansion_loop(char *input, t_copy_context *ctx,
 		int *in_single_quotes)
@@ -75,6 +87,9 @@ static void	process_expansion_loop(char *input, t_copy_context *ctx,
 	}
 }
 
+/*Main function called to perform expansion: allocates the result buffer, initializes the 
+context, runs the expansion loop, terminates the string, and returns the result*/
+
 char	*perform_expansion(char *input, t_data *data, int expanded_size)
 {
 	char			*result;
@@ -92,3 +107,6 @@ char	*perform_expansion(char *input, t_data *data, int expanded_size)
 	result[*(ctx.j)] = '\0';
 	return (result);
 }
+
+/*Each function helps manage environment variable expansion 
+in a shell command, following the rules for quotes.*/

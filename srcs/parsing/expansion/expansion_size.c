@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_size.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 16:51:23 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/23 11:50:24 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
+
+/*Manages the state of signle quotes in the input string, to know 
+if you are inside or outside single quotes (for expansion rules)*/
 
 static int	handle_quote_char_size(char c, int *in_single_quotes)
 {
@@ -27,6 +30,9 @@ static int	handle_quote_char_size(char c, int *in_single_quotes)
 	return (0);
 }
 
+/*When a variable is detected, gets it name and value, and adds the 
+lenght of the value to the total size needed for the expanded string*/
+
 static void	add_variable_size(char *input, t_data *data, int *i, int *size)
 {
 	char	*var_name;
@@ -42,6 +48,9 @@ static void	add_variable_size(char *input, t_data *data, int *i, int *size)
 	free(var_value);
 	*i = temp_i;
 }
+
+/*Processes the current character int the input; handles quotes, triggers variable 
+size calculation if needed, or just increments the size for normal characters*/
 
 static void	process_char_for_size(t_size_context *ctx)
 {
@@ -60,6 +69,9 @@ static void	process_char_for_size(t_size_context *ctx)
 		(*(ctx->i))++;
 	}
 }
+
+/*Main function that iterates through the input string, using the above helpers, 
+to compute and return the total size required for the string after all expansions*/
 
 int	calculate_expanded_size(char *input, t_data *data)
 {
@@ -82,3 +94,6 @@ int	calculate_expanded_size(char *input, t_data *data)
 		process_char_for_size(&ctx);
 	return (size);
 }
+
+/*These functions work together to determine how much memory is needed to store the input 
+string after all environment variable expansions are performed, respecting quote rules.*/
