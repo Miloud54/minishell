@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 12:57:05 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/23 16:02:36 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,9 @@ typedef struct s_size_context
 
 /* builtins/*.c: */
 void				ft_env(t_data *data, t_cmd *cmd);
+
+/* builtins/utils_builtins.c: */
+static void			skip_spaces(const char *str, int *i);
 
 /* parsing/validation.c: */
 int					validate_syntax(char *input);
