@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/22 17:48:29 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/09/23 12:57:36 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ SRCS			= \
 	$(SRC_DIR)/utils/exits.c \
 	$(SRC_DIR)/utils/globals.c \
 	$(SRC_DIR)/utils/init_data.c \
-	$(SRC_DIR)/utils/init_signals.c
+	$(SRC_DIR)/utils/init_signals.c\
+	$(SRC_DIR)/builtins/env.c
 
 OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 

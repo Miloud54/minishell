@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 18:42:54 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/18 19:41:45 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/23 12:52:35 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,39 @@ HOME=/home/user
 SHELL=/bin/bash
 ... 
 
-The minishell version of the 'env' command doesn't require to manage arguments*/
+The minishell version of the 'env' command doesn't require to manage args*/
 
 /* ************************************************************************** */
 /*                               ENV - Function                               */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
+#include "../../inc/minishell.h"
 
-void	ft_env(char **envp)
+void	ft_env(t_data *data, t_cmd *cmd)
 {
 	int		i;
 
-	i = 0;
-	while (envp[i])
+	if (!data->envp)
 	{
-		printf("%s", envp[i]);
-		printf("\n");
+		data->exit_status = 1;
+		return ;
+	}
+	if (cmd->args[1] && ft_strcmp(cmd->args[1], "-i") == 0)
+	{
+		data->exit_status = 0;
+		return ;
+	}
+	if (cmd->args[1])
+	{
+		printf("env: '%s': No such file or directory\n", cmd->args[1]);
+		data->exit_status = 127;
+		return ;
+	}
+	i = 0;
+	while (data->envp[i])
+	{
+		printf("%s\n", data->envp[i]);
 		i++;
 	}
-}
-
-/* ************************************************************************** */
-/*                             ENV - Main to test                             */
-/* ************************************************************************** */
-
-int		main(void)
-{
-	ft_env();
-	return (0);
+	data->exit_status = 0;
 }
