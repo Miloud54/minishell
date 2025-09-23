@@ -6,13 +6,15 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:35:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/22 16:35:52 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/23 12:41:05 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Processes a single redirection token */
+/*Processes a single redirection token in the token list, sets its type and 
+file in the command structure, and initializes heredoc file descriptor*/
+
 static int	process_redirect_token(t_cmd *cmd, t_token **current,
 		int *redir_idx)
 {
@@ -29,6 +31,9 @@ static int	process_redirect_token(t_cmd *cmd, t_token **current,
 	(*redir_idx)++;
 	return (0);
 }
+
+/*Iterates through the token list for a command, processes all redirection tokens 
+using process_redirect_token, and fills the command's redirection array*/
 
 int	parse_redirects(t_cmd *cmd, t_token *start, t_token *end)
 {
@@ -49,6 +54,10 @@ int	parse_redirects(t_cmd *cmd, t_token *start, t_token *end)
 	}
 	return (0);
 }
+
+/*Parses a single command from a range of tokens. Allocates and initializes 
+the command structure, counts arguments and redirections, allocates memory, 
+and fills the command with its arguments and redirections*/
 
 t_cmd	*parse_single_cmd(t_token *start, t_token *end)
 {
@@ -75,3 +84,6 @@ t_cmd	*parse_single_cmd(t_token *start, t_token *end)
 	}
 	return (cmd);
 }
+
+/*These functions handle the extraction and storage of redirection 
+information and the overall parsing of a single command from tokens*/
