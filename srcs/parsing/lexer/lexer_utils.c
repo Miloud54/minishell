@@ -12,6 +12,7 @@
 
 #include "../../../inc/minishell.h"
 
+/* Determines the type of redirection operator and advances the index */
 t_token_type	get_redirect_type(char *input, int *i)
 {
 	if (input[*i] == '<')
@@ -37,12 +38,14 @@ t_token_type	get_redirect_type(char *input, int *i)
 	return (TOKEN_WORD);
 }
 
+/* Creates a pipe token and advances the index */
 t_token	*handle_pipe_token(int *i)
 {
 	*i += 1;
 	return (create_token(ft_strdup("|"), TOKEN_PIPE));
 }
 
+/* Creates a redirection token and advances the index */
 t_token	*handle_redirect_token(char *input, int *i)
 {
 	char	*value;
@@ -54,6 +57,7 @@ t_token	*handle_redirect_token(char *input, int *i)
 	return (create_token(value, get_redirect_type(input, i)));
 }
 
+/* Creates a word token from the input */
 t_token	*handle_word_token(char *input, int *i)
 {
 	char	*value;

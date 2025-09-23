@@ -12,6 +12,7 @@
 
 #include "../../../inc/minishell.h"
 
+/* Checks if there is non-space content before the pipe position */
 static int	has_content_before(char *input, int pipe_pos)
 {
 	int		i;
@@ -26,6 +27,7 @@ static int	has_content_before(char *input, int pipe_pos)
 	return (0);
 }
 
+/* Checks if there is non-space content after the pipe position */
 static int	has_content_after(char *input, int pipe_pos)
 {
 	int		i;
@@ -40,12 +42,14 @@ static int	has_content_after(char *input, int pipe_pos)
 	return (0);
 }
 
+/* Checks if there is content both before and after the pipe */
 static int	has_content_around_pipe(char *input, int pipe_pos)
 {
 	return (has_content_before(input, pipe_pos)
 		&& has_content_after(input, pipe_pos));
 }
 
+/* Checks if the pipe is not followed by another pipe and is surrounded by content */
 static int	check_pipe_position(char *input, int i)
 {
 	int		next_non_space;
@@ -60,6 +64,7 @@ static int	check_pipe_position(char *input, int i)
 	return (1);
 }
 
+/* Validates the overall pipe syntax in the input line */
 int	validate_pipe_syntax(char *input)
 {
 	int		i;
