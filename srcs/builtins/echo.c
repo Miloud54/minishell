@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:51:50 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/19 12:26:40 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:04:06 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 /*                            ECHO - Explanation                              */
 /* ************************************************************************** */
 
-/*The echo command prints on the standard output (stdout) what we've given it as
+/*The echo cmd prints on the standard output (stdout) what we've given it as
 an argument.
 
 Example: 
@@ -23,7 +23,7 @@ $> hello world
 $> echo hello world | cat -e
 $> hello world$
 
-The echo command only has one flag to manage in minishell: -n.
+The echo cmd only has one flag to manage in minishell: -n.
 If the flag -n is present, echo does not print the final \n.
 
 Example:
@@ -39,7 +39,7 @@ $> hello world%
 
 #include "minishell.h" // for ft_strcmp() for 2nd version of ft_echo
 
-/*The function is_n_option takes an argument of the echo command as a string and
+/*The function is_n_option takes an argument of the echo cmd as a string and
 returns a boolean ; either the argument is a valid option (e.g. '-n' or '-nnnn')
 or an invalid option (e.g. 'n', '-a' or '-nnnnna').*/
 
@@ -59,32 +59,33 @@ bool	is_n_option(char *av)
 	return (true);
 }
 
-void	ft_echo(char **command)
+void	ft_echo(t_cmd *cmd, t_data *data)
 {
 	int		i;
 	bool	need_newline;
 
 	i = 0;
 	need_newline = true;
-	if (!command[i])
+	if (!cmd->args[i])
 	{
 		write(1, "\n", 1);
 		return ;
 	}
-	while (command[i] != NULL && is_n_option(command[i]) == true)
+	while (cmd->args[i] != NULL && is_n_option(cmd->args[i]) == true)
 	{
 		need_newline = false;
 		i++;
 	}
-	while (command[i] != NULL)
+	while (cmd->args[i] != NULL)
 	{
-		printf("%s", command[i]);
-		if (command[i + 1] != NULL)
+		printf("%s", cmd->args[i]);
+		if (cmd->args[i + 1] != NULL)
 			printf(" ");
 		i++;
 	}
 	if (need_newline == true)
 		printf("\n");
+	data->exit_status = 0;
 }
 
 /* ************************************************************************** */
@@ -122,33 +123,33 @@ void	ft_echo(char **command)
 
 /*Long version of ft_echo that can take as av[0] either echo or the next av:*/
 
-// void	ft_echo(char **command)
+// void	ft_echo(char **cmd)
 // {
 // 	int		i;
 // 	bool	need_newline;
 // 	bool	printed = false;
 
-// 	if (command[0] && ft_strcmp(command[0], "echo") == 0)
+// 	if (cmd[0] && ft_strcmp(cmd[0], "echo") == 0)
 // 		i = 1;
 // 	else
 // 		i = 0;
 // 	need_newline = true;
-// 	if (!command[i])
+// 	if (!cmd[i])
 // 	{
 // 		write(1, "\n", 1);
 // 		return ;
 // 	}
-// 	while (command[i] != NULL && is_n_option(command[i]) == true)
+// 	while (cmd[i] != NULL && is_n_option(cmd[i]) == true)
 // 	{
 // 		need_newline = false;
 // 		i++;
 // 	}
 // 	int j = i;
-// 	while (command[j] != NULL)
+// 	while (cmd[j] != NULL)
 // 	{
-// 		printf("%s", command[j]);
+// 		printf("%s", cmd[j]);
 // 		printed = true;
-// 		if (command[j + 1] != NULL)
+// 		if (cmd[j + 1] != NULL)
 // 			printf(" ");
 // 		j++;
 // 	}
