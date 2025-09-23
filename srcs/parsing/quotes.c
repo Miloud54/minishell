@@ -12,6 +12,7 @@
 
 #include "../../inc/minishell.h"
 
+/* Finds the index of the closing quote starting from 'start' */
 int	find_quote_end(char *str, int start, char quote)
 {
 	int		i;
@@ -24,6 +25,7 @@ int	find_quote_end(char *str, int start, char quote)
 	return (-1);
 }
 
+/* Checks if the input string contains any unclosed quotes */
 int	has_unclosed_quotes(char *input)
 {
 	int		i;
@@ -45,6 +47,7 @@ int	has_unclosed_quotes(char *input)
 	return (0);
 }
 
+/* Calculates the length of the string without quotes */
 static int	count_unquoted_len(char *str)
 {
 	int		i;
@@ -74,6 +77,7 @@ static int	count_unquoted_len(char *str)
 	return (len);
 }
 
+/* Copies the string to 'result' without quotes */
 static void	copy_without_quotes(char *str, char *result)
 {
 	int		i;
@@ -100,6 +104,7 @@ static void	copy_without_quotes(char *str, char *result)
 	result[j] = '\0';
 }
 
+/* Returns a new string with all quotes removed */
 char	*remove_quotes(char *str)
 {
 	char	*result;

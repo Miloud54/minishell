@@ -12,11 +12,13 @@
 
 #include "../../../inc/minishell.h"
 
+/* Checks if the character is a special shell operator (<, >, |) */
 int	is_special_char(char c)
 {
 	return (c == '|' || c == '<' || c == '>');
 }
 
+/* Skips over quoted sections in the input string */
 int	skip_quotes(char *input, int i, char quote)
 {
 	i++;
@@ -27,6 +29,7 @@ int	skip_quotes(char *input, int i, char quote)
 	return (i);
 }
 
+/* Extracts a word from the input, handling quotes and special chars */
 char	*extract_word(char *input, int *i)
 {
 	int		start;
@@ -46,6 +49,7 @@ char	*extract_word(char *input, int *i)
 	return (word);
 }
 
+/* Tokenizes the input string into a linked list of tokens */
 t_token	*lexer(char *input)
 {
 	int		i;
