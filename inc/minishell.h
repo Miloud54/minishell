@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
 /*   Updated: 2025/09/24 14:42:31 by edidier          ###   ########.fr       */
@@ -126,7 +126,8 @@ typedef struct s_size_context
 }						t_size_context;
 
 /* builtins/*.c: */
-void					ft_env(t_data *data, t_cmd *cmd);
+void				ft_env(t_data *data, t_cmd *cmd);
+void				ft_echo(t_cmd *cmd, t_data *data);
 
 /* builtins/exit_utils.c */
 int						parse_sign(const char *str, int *i);
