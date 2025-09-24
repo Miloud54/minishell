@@ -141,11 +141,15 @@ void					ft_unset(t_cmd *cmd, t_data *data);
 int						ft_pwd(char **argv);
 void					ft_export(t_cmd *cmd, t_data *data);
 
+/* builtins/export_utils.c: */
+void					add_or_update_env(t_data *data, const char *arg);
+void					add_env_var(t_data *data, const char *arg);
+int						replace_env_var(t_data *data, const char *arg, int len);
 
-/* builtins/cd_utils.c */
+/* builtins/cd_utils.c: */
 int						update_env_char(char ***envp, char *name, char *value);
 
-/* builtins/exit_utils.c */
+/* builtins/exit_utils.c: */
 int						parse_sign(const char *str, int *i);
 int						parse_digits(const char *str, int *i, int sign,
 							t_parse_result *res);
