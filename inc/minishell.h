@@ -6,11 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/09/24 18:13:12 by bde-la-p         ###   ########.fr       */
-=======
-/*   Updated: 2025/09/24 17:56:03 by edidier          ###   ########.fr       */
->>>>>>> origin/main
+/*   Updated: 2025/09/24 18:53:51 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +127,10 @@ typedef struct s_size_context
 
 /* builtins/builtins.c: */
 int						is_exit_command(const char *input);
+bool					is_builtin(const char *cmd);
+void					exec_builtin(t_data *data, t_cmd *cmd);
 
-/* builtins/*.c: */
+/* builtins/everything.c: */
 int						ft_cd(t_data *data, char **argv);
 void					ft_env(t_data *data, t_cmd *cmd);
 void					ft_echo(t_cmd *cmd, t_data *data);
