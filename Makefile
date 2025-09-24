@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/24 18:11:16 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/09/24 18:25:15 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,9 @@ SRCS			= \
 	$(SRC_DIR)/utils/globals.c \
 	$(SRC_DIR)/utils/init_data.c \
 	$(SRC_DIR)/utils/init_signals.c \
-	$(SRC_DIR)builtins/builtins.c \
+	$(SRC_DIR)/builtins/builtins.c \
+	$(SRC_DIR)/builtins/cd.c \
+	$(SRC_DIR)/builtins/cd_utils.c \
 	$(SRC_DIR)/builtins/env.c \
 	$(SRC_DIR)/builtins/exit.c \
 	$(SRC_DIR)/builtins/exit_utils.c \

@@ -6,7 +6,11 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/09/24 18:13:12 by bde-la-p         ###   ########.fr       */
+=======
+/*   Updated: 2025/09/24 17:56:03 by edidier          ###   ########.fr       */
+>>>>>>> origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +133,7 @@ typedef struct s_size_context
 int						is_exit_command(const char *input);
 
 /* builtins/*.c: */
+int						ft_cd(t_data *data, char **argv);
 void					ft_env(t_data *data, t_cmd *cmd);
 void					ft_echo(t_cmd *cmd, t_data *data);
 int						ft_exit(t_data *data, char **argv);
@@ -136,12 +141,11 @@ void					ft_unset(t_cmd *cmd, t_data *data);
 int						ft_pwd(char **argv);
 void					ft_export(t_cmd *cmd, t_data *data);
 
-/* builtins/export_utils.c: */
-void					add_or_update_env(t_data *data, const char *arg);
-void					add_env_var(t_data *data, const char *arg);
-int						replace_env_var(t_data *data, const char *arg, int len);
 
-/* builtins/exit_utils.c: */
+/* builtins/cd_utils.c */
+int						update_env_char(char ***envp, char *name, char *value);
+
+/* builtins/exit_utils.c */
 int						parse_sign(const char *str, int *i);
 int						parse_digits(const char *str, int *i, int sign,
 							t_parse_result *res);
