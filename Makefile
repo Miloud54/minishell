@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edidier <edidier@student.42.fr>            +#+  +:+       +#+         #
+#    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/24 16:10:25 by edidier          ###   ########.fr        #
+#    Updated: 2025/09/24 16:16:52 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,9 @@ SRCS			= \
 	$(SRC_DIR)/builtins/env.c \
 	$(SRC_DIR)/builtins/exit.c \
 	$(SRC_DIR)/builtins/exit_utils.c \
-	$(SRC_DIR)/builtins/pwd.c
+	$(SRC_DIR)/builtins/pwd.c \
+	$(SRC_DIR)/builtins/echo.C \
+	$(SRC_DIR)/builtins/unset.c
 
 OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
