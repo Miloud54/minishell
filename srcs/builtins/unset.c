@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:37:30 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/24 15:52:06 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/24 16:17:59 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static void	remove_var(t_data *data, const char *name)
 	i = 0;
 	while (data->envp[i])
 	{
-		if (ft_strncmp(data->envp[i], name, len) == 0 && data->envp[i][len] == '=')
+		if (ft_strncmp(data->envp[i], name, len) == 0
+			&& data->envp[i][len] == '=')
 		{
 			free(data->envp[i]);
 			j = i;
