@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:20 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/24 14:41:49 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:50:06 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,16 @@ int	is_valid_number(char *str)
 			return (0);
 	}
 	return (str[i] == '\0');
+}
+
+void	exit_numeric_error(t_data *data, char *arg)
+{
+	write(1, "exit\n", 5);
+	ft_putstr_fd("minishell: exit ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	free_data(data);
+	exit(2);
 }
 
 int	ft_exit(t_data *data, char **argv)
