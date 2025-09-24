@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/24 16:07:44 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/24 16:12:42 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ static void	process_input(t_data *data, char *input)
 
     if (!input || !*input)
         return;
-
     tokens = lexer(input);
     if (!tokens)
         return;
-
     argv = tokens_to_argv(tokens);
     if (argv && argv[0] && is_exit_command(argv[0]))
         ft_exit(data, argv);
@@ -41,7 +39,6 @@ static void	process_input(t_data *data, char *input)
 		
     // Ici tu peux dispatcher les autres builtins ou commandes
     // ...
-
     free_tokens(tokens);
     free_argv(argv);
 }
