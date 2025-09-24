@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 18:00:18 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/24 16:07:44 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,54 +24,26 @@ static int	validate_args(int ac)
 
 static void	process_input(t_data *data, char *input)
 {
-	t_token	*tokens;
-	t_cmd	**commands;
-	char	*expanded_input;
-	int		cmd_count;
-	int		i;
+    t_token	*tokens;
+    char	**argv;
 
-	if (!input || !*input)
-		return ;
-	
-	// Gestion de la commande exit // a degager qund le builtin sera fait.
-	if (ft_strcmp(input, "exit") == 0)
-	{
-		printf("exit\n");
-		exit(data->exit_status);
-	}
-	
-	if (!validate_syntax(input))
-	{
-		data->exit_status = 2;
-		return ;
-	}
-	expanded_input = expand_variables(input, data);
-	if (!expanded_input)
-		return ;
-	tokens = lexer(expanded_input);
-	if (!tokens)
-	{
-		free(expanded_input);
-		return ;
-	}
-	commands = parser(tokens, &cmd_count);
-	if (!commands)
-	{
-		free_tokens(tokens);
-		free(expanded_input);
-		return ;
-	}
-	
-	//TODO : executer les commandes.
-	i = 0;
-	while (i < cmd_count)
-	{
-		free_cmd(commands[i]);
-		i++;
-	}
-	free(commands);
-	free_tokens(tokens);
-	free(expanded_input);
+    if (!input || !*input)
+        return;
+
+    tokens = lexer(input);
+    if (!tokens)
+        return;
+
+    argv = tokens_to_argv(tokens);
+    if (argv && argv[0] && is_exit_command(argv[0]))
+        ft_exit(data, argv);
+        // Pas besoin de free, ft_exit quitte le programme
+		
+    // Ici tu peux dispatcher les autres builtins ou commandes
+    // ...
+
+    free_tokens(tokens);
+    free_argv(argv);
 }
 
 static void	main_loop(t_data *data)
@@ -86,22 +58,20 @@ static void	main_loop(t_data *data)
 			g_signal_status = 0;
 		}
 		input = readline(PROMPT);
-		if (!input)  // Ctrl+D
+		if (!input) // Ctrl+D
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
-		if (*input)  // Si la ligne n'est pas vide
+		if (*input) // Si la ligne n'est pas vide
 			add_history(input);
-		
 		// // Commande exit ??????
 		// if (ft_strcmp(input, "exit") == 0)
 		// {
 		// 	free(input);
 		// 	printf("exit\n");
-		// 	break;
+		// 	break ;
 		// }
-		
 		process_input(data, input);
 		free(input);
 	}
@@ -140,19 +110,19 @@ int	main(int ac, char **av, char **envp)
 // 		if (!line)
 // 		{
 // 			printf("exit\n");
-// 			break;
+// 			break ;
 // 		}
 // 		if (*line == '\0')
 // 		{
 // 			free(line);
-// 			continue;
+// 			continue ;
 // 		}
 // 		add_history(line);
 // 		if (ft_strcmp(line, "exit") == 0)
 // 		{
 // 			free(line);
 // 			printf("exit\n");
-// 			break;
+// 			break ;
 // 		}
 // 		//Debut du test de tokenization
 // 		printf("Vous avez tape: %s\n", line);
