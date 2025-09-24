@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 16:00:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/24 12:03:45 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:51:04 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,8 @@ int	parse_digits(const char *str, int *i, int sign, t_parse_result *res)
 	return (1);
 }
 
-void	exit_numeric_error(t_data *data, char *arg)
+void	skip_spaces(const char *str, int *i)
 {
-	write(1, "exit\n", 5);
-	ft_putstr_fd("minishell: exit ", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
-	free_data(data);
-	exit(2);
+	while (str[*i] == ' ' || (str[*i] >= 9 && str[*i] <= 13))
+		(*i)++;
 }

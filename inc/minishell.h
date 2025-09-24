@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/24 14:42:31 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:51:33 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,17 +126,14 @@ typedef struct s_size_context
 }						t_size_context;
 
 /* builtins/*.c: */
-void				ft_env(t_data *data, t_cmd *cmd);
-void				ft_echo(t_cmd *cmd, t_data *data);
+void					ft_env(t_data *data, t_cmd *cmd);
+void					ft_echo(t_cmd *cmd, t_data *data);
 
 /* builtins/exit_utils.c */
 int						parse_sign(const char *str, int *i);
 int						parse_digits(const char *str, int *i, int sign,
 							t_parse_result *res);
-void					exit_numeric_error(t_data *data, char *arg);
-
-/* builtins/builtins_utils.c: */
-static void				skip_spaces(const char *str, int *i);
+void					skip_spaces(const char *str, int *i);
 
 /* parsing/validation.c: */
 int						validate_syntax(char *input);
