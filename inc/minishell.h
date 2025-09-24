@@ -6,7 +6,11 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2025/09/24 18:13:12 by bde-la-p         ###   ########.fr       */
+=======
 /*   Updated: 2025/09/24 17:56:03 by edidier          ###   ########.fr       */
+>>>>>>> origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +139,8 @@ void					ft_echo(t_cmd *cmd, t_data *data);
 int						ft_exit(t_data *data, char **argv);
 void					ft_unset(t_cmd *cmd, t_data *data);
 int						ft_pwd(char **argv);
+void					ft_export(t_cmd *cmd, t_data *data);
+
 
 /* builtins/cd_utils.c */
 int						update_env_char(char ***envp, char *name, char *value);

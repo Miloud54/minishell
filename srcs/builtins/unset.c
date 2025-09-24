@@ -6,14 +6,14 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:37:30 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/24 16:17:59 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/24 16:42:20 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 /* Checks if the given string is a valid environment variable identifier */
-static int	is_valid_identifier(const char *str)
+static int	is_valid_identifier_for_unset(const char *str)
 {
 	int		i;
 
@@ -73,7 +73,7 @@ void	ft_unset(t_cmd *cmd, t_data *data)
 	}
 	while (cmd->args[i])
 	{
-		if (!is_valid_identifier(cmd->args[i]))
+		if (!is_valid_identifier_for_unset(cmd->args[i]))
 		{
 			printf("unset: '%s': not a valid identifier\n", cmd->args[i]);
 			error = 1;
