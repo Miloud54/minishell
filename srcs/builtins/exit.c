@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:20 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 16:04:55 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:41:49 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,62 +21,26 @@
 
 #include "minishell.h"
 
-int	overflow(long long result, int digit, int sign)
-{
-	if (sign == 1)
-	{
-		if (result > (LLONG_MAX - digit) / 10)
-			return (1);
-	}
-	else
-	{
-		if (result < (LLONG_MIN - digit) / 10)
-			return (1);
-	}
-	return (0);
-}
-
-static int	parse_sign_digits(const char *str, int *i,
-		unsigned long long *result, int *sign, int *overflow_flag)
-{
-	int	digit;
-
-	*sign = 1;
-	if (str[*i] == '+' || str[*i] == '-')
-		if (str[(*i)++] == '-')
-			*sign = -1;
-	while (str[*i] && str[*i] >= '0' && str[*i] <= '9')
-	{
-		digit = str[*i] - '0';
-		if (overflow((long long)(*result), digit, *sign))
-		{
-			*overflow_flag = 1;
-			return (0);
-		}
-		*result = (*result) * 10 + digit;
-		(*i)++;
-	}
-	return (1);
-}
-
 int	ft_atol(const char *str, int *overflow_flag)
 {
-	unsigned long long	result;
-	int					i;
-	int					sign;
+	t_parse_result	res;
+	int				i;
+	int				sign;
 
 	if (!str)
 		return (0);
 	i = 0;
-	result = 0;
-	*overflow_flag = 0;
+	res.result = 0;
+	res.overflow = 0;
 	skip_spaces(str, &i);
-	if (!parse_sign_digits(str, &i, &result, &sign, overflow_flag))
+	sign = parse_sign(str, &i);
+	if (!parse_digits(str, &i, sign, &res))
 		return (0);
 	skip_spaces(str, &i);
 	if (str[i] != '\0')
-		*overflow_flag = 1;
-	return ((int)((result * sign) % 256));
+		res.overflow = 1;
+	*overflow_flag = res.overflow;
+	return ((int)((res.result * sign) % 256));
 }
 
 int	is_valid_number(char *str)
@@ -124,14 +88,7 @@ int	ft_exit(t_data *data, char **argv)
 	}
 	val = ft_atol(argv[1], &error);
 	if (!is_valid_number(argv[1]) || error)
-	{
-		write(1, "exit\n", 5);
-		ft_putstr_fd("minishell: exit ", 2);
-		ft_putstr_fd(argv[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		free_data(data);
-		exit(2);
-	}
+		exit_numeric_error(data, argv[1]);
 	write(1, "exit\n", 5);
 	free_data(data);
 	exit((unsigned char)val);
