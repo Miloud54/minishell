@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/24 14:51:33 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/24 16:09:40 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,13 @@ typedef struct s_size_context
 	int					*in_single_quotes;
 }						t_size_context;
 
+/* builtins/builtins.c: */
+int						is_exit_command(const char *input);
+
 /* builtins/*.c: */
 void					ft_env(t_data *data, t_cmd *cmd);
 void					ft_echo(t_cmd *cmd, t_data *data);
+int						ft_exit(t_data *data, char **argv);
 
 /* builtins/exit_utils.c */
 int						parse_sign(const char *str, int *i);
@@ -150,12 +154,16 @@ int						has_unclosed_quotes(char *input);
 t_token					*create_token(char *value, t_token_type type);
 void					add_token(t_token **tokens, t_token *new_token);
 
+/* parsing/tokens_utils.c */
+char					**tokens_to_argv(t_token *tokens);
+
 /* parsing/validation_redirection.c: */
 int						validate_redirect_syntax(char *input);
 
 /* utils/cleanup1.c: */
 void					free_data(t_data *data);
 void					free_tokens(t_token *tokens);
+void					free_argv(char **argv);
 
 /* utils/cleanup2.c: */
 void					free_cmd(t_cmd *cmd);

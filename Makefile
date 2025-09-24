@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
+#    By: edidier <edidier@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/23 12:57:36 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/09/24 16:10:25 by edidier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRCS			= \
 	$(SRC_DIR)/parsing/parser/parser_validation.c \
 	$(SRC_DIR)/parsing/quotes.c \
 	$(SRC_DIR)/parsing/tokens.c \
+	$(SRC_DIR)/parsing/tokens_utils.c \
 	$(SRC_DIR)/parsing/validations/validation.c \
 	$(SRC_DIR)/parsing/validations/validation_pipe.c \
 	$(SRC_DIR)/parsing/validations/validation_redirection.c \
@@ -44,8 +45,12 @@ SRCS			= \
 	$(SRC_DIR)/utils/exits.c \
 	$(SRC_DIR)/utils/globals.c \
 	$(SRC_DIR)/utils/init_data.c \
-	$(SRC_DIR)/utils/init_signals.c\
-	$(SRC_DIR)/builtins/env.c
+	$(SRC_DIR)/utils/init_signals.c \
+	$(SRC_DIR)builtins/builtins.c \
+	$(SRC_DIR)/builtins/env.c \
+	$(SRC_DIR)/builtins/exit.c \
+	$(SRC_DIR)/builtins/exit_utils.c \
+	$(SRC_DIR)/builtins/pwd.c
 
 OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
