@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:47:43 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/24 18:55:32 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/25 12:28:37 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	is_exit_command(const char *input)
 }
 
 /* function to detext builtins */
-bool	is_builtin(const char *cmd)
+bool	is_builtin(char *cmd)
 {
 	if (!cmd)
 		return (false);

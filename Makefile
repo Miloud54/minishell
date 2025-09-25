@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/24 18:25:15 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/09/25 12:27:26 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,8 @@ OBJ_DIRS		= $(OBJ_DIR)/$(SRC_DIR) \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/lexer \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/parser \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/validations \
-				  $(OBJ_DIR)/$(SRC_DIR)/utils
+				  $(OBJ_DIR)/$(SRC_DIR)/utils \
+				  $(OBJ_DIR)/$(SRC_DIR)/builtins
 
 # Colors
 GREEN			= \033[0;32m
