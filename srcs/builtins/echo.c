@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:51:50 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/23 16:04:06 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/26 13:38:28 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	ft_echo(t_cmd *cmd, t_data *data)
 	int		i;
 	bool	need_newline;
 
-	i = 0;
+	i = 1;
 	need_newline = true;
-	if (!cmd->args[i])
+	if (!cmd->args[0])
 	{
 		write(1, "\n", 1);
 		return ;
