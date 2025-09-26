@@ -6,13 +6,13 @@
 /*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 17:55:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/26 11:32:27 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/09/26 11:42:31 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*create_env_var(const char *name, const char *value)
+static char	*creating_env_var(const char *name, const char *value)
 {
 	int		name_len;
 	int		value_len;
@@ -29,7 +29,7 @@ static char	*create_env_var(const char *name, const char *value)
 	return (new_var);
 }
 
-static int	replace_env_var(char **envp, const char *name, char *new_var)
+static int	replacing_env_var(char **envp, const char *name, char *new_var)
 {
 	int	i;
 	int	name_len;
@@ -50,7 +50,7 @@ static int	replace_env_var(char **envp, const char *name, char *new_var)
 	return (0);
 }
 
-static int	add_env_var(char ***envp, char *new_var)
+static int	adding_env_var(char ***envp, char *new_var)
 {
 	int		i;
 	char	**new_envp;
@@ -77,12 +77,12 @@ int	update_env_var(char ***envp, char *name, char *value)
 
 	if (!envp || !*envp || !name || !value)
 		return (1);
-	new_var = create_env_var(name, value);
+	new_var = creating_env_var(name, value);
 	if (!new_var)
 		return (1);
-	if (replace_env_var(*envp, name, new_var))
+	if (replacing_env_var(*envp, name, new_var))
 		return (0);
-	if (add_env_var(envp, new_var))
+	if (adding_env_var(envp, new_var))
 	{
 		free(new_var);
 		return (1);
