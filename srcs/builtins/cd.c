@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:52:26 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/24 17:29:51 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/26 11:27:29 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ static char	*get_cd_path(char **argv, t_data *data)
 static void	print_cd_error(const char *msg, const char *path)
 {
 	ft_putstr_fd("minishell: cd: ", 2);
-	ft_putstr_fd(path, 2);
-	ft_putstr_fd(msg, 2);
+	ft_putstr_fd((char *)path, 2);
+	ft_putstr_fd((char *)msg, 2);
 }
 
 static int change_directory(const char *path, t_data *data)
 {
 	char *oldpwd;
-	
+
 	oldpwd = getcwd(NULL, 0);
 	if (chdir(path) != 0)
 	{
@@ -63,7 +63,7 @@ int ft_cd(t_data *data, char **argv)
 	if (ft_strcmp(argv[1], "-") == 0)
 	{
 		ft_putstr_fd(path, 1);
-		ft_putchar_fd("\n", 1);
+		ft_putchar_fd('\n', 1);
 	}
 	return change_directory(path, data);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 17:55:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/24 18:03:52 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/26 11:32:27 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static char	*create_env_var(const char *name, const char *value)
 	new_var = malloc(name_len + value_len + 2);
 	if (!new_var)
 		return (NULL);
-	ft_strcpy(new_var, name);
+	ft_strlcpy(new_var, name, name_len + 1);
 	new_var[name_len] = '=';
-	ft_strcpy(new_var + name_len + 1, value);
+	ft_strlcpy(new_var + name_len + 1, value, value_len + 1);
 	return (new_var);
 }
 
@@ -73,10 +73,7 @@ static int	add_env_var(char ***envp, char *new_var)
 
 int	update_env_var(char ***envp, char *name, char *value)
 {
-	int		i;
-	int		name_len;
 	char	*new_var;
-	char	**new_envp;
 
 	if (!envp || !*envp || !name || !value)
 		return (1);
@@ -94,7 +91,7 @@ int	update_env_var(char ***envp, char *name, char *value)
 }
 
 /*
-We use char ***envp (a pointer to a pointer to a pointer) so that we can modify the environment variable array 
+We use char ***envp (a pointer to a pointer to a pointer) so that we can modify the environment variable array
 itself (not just its contents) inside the function.
 
 Explanation:
