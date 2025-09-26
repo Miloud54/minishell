@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/25 12:46:38 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/26 11:26:58 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,13 +139,13 @@ void					ft_unset(t_cmd *cmd, t_data *data);
 int						ft_pwd(char **argv);
 void					ft_export(t_cmd *cmd, t_data *data);
 
+/* builtins/cd_utils.c */
+int						update_env_var(char ***envp, char *name, char *value);
+
 /* builtins/export_utils.c: */
 void					add_or_update_env(t_data *data, const char *arg);
 void					add_env_var(t_data *data, const char *arg);
 int						replace_env_var(t_data *data, const char *arg, int len);
-
-/* builtins/cd_utils.c: */
-int						update_env_char(char ***envp, char *name, char *value);
 
 /* builtins/exit_utils.c: */
 int						parse_sign(const char *str, int *i);
@@ -260,6 +260,10 @@ t_cmd					*create_new_cmd(void);
 int						fill_cmd_content(t_cmd *cmd, t_token *start,
 							t_token *end);
 void					cleanup_commands_on_error(t_cmd **commands, int count);
+
+/* Readline function declarations */
+extern void				rl_replace_line(const char *text, int clear_undo);
+extern void				rl_redisplay(void);
 
 /* ************************************************************************** */
 
