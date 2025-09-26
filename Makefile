@@ -54,7 +54,9 @@ SRCS			= \
 	$(SRC_DIR)/builtins/exit_utils.c \
 	$(SRC_DIR)/builtins/pwd.c \
 	$(SRC_DIR)/builtins/echo.C \
-	$(SRC_DIR)/builtins/unset.c
+	$(SRC_DIR)/builtins/unset.c \
+	$(SRC_DIR)/builtins/export.c \
+	$(SRC_DIR)/builtins/export_utils.c
 
 OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -66,7 +68,8 @@ OBJ_DIRS		= $(OBJ_DIR)/$(SRC_DIR) \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/lexer \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/parser \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/validations \
-				  $(OBJ_DIR)/$(SRC_DIR)/utils
+				  $(OBJ_DIR)/$(SRC_DIR)/utils \
+				  $(OBJ_DIR)/$(SRC_DIR)/builtins
 
 # Colors
 GREEN			= \033[0;32m

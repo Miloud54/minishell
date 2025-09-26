@@ -127,19 +127,27 @@ typedef struct s_size_context
 
 /* builtins/builtins.c: */
 int						is_exit_command(const char *input);
+bool					is_builtin(char *cmd);
+void					exec_builtin(t_data *data, t_cmd *cmd);
 
-/* builtins/main functions */
+/* builtins/everything.c: */
 int						ft_cd(t_data *data, char **argv);
 void					ft_env(t_data *data, t_cmd *cmd);
 void					ft_echo(t_cmd *cmd, t_data *data);
 int						ft_exit(t_data *data, char **argv);
 void					ft_unset(t_cmd *cmd, t_data *data);
 int						ft_pwd(char **argv);
+void					ft_export(t_cmd *cmd, t_data *data);
 
 /* builtins/cd_utils.c */
 int						update_env_var(char ***envp, char *name, char *value);
 
-/* builtins/exit_utils.c */
+/* builtins/export_utils.c: */
+void					add_or_update_env(t_data *data, const char *arg);
+void					add_env_var(t_data *data, const char *arg);
+int						replace_env_var(t_data *data, const char *arg, int len);
+
+/* builtins/exit_utils.c: */
 int						parse_sign(const char *str, int *i);
 int						parse_digits(const char *str, int *i, int sign,
 							t_parse_result *res);
