@@ -6,7 +6,7 @@
 /*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/26 11:26:58 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/09/26 11:52:08 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+/* Readline function declarations à retirer car juste pour Mac */
+extern void				rl_replace_line(const char *text, int clear_undo);
+extern void				rl_redisplay(void);
 
 // #define TOKEN_REDIR_IN 1      // "<"
 // #define TOKEN_HEREDOC 2       // "<<"
@@ -260,10 +264,6 @@ t_cmd					*create_new_cmd(void);
 int						fill_cmd_content(t_cmd *cmd, t_token *start,
 							t_token *end);
 void					cleanup_commands_on_error(t_cmd **commands, int count);
-
-/* Readline function declarations */
-extern void				rl_replace_line(const char *text, int clear_undo);
-extern void				rl_redisplay(void);
 
 /* ************************************************************************** */
 

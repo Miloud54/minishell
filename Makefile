@@ -6,7 +6,7 @@
 #    By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/26 11:43:35 by emiliedidie      ###   ########.fr        #
+#    Updated: 2025/09/26 11:53:41 by emiliedidie      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME			= minishell
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -g
 INCLUDE_DIRS	= -I./inc -I./libft/inc
-READLINE_FLAGS	= -lreadline
+READLINE_FLAGS	= -lreadline -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include #retirer tout après -lreadline, à garder que pour Mac
 
 LIBFT_DIR		= libft
 LIBFT			= $(LIBFT_DIR)/libft.a
