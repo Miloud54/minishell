@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:09:18 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 12:07:25 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/29 13:44:37 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,23 @@ and returns the expanded string. If any step fails, it returns NULL*/
 
 char	*expand_variables(char *input, t_data *data)
 {
-	int	expanded_size;
+	char	*var_name;
+	char	*var_value;
 
 	if (!input || !data)
 		return (NULL);
-	expanded_size = calculate_expanded_size(input, data);
-	if (expanded_size < 0)
-		return (NULL);
-	return (perform_expansion(input, data, expanded_size));
+	if (input[0] == '$' && input[1] != '\0')
+	{
+		var_name = input + 1;
+		if (ft_strcmp(var_name, "?") == 0)
+		{
+			return (ft_itoa(data->exit_status));
+		}
+		var_value = get_env_var(data->envp, var_name);
+		if (var_value)
+			return (ft_strdup(var_value));
+		else
+			return (ft_strdup(""));
+	}
+	return (ft_strdup(input));
 }
