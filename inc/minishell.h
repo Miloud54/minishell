@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
 /*   Updated: 2025/09/29 22:08:20 by emiliedidie      ###   ########.fr       */
@@ -47,7 +47,7 @@ extern void				rl_redisplay(void);
 /* ************************************************************************** */
 
 # define MAX_PATH 4096
-# define PROMPT "minishell$ "
+# define PROMPT "\033[0;32mminishell$ \033[0m"
 
 /* ************************************************************************** */
 /*                              GLOBAL VARIABLES                              */
@@ -151,6 +151,7 @@ int						update_env_var(char ***envp, char *name, char *value);
 void					add_or_update_env(t_data *data, const char *arg);
 void					add_env_var(t_data *data, const char *arg);
 int						replace_env_var(t_data *data, const char *arg, int len);
+void					sort_env(char **envp);
 
 /* builtins/exit_utils.c: */
 int						parse_sign(const char *str, int *i);

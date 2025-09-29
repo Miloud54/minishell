@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_process.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:40 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 12:01:28 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/29 13:45:25 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,9 @@ static void	init_expansion_context(t_copy_context *ctx, char *input,
 	ctx->j = &j;
 }
 
-/*Iterates through the input string character by character, handles quotes, 
-triggers variable expansion if needed, and copies characters or values into the result*/
+/*Iterates through the input string character by character, handles quotes,
+triggers variable expansion if needed, and copies characters or values into 
+the result*/
 
 static void	process_expansion_loop(char *input, t_copy_context *ctx,
 		int *in_single_quotes)
@@ -87,8 +88,9 @@ static void	process_expansion_loop(char *input, t_copy_context *ctx,
 	}
 }
 
-/*Main function called to perform expansion: allocates the result buffer, initializes 
-the context, runs the expansion loop, terminates the string, and returns the result*/
+/*Main function called to perform expansion: allocates the result buffer,
+initializes the context, runs the expansion loop, terminates the string,
+and returns the result*/
 
 char	*perform_expansion(char *input, t_data *data, int expanded_size)
 {

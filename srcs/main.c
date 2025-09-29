@@ -22,6 +22,22 @@ static int	validate_args(int ac)
 	return (0);
 }
 
+static void	expand_cmd_args(t_cmd *cmd, t_data *data)
+{
+	int	i;
+	char	*tmp;
+
+	i = 0;
+	while (cmd->args && cmd->args[i])
+	{
+		tmp = expand_variables(cmd->args[i], data);
+		if (tmp != cmd->args[i])
+			free(cmd->args[i]);
+		cmd->args[i] = tmp;
+		i++;
+	}
+}
+
 static void	process_input(t_data *data, char *input)
 {
     t_token	*tokens;
