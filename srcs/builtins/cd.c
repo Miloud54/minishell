@@ -6,7 +6,7 @@
 /*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:52:26 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/26 16:22:05 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/09/29 12:12:19 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static char	*get_cd_path(char **argv, t_data *data)
 
 static void	print_cd_error(const char *path)
 {
-	ft_putstr_fd("minishell: cd: no such file or directory: ", 2);
+	ft_putstr_fd("minishell: cd: ", 2);
   ft_putstr_fd((char *)path, 2);
-  ft_putstr_fd("\n", 2);
+  ft_putstr_fd(": No such file or directory\n", 2);
 }
 
 static int change_directory(const char *path, t_data *data)
