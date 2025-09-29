@@ -6,7 +6,7 @@
 #    By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/26 11:53:41 by emiliedidie      ###   ########.fr        #
+#    Updated: 2025/09/29 22:09:06 by emiliedidie      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,10 @@ SRCS			= \
 	$(SRC_DIR)/builtins/echo.c \
 	$(SRC_DIR)/builtins/unset.c \
 	$(SRC_DIR)/builtins/export.c \
-	$(SRC_DIR)/builtins/export_utils.c
+	$(SRC_DIR)/builtins/export_utils.c \
+	$(SRC_DIR)/exec/exec.c \
+	$(SRC_DIR)/exec/executor.c \
+	$(SRC_DIR)/exec/redir.c
 
 OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -69,7 +72,7 @@ OBJ_DIRS		= $(OBJ_DIR)/$(SRC_DIR) \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/parser \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/validations \
 				  $(OBJ_DIR)/$(SRC_DIR)/utils \
-				  $(OBJ_DIR)/$(SRC_DIR)/builtins
+				  $(OBJ_DIR)/$(SRC_DIR)/exec
 
 # Colors
 GREEN			= \033[0;32m
