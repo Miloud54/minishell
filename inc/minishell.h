@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/29 12:36:30 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/29 22:08:20 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_redirect
 typedef struct s_cmd
 {
 	char				**args;
+  char        **cmd_path;
 	t_redirect			*redirects;
 	int					redirect_count;
 }						t_cmd;
@@ -186,6 +187,7 @@ void					free_argv(char **argv);
 
 /* utils/cleanup2.c: */
 void					free_cmd(t_cmd *cmd);
+char *ft_strjoin_free(char *s1, char *s2);
 
 /* utils/exits.c: */
 void					error_exit(char *msg, int exit_code);
@@ -265,6 +267,18 @@ t_cmd					*create_new_cmd(void);
 int						fill_cmd_content(t_cmd *cmd, t_token *start,
 							t_token *end);
 void					cleanup_commands_on_error(t_cmd **commands, int count);
+
+/* exec/exec.c */
+char					*find_executable(char *cmd, char **envp);
+int						execute_single_command(t_cmd *cmd, t_data *data);
+
+/* exec/executor.c */
+int						execute_commands(t_cmd **commands, int cmd_count, t_data *data);
+
+/* exec/redir.c */
+int						setup_redirections(t_cmd *cmd, t_data *data);
+void					restore_std_fds(t_data *data);
+int						backup_std_fds(t_data *data);
 
 /* ************************************************************************** */
 
