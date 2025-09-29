@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/24 18:51:17 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/29 13:21:35 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,22 @@ static int	validate_args(int ac)
 		return (1);
 	}
 	return (0);
+}
+
+static void	expand_cmd_args(t_cmd *cmd, t_data *data)
+{
+	int	i;
+	char	*tmp;
+
+	i = 0;
+	while (cmd->args && cmd->args[i])
+	{
+		tmp = expand_variables(cmd->args[i], data);
+		if (tmp != cmd->args[i])
+			free(cmd->args[i]);
+		cmd->args[i] = tmp;
+		i++;
+	}
 }
 
 static void	process_input(t_data *data, char *input)
@@ -36,7 +52,10 @@ static void	process_input(t_data *data, char *input)
 		return ;
 	cmds = parser(tokens, &cmd_count);
 	if (cmds && cmds[0] && cmds[0]->args && is_builtin(cmds[0]->args[0]))
+	{
+		expand_cmd_args(cmds[0], data);
 		exec_builtin(data, cmds[0]);
+	}
 	else
 	{
 		// Here goes the execution of external commands (fork/exec)
