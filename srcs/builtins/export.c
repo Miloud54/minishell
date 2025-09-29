@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 16:43:08 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/24 18:05:32 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/26 14:13:15 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	print_export_env(char **envp)
 	int		i;
 	char	*equal;
 
+	sort_env(envp);
 	i = 0;
 	while (envp && envp[i])
 	{
@@ -72,7 +73,7 @@ void	ft_export(t_cmd *cmd, t_data *data)
 	{
 		if (!is_valid_identifier_for_export(cmd->args[i]))
 		{
-			printf("export: '%s': not a valid identifier\n", cmd->args[i]);
+			printf("minishell: export: `%s': not a valid identifier\n", cmd->args[i]);
 			error = 1;
 		}
 		else

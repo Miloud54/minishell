@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 17:45:12 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/24 18:06:07 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/26 14:09:31 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,51 @@ void	add_env_var(t_data *data, const char *arg)
 	data->envp = new_envp;
 }
 
-/* Adds a new variable or updates it if it already exists in envp */
+/* Adds or updates a variable in the environment, even if no '=' is present */
 void	add_or_update_env(t_data *data, const char *arg)
 {
 	int		len;
+	int		i;
 	char	*equal;
 
 	equal = ft_strchr(arg, '=');
-	if (!equal)
-		return ;
-	len = equal - arg;
-	if (!replace_env_var(data, arg, len))
-		add_env_var(data, arg);
+	if (equal)
+	{
+		len = equal - arg;
+		if (!replace_env_var(data, arg, len))
+			add_env_var(data, arg);
+	}
+	else
+	{
+		// Check if variable already exists (name only)
+		i = 0;
+		while (data->envp && data->envp[i])
+		{
+			if (ft_strncmp(data->envp[i], arg, ft_strlen(arg)) == 0
+				&& data->envp[i][ft_strlen(arg)] == '\0')
+				return ; // already exists
+			i++;
+		}
+		add_env_var(data, arg); // add name only
+	}
+}
+
+/* Sorts envp array alphabetically (simple bubble sort) */
+void	sort_env(char **envp)
+{
+	int i, j;
+	char *tmp;
+
+	for (i = 0; envp && envp[i]; i++)
+	{
+		for (j = i + 1; envp[j]; j++)
+		{
+			if (ft_strcmp(envp[i], envp[j]) > 0)
+			{
+				tmp = envp[i];
+				envp[i] = envp[j];
+				envp[j] = tmp;
+			}
+		}
+	}
 }
