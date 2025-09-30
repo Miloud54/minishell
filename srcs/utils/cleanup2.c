@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:00:37 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 16:05:44 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/29 17:33:01 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,16 @@ void	free_cmd(t_cmd *cmd)
 	free_cmd_args(cmd);
 	free_cmd_redirects(cmd);
 	free(cmd);
+}
+
+char *ft_strjoin_free(char *s1, char *s2)
+{
+    char *result;
+
+    if (!s1 || !s2)
+        return (NULL);
+    result = ft_strjoin(s1, s2);
+    if (s1)
+        free(s1);
+    return (result);
 }
