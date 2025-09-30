@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/30 16:31:30 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/09/30 17:23:28 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,6 @@ int	main(int ac, char **av, char **envp)
 	init_data(&data, envp);
 	init_signals();
 	main_loop(&data);
+	free_data(&data);
 	return (data.exit_status);
 }
