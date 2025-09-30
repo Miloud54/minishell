@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/29 22:08:20 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/09/30 17:14:02 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,10 +275,21 @@ int						execute_single_command(t_cmd *cmd, t_data *data);
 /* exec/executor.c */
 int						execute_commands(t_cmd **commands, int cmd_count, t_data *data);
 
+/* exec/pipes.c */
+int						execute_pipeline(t_cmd **commands, int cmd_count, t_data *data);
+
 /* exec/redir.c */
 int						setup_redirections(t_cmd *cmd, t_data *data);
 void					restore_std_fds(t_data *data);
 int						backup_std_fds(t_data *data);
+
+/* exec/heredoc.c */
+int						setup_heredoc(t_redirect *redirect, t_data *data);
+int						handle_heredoc_redirect(t_redirect *redirect, t_data *data);
+
+/* parsing/parse_heredoc.c */
+int						setup_heredoc_at_parse(t_redirect *redirect, t_data *data);
+int						write_heredoc_to_file(int fd, char *delimiter, t_data *data);
 
 /* ************************************************************************** */
 

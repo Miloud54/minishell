@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/30 14:58:43 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/30 16:31:30 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ static void	expand_cmd_args(t_cmd *cmd, t_data *data)
 		if (tmp != cmd->args[i])
 			free(cmd->args[i]);
 		cmd->args[i] = tmp;
+		
+		// Supprime les quotes après expansion
+		tmp = remove_quotes(cmd->args[i]);
+		if (tmp != cmd->args[i])
+		{
+			free(cmd->args[i]);
+			cmd->args[i] = tmp;
+		}
 		i++;
 	}
 }
