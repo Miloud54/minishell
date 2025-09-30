@@ -9,14 +9,24 @@ int execute_commands(t_cmd **commands, int cmd_count, t_data *data)
     /* Pour l'instant, une seule commande (pas de pipes) */
     if (cmd_count == 1)
     {
-        exit_code = execute_single_command(commands[0], data);
+        // Version avec redirections
+        if (backup_std_fds(data) == 0)
+        {
+            if (setup_redirections(commands[0], data) == 0)
+                exit_code = execute_single_command(commands[0], data);
+            else
+                exit_code = 1;
+            restore_std_fds(data);
+        }
+        else
+            exit_code = 1;
+
     }
     else
     {
-        /* A faire: Phase 6 - Pipes */
-        ft_putendl_fd("minishell: pipes not implemented yet", 2);
-        data->exit_status = 1;
-        exit_code = 1;
+        /* Phase 6 - Pipes implementation */
+        exit_code = execute_pipeline(commands, cmd_count, data);
+        data->exit_status = exit_code;
     }
 
     return (exit_code);

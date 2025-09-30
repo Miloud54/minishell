@@ -62,6 +62,19 @@ int setup_redirections(t_cmd *cmd, t_data *data)
             }
             close(fd);
         }
+        else if (cmd->redirects[i].type == TOKEN_REDIR_HEREDOC) // <<
+        {
+            // Le heredoc a déjà été configuré pendant le parsing/pipeline setup
+            if (cmd->redirects[i].heredoc_fd != -1)
+            {
+                if (dup2(cmd->redirects[i].heredoc_fd, STDIN_FILENO) == -1)
+                {
+                    perror("dup2");
+                    data->exit_status = 1;
+                    return (-1);
+                }
+            }
+        }
         i++;
     }
     return (0);

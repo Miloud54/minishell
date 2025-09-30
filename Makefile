@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/29 22:09:06 by emiliedidie      ###   ########.fr        #
+#    Updated: 2025/09/30 17:08:17 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS			= \
 	$(SRC_DIR)/parsing/quotes.c \
 	$(SRC_DIR)/parsing/tokens.c \
 	$(SRC_DIR)/parsing/tokens_utils.c \
+	$(SRC_DIR)/parsing/parse_heredoc.c \
 	$(SRC_DIR)/parsing/validations/validation.c \
 	$(SRC_DIR)/parsing/validations/validation_pipe.c \
 	$(SRC_DIR)/parsing/validations/validation_redirection.c \
@@ -59,7 +60,9 @@ SRCS			= \
 	$(SRC_DIR)/builtins/export_utils.c \
 	$(SRC_DIR)/exec/exec.c \
 	$(SRC_DIR)/exec/executor.c \
-	$(SRC_DIR)/exec/redir.c
+	$(SRC_DIR)/exec/redir.c \
+	$(SRC_DIR)/exec/pipes.c \
+	$(SRC_DIR)/exec/heredoc.c
 
 OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
