@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/29 22:13:12 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/09/30 14:58:43 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	validate_args(int ac)
 
 static void	expand_cmd_args(t_cmd *cmd, t_data *data)
 {
-	int	i;
+	int		i;
 	char	*tmp;
 
 	i = 0;
@@ -40,54 +40,55 @@ static void	expand_cmd_args(t_cmd *cmd, t_data *data)
 
 static void	process_input(t_data *data, char *input)
 {
-    t_token	*tokens;
-    t_cmd	**cmds;
-    int		cmd_count;
-    int		i;
-    char	*expanded_input;
+	t_token	*tokens;
+	t_cmd	**cmds;
+	int		cmd_count;
+	int		i;
 
-    if (!input || !*input)
-        return ;
-    if (ft_strcmp(input, "$?") == 0)
-    {
-        printf("%d\n", data->exit_status);
-        return ;
-    }
-    expanded_input = expand_variables(input, data);
-    if (!expanded_input)
-        return ;
-    tokens = lexer(expanded_input);
-    free(expanded_input);
-    if (!tokens)
-        return ;
-    cmds = parser(tokens, &cmd_count);
-    if (cmds && cmd_count == 1 && cmds[0] && cmds[0]->args &&
-        cmds[0]->args[0] && ft_strcmp(cmds[0]->args[0], "exit") == 0)
-    {
-        exec_builtin(data, cmds[0]);
-        i = 0;
-        while (i < cmd_count)
-        {
-            free_cmd(cmds[i]);
-            i++;
-        }
-        free(cmds);
-        free_tokens(tokens);
-        exit(data->exit_status);
-    }
-    if (cmds && cmd_count > 0)
-        execute_commands(cmds, cmd_count, data);
-    if (cmds)
-    {
-        i = 0;
-        while (i < cmd_count)
-        {
-            free_cmd(cmds[i]);
-            i++;
-        }
-        free(cmds);
-    }
-    free_tokens(tokens);
+	if (!input || !*input)
+		return ;
+	if (ft_strcmp(input, "$?") == 0)
+	{
+		printf("%d\n", data->exit_status);
+		return ;
+	}
+	tokens = lexer(input);
+	if (!tokens)
+		return ;
+	cmds = parser(tokens, &cmd_count);
+	if (cmds)
+	{
+		i = 0;
+		while (i < cmd_count)
+		{
+			expand_cmd_args(cmds[i], data);
+			i++;
+		}
+		if (cmds && cmd_count == 1 && cmds[0] && cmds[0]->args
+			&& cmds[0]->args[0] && ft_strcmp(cmds[0]->args[0], "exit") == 0)
+		{
+			exec_builtin(data, cmds[0]);
+			i = 0;
+			while (i < cmd_count)
+			{
+				free_cmd(cmds[i]);
+				i++;
+			}
+			free(cmds);
+			free_tokens(tokens);
+			exit(data->exit_status);
+		}
+		if (cmd_count > 0)
+			execute_commands(cmds, cmd_count, data);
+		i = 0;
+		while (i < cmd_count)
+		{
+			free_cmd(cmds[i]);
+			i++;
+		}
+		free(cmds);
+	}
+	free_tokens(tokens);
 }
 
 static void	main_loop(t_data *data)
@@ -124,5 +125,5 @@ int	main(int ac, char **av, char **envp)
 	init_data(&data, envp);
 	init_signals();
 	main_loop(&data);
-  return (data.exit_status);
+	return (data.exit_status);
 }
