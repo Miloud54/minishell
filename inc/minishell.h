@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 15:51:36 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 16:29:38 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,6 +307,11 @@ int						handle_heredoc_redir(t_redirect *redir, t_data *data);
 int						setup_heredoc(t_redirect *redirect, t_data *data);
 int						handle_heredoc_redirect(t_redirect *redirect,
 							t_data *data);
+
+/* exec/heredoc_utils.c: */
+int is_delimiter(char *line, char *delimiter);
+void write_heredoc_line(int fd, char *line, t_data *data);
+void read_heredoc_input(int write_fd, char *delimiter, t_data *data);
 
 /* parsing/parse_heredoc.c */
 int						setup_heredoc_at_parse(t_redirect *redirect,
