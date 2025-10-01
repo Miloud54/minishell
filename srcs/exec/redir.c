@@ -3,90 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 13:52:57 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:53:01 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 14:12:56 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "redir_utils.h"
 
 int	setup_redirections(t_cmd *cmd, t_data *data)
 {
-	int	i;
-	int	fd;
+	int			i;
+	t_redirect	*redir;
 
+	i = 0;
 	if (!cmd || !cmd->redirects)
 		return (0);
-	i = 0;
 	while (i < cmd->redirect_count)
 	{
-		if (cmd->redirects[i].type == TOKEN_REDIR_IN) // <
+		redir = &cmd->redirects[i];
+		if (redir->type == TOKEN_REDIR_IN)
 		{
-			fd = open(cmd->redirects[i].file, O_RDONLY);
-			if (fd == -1)
-			{
-				perror(cmd->redirects[i].file);
-				data->exit_status = 1;
+			if (handle_in_redir(redir, data) == -1)
 				return (-1);
-			}
-			if (dup2(fd, STDIN_FILENO) == -1)
-			{
-				perror("dup2");
-				close(fd);
-				return (-1);
-			}
-			close(fd);
 		}
-		else if (cmd->redirects[i].type == TOKEN_REDIR_OUT) // >
+		else if (redir->type == TOKEN_REDIR_OUT
+			|| redir->type == TOKEN_REDIR_APPEND)
 		{
-			fd = open(cmd->redirects[i].file, O_WRONLY | O_CREAT | O_TRUNC,
-					0644);
-			if (fd == -1)
-			{
-				perror(cmd->redirects[i].file);
-				data->exit_status = 1;
+			if (handle_out_redir(redir, data) == -1)
 				return (-1);
-			}
-			if (dup2(fd, STDOUT_FILENO) == -1)
-			{
-				perror("dup2");
-				close(fd);
-				return (-1);
-			}
-			close(fd);
 		}
-		else if (cmd->redirects[i].type == TOKEN_REDIR_APPEND) // >>
+		else if (redir->type == TOKEN_REDIR_HEREDOC)
 		{
-			fd = open(cmd->redirects[i].file, O_WRONLY | O_CREAT | O_APPEND,
-					0644);
-			if (fd == -1)
-			{
-				perror(cmd->redirects[i].file);
-				data->exit_status = 1;
+			if (handle_heredoc_redir(redir, data) == -1)
 				return (-1);
-			}
-			if (dup2(fd, STDOUT_FILENO) == -1)
-			{
-				perror("dup2");
-				close(fd);
-				return (-1);
-			}
-			close(fd);
-		}
-		else if (cmd->redirects[i].type == TOKEN_REDIR_HEREDOC) // <<
-		{
-			// Le heredoc a déjà été configuré pendant le parsing/pipeline setup
-			if (cmd->redirects[i].heredoc_fd != -1)
-			{
-				if (dup2(cmd->redirects[i].heredoc_fd, STDIN_FILENO) == -1)
-				{
-					perror("dup2");
-					data->exit_status = 1;
-					return (-1);
-				}
-			}
 		}
 		i++;
 	}

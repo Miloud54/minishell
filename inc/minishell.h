@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:49:23 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 14:13:54 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,6 +292,11 @@ int						execute_pipeline(t_cmd **commands, int cmd_count,
 int						setup_redirections(t_cmd *cmd, t_data *data);
 void					restore_std_fds(t_data *data);
 int						backup_std_fds(t_data *data);
+
+/* exec/redir_utils.c: */
+int						handle_in_redir(t_redirect *redir, t_data *data);
+int						handle_out_redir(t_redirect *redir, t_data *data);
+int						handle_heredoc_redir(t_redirect *redir, t_data *data);
 
 /* exec/heredoc.c */
 int						setup_heredoc(t_redirect *redirect, t_data *data);

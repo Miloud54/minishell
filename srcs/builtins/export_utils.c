@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 17:45:12 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:10 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 14:02:59 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,15 @@ void	add_or_update_env(t_data *data, const char *arg)
 	}
 	else
 	{
-		// Check if variable already exists (name only)
 		i = 0;
 		while (data->envp && data->envp[i])
 		{
 			if (ft_strncmp(data->envp[i], arg, ft_strlen(arg)) == 0
 				&& data->envp[i][ft_strlen(arg)] == '\0')
-				return ; // already exists
+				return ;
 			i++;
 		}
-		add_env_var(data, arg); // add name only
+		add_env_var(data, arg);
 	}
 }
 
@@ -91,11 +90,14 @@ void	add_or_update_env(t_data *data, const char *arg)
 void	sort_env(char **envp)
 {
 	char	*tmp;
+	int		i;
+	int		j;
 
-	int i, j;
-	for (i = 0; envp && envp[i]; i++)
+	i = 0;
+	while (envp && envp[i])
 	{
-		for (j = i + 1; envp[j]; j++)
+		j = i + 1;
+		while (envp[j])
 		{
 			if (ft_strcmp(envp[i], envp[j]) > 0)
 			{
@@ -103,6 +105,8 @@ void	sort_env(char **envp)
 				envp[i] = envp[j];
 				envp[j] = tmp;
 			}
+			j++;
 		}
+		i++;
 	}
 }
