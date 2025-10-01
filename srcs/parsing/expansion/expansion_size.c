@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_size.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:31 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 16:55:53 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ static void	add_variable_size(char *input, t_data *data, int *i, int *size)
 	*i = temp_i;
 }
 
-/*Processes the current character in the input; handles quotes,
-	triggers variable
-size calculation if needed, or just increments the size for normal characters*/
+/*Processes the current character in the input; handles quotes, triggers
+variable size calculation if needed, or just increments the size for normal
+characters*/
 
 static void	process_char_for_size(t_size_context *ctx)
 {
@@ -71,8 +71,9 @@ static void	process_char_for_size(t_size_context *ctx)
 	}
 }
 
-/*Main function that iterates through the input string, using the above helpers,
-to compute and return the total size required for the string after all expansions*/
+/*Main function that iterates through the input string, using the above 
+helpers, to compute and return the total size required for the string
+after all expansions*/
 
 int	calculate_expanded_size(char *input, t_data *data)
 {
@@ -96,6 +97,6 @@ int	calculate_expanded_size(char *input, t_data *data)
 	return (size);
 }
 
-/*These functions work together to determine how much memory is needed to store the input
-string after all environment variable expansions are performed,
-	respecting quote rules*/
+/*These functions work together to determine how much memory is needed to store
+ the input string after all environment variable expansions are performed,
+ respecting quote rules*/
