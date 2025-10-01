@@ -6,12 +6,32 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 13:52:57 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 14:12:56 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 16:14:04 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "redir_utils.h"
+
+static int	handle_one_redirection(t_redirect *redir, t_data *data)
+{
+	if (redir->type == TOKEN_REDIR_IN)
+	{
+		if (handle_in_redir(redir, data) == -1)
+			return (-1);
+	}
+	else if (redir->type == TOKEN_REDIR_OUT
+		|| redir->type == TOKEN_REDIR_APPEND)
+	{
+		if (handle_out_redir(redir, data) == -1)
+			return (-1);
+	}
+	else if (redir->type == TOKEN_REDIR_HEREDOC)
+	{
+		if (handle_heredoc_redir(redir, data) == -1)
+			return (-1);
+	}
+	return (0);
+}
 
 int	setup_redirections(t_cmd *cmd, t_data *data)
 {
@@ -24,22 +44,8 @@ int	setup_redirections(t_cmd *cmd, t_data *data)
 	while (i < cmd->redirect_count)
 	{
 		redir = &cmd->redirects[i];
-		if (redir->type == TOKEN_REDIR_IN)
-		{
-			if (handle_in_redir(redir, data) == -1)
-				return (-1);
-		}
-		else if (redir->type == TOKEN_REDIR_OUT
-			|| redir->type == TOKEN_REDIR_APPEND)
-		{
-			if (handle_out_redir(redir, data) == -1)
-				return (-1);
-		}
-		else if (redir->type == TOKEN_REDIR_HEREDOC)
-		{
-			if (handle_heredoc_redir(redir, data) == -1)
-				return (-1);
-		}
+		if (handle_one_redirection(redir, data) == -1)
+			return (-1);
 		i++;
 	}
 	return (0);
