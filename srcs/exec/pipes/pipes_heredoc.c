@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 15:54:30 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 16:26:58 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:07:45 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	open_heredocs_tmpfile(char **tmp_filename)
 	free(pid_str);
 	if (!*tmp_filename)
 		return (-1);
-	fd = open(tmp_filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+	fd = open(*tmp_filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd == -1)
 		free(*tmp_filename);
 	return (fd);

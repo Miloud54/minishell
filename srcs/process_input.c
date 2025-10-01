@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 14:04:51 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 15:43:29 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:06:33 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	handle_exit_cmd(t_data *data, t_cmd **cmds, int cmd_count,
 	exit(data->exit_status);
 }
 
-static void	process_input(t_data *data, char *input)
+void	process_input(t_data *data, char *input)
 {
 	t_token	*tokens;
 	t_cmd	**cmds;

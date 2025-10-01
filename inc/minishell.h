@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 16:54:55 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:18:31 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,9 @@ typedef struct s_iter_args
 	t_data				*data;
 }						t_iter_args;
 
+/* process_input.c: */
+void					process_input(t_data *data, char *input);
+
 /* builtins/builtins.c: */
 int						is_exit_command(const char *input);
 bool					is_builtin(char *cmd);
@@ -304,12 +307,16 @@ int						execute_single_command(t_cmd *cmd, t_data *data);
 char					*search_path_in_env(char *cmd, char **envp);
 int						run_external_command(char *cmd_path, t_cmd *cmd,
 							t_data *data);
+int						is_delimiter(char *line, char *delimiter);
+void					write_heredoc_line(int fd, char *line, t_data *data);
+void					read_heredoc_input(int write_fd, char *delimiter,
+							t_data *data);
 
 /* exec/executor.c */
 int						execute_commands(t_cmd **commands, int cmd_count,
 							t_data *data);
 
-/* exec/pipes/*.c */
+/* exec/pipes/everything */
 int						execute_pipeline(t_cmd **commands, int cmd_count,
 							t_data *data);
 int						create_pipe_if_needed(int i, int cmd_count,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_child.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:25:46 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 16:38:13 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 17:08:04 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ static void	exec_external(t_cmd *cmd, t_data *shell_data)
 
 void	execute_piped_command(t_cmd *cmd, t_pipe_data *data, t_data *shell_data)
 {
-	char	*path;
-
 	setup_pipe_input(data->cmd_index, data->prev_pipe);
 	setup_pipe_output(data->cmd_index, data->cmd_count, data->pipe_fd);
 	if (setup_redirections(cmd, shell_data) == -1)
