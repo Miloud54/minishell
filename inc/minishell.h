@@ -337,6 +337,12 @@ int						setup_heredoc(t_redirect *redirect, t_data *data);
 int						handle_heredoc_redirect(t_redirect *redirect,
 							t_data *data);
 
+/* exec/heredoc_utils.c: */
+int						is_delimiter(char *line, char *delimiter);
+void					write_heredoc_line(int fd, char *line, t_data *data);
+void					read_heredoc_input(int write_fd, char *delimiter,
+							t_data *data);
+
 /* parsing/parse_heredoc.c */
 int						setup_heredoc_at_parse(t_redirect *redirect,
 							t_data *data);
@@ -344,46 +350,5 @@ int						write_heredoc_to_file(int fd, char *delimiter,
 							t_data *data);
 
 /* ************************************************************************** */
-
-/*before 21/09 : */
-
-// typedef struct s_token
-// {
-// 	char			*value;
-// 	int				type;
-// 	struct s_token	*prev;
-// 	struct s_token	*next;
-// }					t_token;
-
-// typedef struct s_cmd
-// {
-// 	char			**args;
-// 	char			*input_file;
-// 	char			*output_file;
-// 	int				append; // 1 si >>, 0 si >
-// 	struct s_cmd	*prev;
-// 	struct s_cmd	*next;
-// }					t_cmd;
-
-// typedef struct s_minishell
-// {
-// 	char	**env;
-// 	t_token	*tokens;
-// 	t_cmd	*commands;
-// 	int		last_status;
-// }			t_minishell;
-
-// /*Utils*/
-// void		free_array(char **array);
-
-// /*Tokenization*/
-// void		free_tokens(t_token **head);
-// t_token		*tokenize(char *line);
-// int			append_token(t_token **head, char *value, int type);
-// bool		is_operator(char *word);
-// // int			get_token_type(char *word);
-
-// /*Debug*/
-// void		print_tokens(t_token *head);
 
 #endif

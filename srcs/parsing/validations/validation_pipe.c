@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:07:28 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 15:11:08 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 16:44:00 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static int	has_content_around_pipe(char *input, int pipe_pos)
 		&& has_content_after(input, pipe_pos));
 }
 
-/* Checks if the pipe is not followed by another pipe and is surrounded by content */
+/* Checks if the pipe is not followed by another pipe and is surrounded by
+content */
 static int	check_pipe_position(char *input, int i)
 {
 	int		next_non_space;
