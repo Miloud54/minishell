@@ -6,13 +6,13 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:50:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 12:41:55 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:48 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*Counts the number of commands in the token list by counting 
+/*Counts the number of commands in the token list by counting
 the number of pipes (|) and adding one*/
 
 int	count_commands(t_token *tokens)
@@ -31,7 +31,7 @@ int	count_commands(t_token *tokens)
 	return (count);
 }
 
-/*Counts the number of argument tokens (words) in a command, 
+/*Counts the number of argument tokens (words) in a command,
 skipping over redirection tokens and their associated file tokens*/
 
 int	count_args_in_cmd(t_token *start, t_token *end)
@@ -58,7 +58,8 @@ int	count_args_in_cmd(t_token *start, t_token *end)
 	return (count);
 }
 
-/*Counts the number of redirection tokens (input, output, append, heredoc) in a command*/
+/*Counts the number of redirection tokens (input, output, append,
+	heredoc) in a command*/
 
 int	count_redirect_in_cmd(t_token *start, t_token *end)
 {
@@ -77,7 +78,7 @@ int	count_redirect_in_cmd(t_token *start, t_token *end)
 	return (count);
 }
 
-/*Returns a pointer to the next pipe token in the list, 
+/*Returns a pointer to the next pipe token in the list,
 or NULL if there is none*/
 
 t_token	*find_next_pipe(t_token *tokens)
@@ -87,5 +88,5 @@ t_token	*find_next_pipe(t_token *tokens)
 	return (tokens);
 }
 
-/*These functions are used to analyze the token list and determine how many commands, 
+/*These functions are used to analyze the token list and determine how many commands,
 arguments, and redirections are present for parsing and memory allocation*/

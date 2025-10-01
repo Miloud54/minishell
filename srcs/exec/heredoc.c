@@ -21,21 +21,20 @@ static int	is_delimiter(char *line, char *delimiter)
 		return (0);
 	len_line = ft_strlen(line);
 	len_delim = ft_strlen(delimiter);
-	
 	// Remove newline from line if present
 	if (len_line > 0 && line[len_line - 1] == '\n')
 	{
 		line[len_line - 1] = '\0';
 		len_line--;
 	}
-	
-	return (len_line == len_delim && ft_strncmp(line, delimiter, len_delim) == 0);
+	return (len_line == len_delim && ft_strncmp(line, delimiter,
+			len_delim) == 0);
 }
 
 static void	write_heredoc_line(int fd, char *line, t_data *data)
 {
 	char	*expanded;
-	
+
 	// Expand variables in heredoc content
 	expanded = expand_variables(line, data);
 	if (expanded)
@@ -60,42 +59,37 @@ static void	read_heredoc_input(int write_fd, char *delimiter, t_data *data)
 	prompt = ft_strjoin(delimiter, "> ");
 	if (!prompt)
 		prompt = ft_strdup("> ");
-	
 	while (1)
 	{
 		line = readline(prompt);
 		if (!line) // Ctrl+D
 		{
 			printf("\n");
-			break;
+			break ;
 		}
-		
 		if (is_delimiter(line, delimiter))
 		{
 			free(line);
-			break;
+			break ;
 		}
-		
 		write_heredoc_line(write_fd, line, data);
 		free(line);
 	}
-	
 	if (prompt)
 		free(prompt);
 }
 
 int	setup_heredoc(t_redirect *redirect, t_data *data)
 {
-	int	pipe_fd[2];
+	int		pipe_fd[2];
 	pid_t	pid;
-	int	status;
+	int		status;
 
 	if (pipe(pipe_fd) == -1)
 	{
 		perror("pipe");
 		return (-1);
 	}
-
 	pid = fork();
 	if (pid == -1)
 	{
@@ -104,7 +98,6 @@ int	setup_heredoc(t_redirect *redirect, t_data *data)
 		close(pipe_fd[1]);
 		return (-1);
 	}
-	
 	if (pid == 0) // Child process - read heredoc input
 	{
 		close(pipe_fd[0]);
@@ -128,12 +121,10 @@ int	handle_heredoc_redirect(t_redirect *redirect, t_data *data)
 		if (setup_heredoc(redirect, data) == -1)
 			return (-1);
 	}
-	
 	if (dup2(redirect->heredoc_fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2");
 		return (-1);
 	}
-	
 	return (0);
 }

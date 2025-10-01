@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:39:28 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 12:47:31 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:55 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	process_all_commands(t_cmd **commands, t_token *tokens,
 	return (0);
 }
 
-/*Main entry point for parsing; initializes the parser, processes all commands, 
+/*Main entry point for parsing; initializes the parser, processes all commands,
 and returns the array of parsed command structures (or NULL on error)*/
 
 t_cmd	**parser(t_token *tokens, int *cmd_count)
@@ -73,5 +73,5 @@ t_cmd	**parser(t_token *tokens, int *cmd_count)
 	return (commands);
 }
 
-/*These functions coordinate the overall parsing process, from validation and 
+/*These functions coordinate the overall parsing process, from validation and
 memory allocation to splitting and parsing each command in the input*/

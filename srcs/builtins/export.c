@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 16:43:08 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/29 12:36:16 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:12 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 _, not starting with digit, stops at '=') */
 static int	is_valid_identifier_for_export(const char *str)
 {
-	int		i;
+	int	i;
 
 	if (!str || !str[0] || ft_isdigit(str[0]))
 		return (0);
@@ -30,10 +30,10 @@ static int	is_valid_identifier_for_export(const char *str)
 	return (1);
 }
 
-/* Prints all environment variables in the export format (export VAR="value") 
+/* Prints all environment variables in the export format (export VAR="value")
 for POSIX style */
-/* FYI : the syntax "%.*s" means to print a substring of given length, starting 
-from a pointer. 
+/* FYI : the syntax "%.*s" means to print a substring of given length, starting
+from a pointer.
 - The first arg is the number of chars before the equal sign.
 - The second arg is the pointer to the string.*/
 static void	print_export_env(char **envp)
@@ -47,8 +47,8 @@ static void	print_export_env(char **envp)
 	{
 		equal = ft_strchr(envp[i], '=');
 		if (equal)
-			printf("export %.*s=\"%s\"\n",
-				(int)(equal - envp[i]), envp[i], equal + 1);
+			printf("export %.*s=\"%s\"\n", (int)(equal - envp[i]), envp[i],
+				equal + 1);
 		else
 			printf("export %s\n", envp[i]);
 		i++;
@@ -58,8 +58,8 @@ static void	print_export_env(char **envp)
 /* Builtin export: adds/modifies env variables or prints them if no args */
 void	ft_export(t_cmd *cmd, t_data *data)
 {
-	int		i;
-	int		error;
+	int	i;
+	int	error;
 
 	i = 1;
 	error = 0;
@@ -73,7 +73,8 @@ void	ft_export(t_cmd *cmd, t_data *data)
 	{
 		if (!is_valid_identifier_for_export(cmd->args[i]))
 		{
-			printf("minishell: export: `%s': not a valid identifier\n", cmd->args[i]);
+			printf("minishell: export: `%s': not a valid identifier\n",
+				cmd->args[i]);
 			error = 1;
 		}
 		else
