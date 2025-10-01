@@ -13,14 +13,6 @@
 #include "../../inc/minishell.h"
 #include <fcntl.h>
 
-typedef struct s_pipe_data
-{
-	int	cmd_index;
-	int	*pipe_fd;
-	int	prev_pipe;
-	int	cmd_count;
-}	t_pipe_data;
-
 static int	create_pipe_if_needed(int i, int cmd_count, int pipe_fd[2])
 {
 	if (i < cmd_count - 1)
@@ -59,15 +51,16 @@ static void	setup_pipe_output(int cmd_index, int cmd_count, int pipe_fd[2])
 	close(pipe_fd[1]);
 }
 
-static void	execute_piped_command(t_cmd *cmd, t_pipe_data *data, t_data *shell_data)
+static void	execute_piped_command(t_cmd *cmd, t_pipe_data *data,
+		t_data *shell_data)
 {
+	char	*path;
+
 	setup_pipe_input(data->cmd_index, data->prev_pipe);
 	setup_pipe_output(data->cmd_index, data->cmd_count, data->pipe_fd);
-	
 	// Gerer les redirections de la commande (< > >>)
 	if (setup_redirections(cmd, shell_data) == -1)
 		exit(1);
-	
 	// Executer builtin ou commande externe
 	if (is_builtin(cmd->args[0]))
 	{
@@ -76,7 +69,7 @@ static void	execute_piped_command(t_cmd *cmd, t_pipe_data *data, t_data *shell_d
 	}
 	else
 	{
-		char *path = find_executable(cmd->args[0], shell_data->envp);
+		path = find_executable(cmd->args[0], shell_data->envp);
 		if (!path)
 		{
 			printf("minishell: %s: command not found\n", cmd->args[0]);
@@ -92,11 +85,11 @@ static void	execute_piped_command(t_cmd *cmd, t_pipe_data *data, t_data *shell_d
 	}
 }
 
-static int	handle_parent_process(int pipe_fd[2], int prev_pipe, int is_last_cmd)
+static int	handle_parent_process(int pipe_fd[2], int prev_pipe,
+		int is_last_cmd)
 {
 	if (prev_pipe != -1)
 		close(prev_pipe);
-	
 	if (!is_last_cmd)
 	{
 		close(pipe_fd[1]);
@@ -108,16 +101,17 @@ static int	handle_parent_process(int pipe_fd[2], int prev_pipe, int is_last_cmd)
 static int	wait_all_pipeline_children(int cmd_count)
 {
 	int	status;
-	int	last_status = 0;
-	int	i = 0;
-	
+	int	last_status;
+	int	i;
+
+	last_status = 0;
+	i = 0;
 	while (i < cmd_count)
 	{
 		wait(&status);
 		last_status = status;
 		i++;
 	}
-	
 	if (WIFEXITED(last_status))
 		return (WEXITSTATUS(last_status));
 	else if (WIFSIGNALED(last_status))
@@ -125,13 +119,15 @@ static int	wait_all_pipeline_children(int cmd_count)
 	return (1);
 }
 
-static int	setup_pipeline_heredocs(t_cmd **commands, int cmd_count, t_data *data)
+static int	setup_pipeline_heredocs(t_cmd **commands, int cmd_count,
+		t_data *data)
 {
-	int	i;
-	int	j;
-	int	temp_fd;
-	char *temp_filename;
-	
+	int		i;
+	int		j;
+	int		temp_fd;
+	char	*temp_filename;
+	char	*pid_str;
+
 	// Pour les pipelines, on utilise des fichiers temporaires
 	i = 0;
 	while (i < cmd_count)
@@ -142,37 +138,34 @@ static int	setup_pipeline_heredocs(t_cmd **commands, int cmd_count, t_data *data
 			if (commands[i]->redirects[j].type == TOKEN_REDIR_HEREDOC)
 			{
 				// Créer un fichier temporaire unique
-				char *pid_str = ft_itoa(getpid());
+				pid_str = ft_itoa(getpid());
 				temp_filename = ft_strjoin("/tmp/minishell_heredoc_", pid_str);
 				free(pid_str);
 				if (!temp_filename)
 					return (-1);
-				
-				temp_fd = open(temp_filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+				temp_fd = open(temp_filename, O_CREAT | O_WRONLY | O_TRUNC,
+						0600);
 				if (temp_fd == -1)
 				{
 					free(temp_filename);
 					return (-1);
 				}
-				
 				// Lire le heredoc et l'écrire dans le fichier temporaire
-				if (write_heredoc_to_file(temp_fd, commands[i]->redirects[j].file, data) == -1)
+				if (write_heredoc_to_file(temp_fd,
+						commands[i]->redirects[j].file, data) == -1)
 				{
 					close(temp_fd);
 					unlink(temp_filename);
 					free(temp_filename);
 					return (-1);
 				}
-				
 				close(temp_fd);
-				
 				// Ouvrir le fichier en lecture et stocker le fd
-				commands[i]->redirects[j].heredoc_fd = open(temp_filename, O_RDONLY);
-				
+				commands[i]->redirects[j].heredoc_fd = open(temp_filename,
+						O_RDONLY);
 				// Supprimer le fichier temporaire (mais le fd reste ouvert)
 				unlink(temp_filename);
 				free(temp_filename);
-				
 				if (commands[i]->redirects[j].heredoc_fd == -1)
 					return (-1);
 			}
@@ -186,28 +179,27 @@ static int	setup_pipeline_heredocs(t_cmd **commands, int cmd_count, t_data *data
 int	execute_pipeline(t_cmd **commands, int cmd_count, t_data *data)
 {
 	int			pipe_fd[2];
-	int			prev_pipe = -1;
+	int			prev_pipe;
 	pid_t		pid;
 	t_pipe_data	pipe_data;
-	int			i = 0;
-	
+	int			i;
+
+	prev_pipe = -1;
+	i = 0;
 	// Traiter tous les heredocs AVANT les pipes
 	if (setup_pipeline_heredocs(commands, cmd_count, data) == -1)
 		return (-1);
-	
 	while (i < cmd_count)
 	{
 		if (create_pipe_if_needed(i, cmd_count, pipe_fd) == -1)
 			return (-1);
-		
 		pid = fork();
 		if (pid == -1)
 		{
 			perror("fork");
 			return (-1);
 		}
-		
-		if (pid == 0)  // Processus enfant
+		if (pid == 0) // Processus enfant
 		{
 			pipe_data.cmd_index = i;
 			pipe_data.pipe_fd = pipe_fd;
@@ -215,12 +207,10 @@ int	execute_pipeline(t_cmd **commands, int cmd_count, t_data *data)
 			pipe_data.cmd_count = cmd_count;
 			execute_piped_command(commands[i], &pipe_data, data);
 		}
-		
 		// Processus parent
-		prev_pipe = handle_parent_process(pipe_fd, prev_pipe, 
-										 (i == cmd_count - 1));
+		prev_pipe = handle_parent_process(pipe_fd, prev_pipe, (i == cmd_count
+					- 1));
 		i++;
 	}
-	
 	return (wait_all_pipeline_children(cmd_count));
 }

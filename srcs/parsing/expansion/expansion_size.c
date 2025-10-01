@@ -6,13 +6,13 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 12:03:51 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:31 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-/*Manages the state of single quotes in the input string, to know 
+/*Manages the state of single quotes in the input string, to know
 if you are inside or outside single quotes (for expansion rules)*/
 
 static int	handle_quote_char_size(char c, int *in_single_quotes)
@@ -49,7 +49,8 @@ static void	add_variable_size(char *input, t_data *data, int *i, int *size)
 	*i = temp_i;
 }
 
-/*Processes the current character in the input; handles quotes, triggers variable 
+/*Processes the current character in the input; handles quotes,
+	triggers variable
 size calculation if needed, or just increments the size for normal characters*/
 
 static void	process_char_for_size(t_size_context *ctx)
@@ -70,7 +71,7 @@ static void	process_char_for_size(t_size_context *ctx)
 	}
 }
 
-/*Main function that iterates through the input string, using the above helpers, 
+/*Main function that iterates through the input string, using the above helpers,
 to compute and return the total size required for the string after all expansions*/
 
 int	calculate_expanded_size(char *input, t_data *data)
@@ -95,5 +96,6 @@ int	calculate_expanded_size(char *input, t_data *data)
 	return (size);
 }
 
-/*These functions work together to determine how much memory is needed to store the input 
-string after all environment variable expansions are performed, respecting quote rules*/
+/*These functions work together to determine how much memory is needed to store the input
+string after all environment variable expansions are performed,
+	respecting quote rules*/

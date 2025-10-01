@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/30 17:14:02 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:49:23 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_redirect
 typedef struct s_cmd
 {
 	char				**args;
-  char        **cmd_path;
+	char				**cmd_path;
 	t_redirect			*redirects;
 	int					redirect_count;
 }						t_cmd;
@@ -129,6 +129,14 @@ typedef struct s_size_context
 	int					*size;
 	int					*in_single_quotes;
 }						t_size_context;
+
+typedef struct s_pipe_data
+{
+	int					cmd_index;
+	int					*pipe_fd;
+	int					prev_pipe;
+	int					cmd_count;
+}						t_pipe_data;
 
 /* builtins/builtins.c: */
 int						is_exit_command(const char *input);
@@ -187,7 +195,7 @@ void					free_argv(char **argv);
 
 /* utils/cleanup2.c: */
 void					free_cmd(t_cmd *cmd);
-char *ft_strjoin_free(char *s1, char *s2);
+char					*ft_strjoin_free(char *s1, char *s2);
 
 /* utils/exits.c: */
 void					error_exit(char *msg, int exit_code);
@@ -273,10 +281,12 @@ char					*find_executable(char *cmd, char **envp);
 int						execute_single_command(t_cmd *cmd, t_data *data);
 
 /* exec/executor.c */
-int						execute_commands(t_cmd **commands, int cmd_count, t_data *data);
+int						execute_commands(t_cmd **commands, int cmd_count,
+							t_data *data);
 
 /* exec/pipes.c */
-int						execute_pipeline(t_cmd **commands, int cmd_count, t_data *data);
+int						execute_pipeline(t_cmd **commands, int cmd_count,
+							t_data *data);
 
 /* exec/redir.c */
 int						setup_redirections(t_cmd *cmd, t_data *data);
@@ -285,11 +295,14 @@ int						backup_std_fds(t_data *data);
 
 /* exec/heredoc.c */
 int						setup_heredoc(t_redirect *redirect, t_data *data);
-int						handle_heredoc_redirect(t_redirect *redirect, t_data *data);
+int						handle_heredoc_redirect(t_redirect *redirect,
+							t_data *data);
 
 /* parsing/parse_heredoc.c */
-int						setup_heredoc_at_parse(t_redirect *redirect, t_data *data);
-int						write_heredoc_to_file(int fd, char *delimiter, t_data *data);
+int						setup_heredoc_at_parse(t_redirect *redirect,
+							t_data *data);
+int						write_heredoc_to_file(int fd, char *delimiter,
+							t_data *data);
 
 /* ************************************************************************** */
 

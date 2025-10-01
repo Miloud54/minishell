@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 18:03:06 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/21 18:29:48 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:51:18 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*get_env_var(char **envp, char *name)
 {
-	int		i;
-	int		name_ln;
+	int	i;
+	int	name_ln;
 
 	if (!envp || !name)
 		return (NULL);
@@ -32,7 +32,7 @@ char	*get_env_var(char **envp, char *name)
 
 static int	count_envp(char **envp)
 {
-	int		counter;
+	int	counter;
 
 	counter = 0;
 	while (envp[counter])

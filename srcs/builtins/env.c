@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 18:42:54 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/23 12:52:35 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:01 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ $> env
 PATH=/usr/bin:/bin
 HOME=/home/user
 SHELL=/bin/bash
-... 
+...
 
 The minishell version of the 'env' command doesn't require to manage args*/
 
@@ -35,7 +35,7 @@ The minishell version of the 'env' command doesn't require to manage args*/
 
 void	ft_env(t_data *data, t_cmd *cmd)
 {
-	int		i;
+	int	i;
 
 	if (!data->envp)
 	{

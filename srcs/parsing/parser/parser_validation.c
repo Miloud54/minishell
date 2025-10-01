@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:35:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 12:44:42 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:53 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,5 @@ int	validate_token_sequence(t_token *tokens)
 	return (1);
 }
 
-/*These functions are used to validate the syntax 
+/*These functions are used to validate the syntax
 of the token list before parsing it into commands*/

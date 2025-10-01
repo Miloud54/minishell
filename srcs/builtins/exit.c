@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:20 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/30 15:27:27 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:07 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,20 @@ int	ft_atol(const char *str, int *overflow_flag)
 
 int	is_valid_number(char *str)
 {
-    int	i;
+	int	i;
 
-    if (!str || !*str)
-        return (0);
-    i = 0;
-    skip_spaces(str, &i);
-    if (str[i] == '+' || str[i] == '-')
-        i++;
-    if (!str[i] || str[i] < '0' || str[i] > '9')
-        return (0);
-    while (str[i] >= '0' && str[i] <= '9')
-        i++;
-    skip_spaces(str, &i);
-    return (str[i] == '\0');
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	skip_spaces(str, &i);
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	if (!str[i] || str[i] < '0' || str[i] > '9')
+		return (0);
+	while (str[i] >= '0' && str[i] <= '9')
+		i++;
+	skip_spaces(str, &i);
+	return (str[i] == '\0');
 }
 
 void	exit_numeric_error(t_data *data, char *arg)

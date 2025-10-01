@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 19:39:46 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/21 20:00:22 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:51:01 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* Finds the index of the closing quote starting from 'start' */
 int	find_quote_end(char *str, int start, char quote)
 {
-	int		i;
+	int	i;
 
 	i = start + 1;
 	while (str[i] && str[i] != quote)

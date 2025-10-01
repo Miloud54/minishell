@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:00:37 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/30 16:31:27 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:51:10 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	free_cmd_args(t_cmd *cmd)
 {
-	int		i;
+	int	i;
 
 	if (!cmd->args)
 		return ;
@@ -29,7 +29,7 @@ static void	free_cmd_args(t_cmd *cmd)
 
 static void	free_cmd_redirects(t_cmd *cmd)
 {
-	int		i;
+	int	i;
 
 	if (!cmd->redirects || cmd->redirect_count <= 0)
 		return ;
@@ -62,14 +62,14 @@ void	free_cmd(t_cmd *cmd)
 	free(cmd);
 }
 
-char *ft_strjoin_free(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
-    char *result;
+	char	*result;
 
-    if (!s1 || !s2)
-        return (NULL);
-    result = ft_strjoin(s1, s2);
-    if (s1)
-        free(s1);
-    return (result);
+	if (!s1 || !s2)
+		return (NULL);
+	result = ft_strjoin(s1, s2);
+	if (s1)
+		free(s1);
+	return (result);
 }

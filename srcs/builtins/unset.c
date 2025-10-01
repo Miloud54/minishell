@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:37:30 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/24 16:42:20 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:17 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* Checks if the given string is a valid environment variable identifier */
 static int	is_valid_identifier_for_unset(const char *str)
 {
-	int		i;
+	int	i;
 
 	if (!str || !str[0] || ft_isdigit(str[0]))
 		return (0);
@@ -32,9 +32,9 @@ static int	is_valid_identifier_for_unset(const char *str)
 /* Removes the variable with the given name from the environment */
 static void	remove_var(t_data *data, const char *name)
 {
-	int		i;
-	int		j;
-	int		len;
+	int	i;
+	int	j;
+	int	len;
 
 	if (!data->envp)
 		return ;
@@ -61,8 +61,8 @@ static void	remove_var(t_data *data, const char *name)
 /* Builtin unset: removes one or more variables from the environment */
 void	ft_unset(t_cmd *cmd, t_data *data)
 {
-	int		i;
-	int		error;
+	int	i;
+	int	error;
 
 	i = 1;
 	error = 0;

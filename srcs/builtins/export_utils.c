@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 17:45:12 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/29 12:36:10 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:10 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 (before '=') */
 int	replace_env_var(t_data *data, const char *arg, int len)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (data->envp && data->envp[i])
@@ -90,9 +90,9 @@ void	add_or_update_env(t_data *data, const char *arg)
 /* Sorts envp array alphabetically (simple bubble sort) */
 void	sort_env(char **envp)
 {
-	int i, j;
-	char *tmp;
+	char	*tmp;
 
+	int i, j;
 	for (i = 0; envp && envp[i]; i++)
 	{
 		for (j = i + 1; envp[j]; j++)

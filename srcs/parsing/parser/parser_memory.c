@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:35:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 12:41:31 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:50 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,5 @@ int	allocate_cmd_memory(t_cmd *cmd, int arg_count, int redir_count)
 	return (1);
 }
 
-/*These functions are used to safely initialize and allocate 
+/*These functions are used to safely initialize and allocate
 memory for command structures before filling them with parsed data*/
