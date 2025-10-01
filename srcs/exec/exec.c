@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 13:52:28 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 15:49:43 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 16:21:26 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "exec_utils.h"
+#include "minishell.h"
 
 char	*find_executable(char *cmd, char **envp)
 {
