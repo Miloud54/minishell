@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:52:26 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/29 12:12:19 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/09/30 15:24:43 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,36 @@
 
 static char	*get_cd_path(char **argv, t_data *data)
 {
+	char	*home;
+	char	*oldpwd;
+
 	if (!argv[1] || ft_strcmp(argv[1], "~") == 0)
-		return (get_env_var(data->envp, "HOME"));
+	{
+		home = get_env_var(data->envp, "HOME");
+		if (!home)
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		return (home);
+	}
 	if (ft_strcmp(argv[1], "-") == 0)
-		return (get_env_var(data->envp, "OLDPWD"));
+	{
+		oldpwd = get_env_var(data->envp, "OLDPWD");
+		if (!oldpwd)
+			ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+		return (oldpwd);
+	}
 	return (argv[1]);
 }
 
 static void	print_cd_error(const char *path)
 {
 	ft_putstr_fd("minishell: cd: ", 2);
-  ft_putstr_fd((char *)path, 2);
-  ft_putstr_fd(": No such file or directory\n", 2);
+	ft_putstr_fd((char *)path, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 }
 
-static int change_directory(const char *path, t_data *data)
+static int	change_directory(const char *path, t_data *data)
 {
-	char *oldpwd;
+	char	*oldpwd;
 
 	oldpwd = getcwd(NULL, 0);
 	if (chdir(path) != 0)
@@ -49,14 +62,13 @@ static int change_directory(const char *path, t_data *data)
 	return (0);
 }
 
-int ft_cd(t_data *data, char **argv)
+int	ft_cd(t_data *data, char **argv)
 {
-	char *path;
+	char	*path;
 
 	path = get_cd_path(argv, data);
 	if (!path)
 	{
-		ft_putstr_fd("minishel: cd: HOME/OLDPWD not set\n", 2);
 		data->exit_status = 1;
 		return (1);
 	}
@@ -65,5 +77,5 @@ int ft_cd(t_data *data, char **argv)
 		ft_putstr_fd(path, 1);
 		ft_putchar_fd('\n', 1);
 	}
-	return change_directory(path, data);
+	return (change_directory(path, data));
 }
