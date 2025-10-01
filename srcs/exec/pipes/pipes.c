@@ -58,10 +58,8 @@ static void	execute_piped_command(t_cmd *cmd, t_pipe_data *data,
 
 	setup_pipe_input(data->cmd_index, data->prev_pipe);
 	setup_pipe_output(data->cmd_index, data->cmd_count, data->pipe_fd);
-	// Gerer les redirections de la commande (< > >>)
 	if (setup_redirections(cmd, shell_data) == -1)
 		exit(1);
-	// Executer builtin ou commande externe
 	if (is_builtin(cmd->args[0]))
 	{
 		exec_builtin(shell_data, cmd);
@@ -119,62 +117,7 @@ static int	wait_all_pipeline_children(int cmd_count)
 	return (1);
 }
 
-static int	setup_pipeline_heredocs(t_cmd **commands, int cmd_count,
-		t_data *data)
-{
-	int		i;
-	int		j;
-	int		temp_fd;
-	char	*temp_filename;
-	char	*pid_str;
 
-	// Pour les pipelines, on utilise des fichiers temporaires
-	i = 0;
-	while (i < cmd_count)
-	{
-		j = 0;
-		while (j < commands[i]->redirect_count)
-		{
-			if (commands[i]->redirects[j].type == TOKEN_REDIR_HEREDOC)
-			{
-				// Créer un fichier temporaire unique
-				pid_str = ft_itoa(getpid());
-				temp_filename = ft_strjoin("/tmp/minishell_heredoc_", pid_str);
-				free(pid_str);
-				if (!temp_filename)
-					return (-1);
-				temp_fd = open(temp_filename, O_CREAT | O_WRONLY | O_TRUNC,
-						0600);
-				if (temp_fd == -1)
-				{
-					free(temp_filename);
-					return (-1);
-				}
-				// Lire le heredoc et l'écrire dans le fichier temporaire
-				if (write_heredoc_to_file(temp_fd,
-						commands[i]->redirects[j].file, data) == -1)
-				{
-					close(temp_fd);
-					unlink(temp_filename);
-					free(temp_filename);
-					return (-1);
-				}
-				close(temp_fd);
-				// Ouvrir le fichier en lecture et stocker le fd
-				commands[i]->redirects[j].heredoc_fd = open(temp_filename,
-						O_RDONLY);
-				// Supprimer le fichier temporaire (mais le fd reste ouvert)
-				unlink(temp_filename);
-				free(temp_filename);
-				if (commands[i]->redirects[j].heredoc_fd == -1)
-					return (-1);
-			}
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
 
 int	execute_pipeline(t_cmd **commands, int cmd_count, t_data *data)
 {
@@ -186,7 +129,6 @@ int	execute_pipeline(t_cmd **commands, int cmd_count, t_data *data)
 
 	prev_pipe = -1;
 	i = 0;
-	// Traiter tous les heredocs AVANT les pipes
 	if (setup_pipeline_heredocs(commands, cmd_count, data) == -1)
 		return (-1);
 	while (i < cmd_count)
@@ -199,7 +141,7 @@ int	execute_pipeline(t_cmd **commands, int cmd_count, t_data *data)
 			perror("fork");
 			return (-1);
 		}
-		if (pid == 0) // Processus enfant
+		if (pid == 0)
 		{
 			pipe_data.cmd_index = i;
 			pipe_data.pipe_fd = pipe_fd;
@@ -207,7 +149,6 @@ int	execute_pipeline(t_cmd **commands, int cmd_count, t_data *data)
 			pipe_data.cmd_count = cmd_count;
 			execute_piped_command(commands[i], &pipe_data, data);
 		}
-		// Processus parent
 		prev_pipe = handle_parent_process(pipe_fd, prev_pipe, (i == cmd_count
 					- 1));
 		i++;
