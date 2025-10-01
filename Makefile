@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/09/30 17:08:17 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/10/01 17:05:53 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ LIBFT			= $(LIBFT_DIR)/libft.a
 SRC_DIR			= srcs
 SRCS			= \
 	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/process_input.c \
 	$(SRC_DIR)/parsing/expansion/expansion.c \
 	$(SRC_DIR)/parsing/expansion/expansion_process.c \
 	$(SRC_DIR)/parsing/expansion/expansion_size.c \
@@ -59,10 +60,17 @@ SRCS			= \
 	$(SRC_DIR)/builtins/export.c \
 	$(SRC_DIR)/builtins/export_utils.c \
 	$(SRC_DIR)/exec/exec.c \
+	$(SRC_DIR)/exec/exec_utils.c \
 	$(SRC_DIR)/exec/executor.c \
+	$(SRC_DIR)/exec/heredoc.c \
+	$(SRC_DIR)/exec/heredoc_utils.c \
 	$(SRC_DIR)/exec/redir.c \
-	$(SRC_DIR)/exec/pipes.c \
-	$(SRC_DIR)/exec/heredoc.c
+	$(SRC_DIR)/exec/redir_utils.c \
+	$(SRC_DIR)/exec/pipes/pipes.c \
+	$(SRC_DIR)/exec/pipes/pipes_utils.c \
+	$(SRC_DIR)/exec/pipes/pipes_heredoc.c \
+	$(SRC_DIR)/exec/pipes/pipes_child.c 
+
 
 OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
@@ -75,7 +83,8 @@ OBJ_DIRS		= $(OBJ_DIR)/$(SRC_DIR) \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/parser \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/validations \
 				  $(OBJ_DIR)/$(SRC_DIR)/utils \
-				  $(OBJ_DIR)/$(SRC_DIR)/exec
+				  $(OBJ_DIR)/$(SRC_DIR)/exec \
+				  $(OBJ_DIR)/$(SRC_DIR)/exec/pipes
 
 # Colors
 GREEN			= \033[0;32m
