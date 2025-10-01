@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 14:13:54 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 15:51:36 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,11 @@ void					cleanup_commands_on_error(t_cmd **commands, int count);
 /* exec/exec.c */
 char					*find_executable(char *cmd, char **envp);
 int						execute_single_command(t_cmd *cmd, t_data *data);
+
+/* exec/exec_utils.c: */
+char					*search_path_in_env(char *cmd, char **envp);
+int						run_external_command(char *cmd_path, t_cmd *cmd,
+							t_data *data);
 
 /* exec/executor.c */
 int						execute_commands(t_cmd **commands, int cmd_count,
