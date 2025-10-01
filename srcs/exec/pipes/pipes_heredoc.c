@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 15:54:30 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 16:15:33 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 16:26:58 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	handle_heredoc(t_cmd *cmd, int j, t_data *data)
 	return (0);
 }
 
-static int	setup_pipeline_heredocs(t_cmd **cmds, int cmd_count, t_data *data)
+int	setup_pipeline_heredocs(t_cmd **cmds, int cmd_count, t_data *data)
 {
 	int	i;
 	int	j;

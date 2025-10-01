@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 15:51:36 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 16:54:55 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,26 @@ typedef struct s_pipe_data
 	int					prev_pipe;
 	int					cmd_count;
 }						t_pipe_data;
+
+typedef struct s_child_args
+{
+	t_cmd				**cmds;
+	int					i;
+	int					cmd_count;
+	t_pipe_data			*pipe_data;
+	int					*pipe_fd;
+	int					prev_pipe;
+	t_data				*data;
+}						t_child_args;
+
+typedef struct s_iter_args
+{
+	t_cmd				**cmds;
+	int					i;
+	int					cmd_count;
+	int					*prev_pipe;
+	t_data				*data;
+}						t_iter_args;
 
 /* builtins/builtins.c: */
 int						is_exit_command(const char *input);
@@ -289,8 +309,17 @@ int						run_external_command(char *cmd_path, t_cmd *cmd,
 int						execute_commands(t_cmd **commands, int cmd_count,
 							t_data *data);
 
-/* exec/pipes.c */
+/* exec/pipes/*.c */
 int						execute_pipeline(t_cmd **commands, int cmd_count,
+							t_data *data);
+int						create_pipe_if_needed(int i, int cmd_count,
+							int pipe_fd[2]);
+int						handle_parent_process(int pipe_fd[2], int prev_pipe,
+							int is_last_cmd);
+int						wait_all_pipeline_children(int cmd_count);
+void					execute_piped_command(t_cmd *cmd, t_pipe_data *data,
+							t_data *shell_data);
+int						setup_pipeline_heredocs(t_cmd **commands, int cmd_count,
 							t_data *data);
 
 /* exec/redir.c */
