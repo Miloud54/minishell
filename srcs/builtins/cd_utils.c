@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 17:55:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:49:54 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 14:01:59 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ int	update_env_var(char ***envp, char *name, char *value)
 	return (0);
 }
 
-/*
-We use char ***envp (a pointer to a pointer to a pointer) so that we can modify the environment variable array
+/* We use char ***envp (a pointer to a pointer to a pointer) so 
+that we can modify the environment variable array
 itself (not just its contents) inside the function.
 
 Explanation:
@@ -100,8 +100,10 @@ If you want to add a new variable,
 	you may need to reallocate the array (malloc a bigger array,
 	then free the old one).
 If you only pass char **envp,
-	you are just modifying a local copy of the pointer: the reallocated array will not be visible outside the function.
+	you are just modifying a local copy of the pointer: the reallocated 
+	array will not be visible outside the function.
 By passing char ***envp, you can do:
 *envp = new_envp;
-and the shell’s environment variable pointer will correctly point to the new array.
+and the shell’s environment variable pointer will correctly 
+point to the new array.
 */
