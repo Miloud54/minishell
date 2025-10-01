@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_counter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:50:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:48 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 15:43:42 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,6 @@ t_token	*find_next_pipe(t_token *tokens)
 	return (tokens);
 }
 
-/*These functions are used to analyze the token list and determine how many commands,
-arguments, and redirections are present for parsing and memory allocation*/
+/*These functions are used to analyze the token list and determine how many
+commands, arguments, and redirections are present for parsing and memory
+allocation*/
