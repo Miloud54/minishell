@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 15:46:46 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 15:46:52 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/02 17:00:05 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ int	handle_in_redir(t_redirect *redir, t_data *data)
 	fd = open(redir->file, O_RDONLY);
 	if (fd == -1)
 	{
-		perror(redir->file);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redir->file, 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		data->exit_status = 1;
 		return (-1);
 	}
@@ -45,7 +47,9 @@ int	handle_out_redir(t_redirect *redir, t_data *data)
 	fd = open(redir->file, flags, 0644);
 	if (fd == -1)
 	{
-		perror(redir->file);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redir->file, 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		data->exit_status = 1;
 		return (-1);
 	}
