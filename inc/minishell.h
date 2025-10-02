@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 17:18:31 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:04:47 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ void					ft_export(t_cmd *cmd, t_data *data);
 
 /* builtins/cd_utils.c */
 int						update_env_var(char ***envp, char *name, char *value);
+char					*expand_env_var(const char *arg, char **envp);
 
 /* builtins/export_utils.c: */
 void					add_or_update_env(t_data *data, const char *arg);
