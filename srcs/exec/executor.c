@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 13:52:43 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 16:21:29 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/02 14:48:37 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ int	execute_commands(t_cmd **commands, int cmd_count, t_data *data)
 			exit_code = 1;
 	}
 	else
-	{
 		exit_code = execute_pipeline(commands, cmd_count, data);
-		data->exit_status = exit_code;
-	}
 	return (exit_code);
 }

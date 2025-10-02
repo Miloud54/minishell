@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 17:55:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 14:01:59 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/02 13:29:37 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,33 @@ int	update_env_var(char ***envp, char *name, char *value)
 	return (0);
 }
 
-/* We use char ***envp (a pointer to a pointer to a pointer) so 
+char	*expand_env_var(const char *arg, char **envp)
+{
+	const char	*slash;
+	int			var_len;
+	char		var_name[256];
+	char		*value;
+
+	if (!arg)
+		return (NULL);
+	if (arg[0] != '$')
+		return (ft_strdup(arg));
+	slash = ft_strchr(arg, '/');
+	if (slash)
+		var_len = slash - (arg + 1);
+	else
+		var_len = ft_strlen(arg + 1);
+	ft_strlcpy(var_name, arg + 1, var_len + 1);
+	value = get_env_var(envp, var_name);
+	if (!value)
+		return (NULL);
+	if (slash)
+		return (ft_strjoin(value, slash));
+	else
+		return (ft_strdup(value));
+}
+
+/* We use char ***envp (a pointer to a pointer to a pointer) so
 that we can modify the environment variable array
 itself (not just its contents) inside the function.
 
@@ -100,10 +126,10 @@ If you want to add a new variable,
 	you may need to reallocate the array (malloc a bigger array,
 	then free the old one).
 If you only pass char **envp,
-	you are just modifying a local copy of the pointer: the reallocated 
+	you are just modifying a local copy of the pointer: the reallocated
 	array will not be visible outside the function.
 By passing char ***envp, you can do:
 *envp = new_envp;
-and the shell’s environment variable pointer will correctly 
+and the shell’s environment variable pointer will correctly
 point to the new array.
 */

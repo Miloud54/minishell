@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 14:04:51 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 17:06:33 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:27:59 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,13 @@ void	process_input(t_data *data, char *input)
 		return (free_tokens(tokens), (void)0);
 	i = -1;
 	while (++i < cmd_count)
+	{
+		if (cmds[i]->args && cmds[i]->args[0] &&
+			(ft_strcmp(cmds[i]->args[0], "cd") == 0
+				/* || ft_strcmp(cmds[i]->args[0], "echo") == 0 */))
+			continue ;
 		expand_cmd_args(cmds[i], data);
+	}
 	if (is_exit_cmd(cmds, cmd_count))
 		return (handle_exit_cmd(data, cmds, cmd_count, tokens), (void)0);
 	if (cmd_count > 0)
