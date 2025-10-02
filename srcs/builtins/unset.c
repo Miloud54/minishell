@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:37:30 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:17 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/02 15:26:26 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_unset(t_cmd *cmd, t_data *data)
 	{
 		if (!is_valid_identifier_for_unset(cmd->args[i]))
 		{
-			printf("unset: '%s': not a valid identifier\n", cmd->args[i]);
+			printf("unset: `%s': not a valid identifier\n", cmd->args[i]);
 			error = 1;
 		}
 		else

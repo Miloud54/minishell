@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 14:04:51 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/02 13:27:59 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/02 16:02:00 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	process_input(t_data *data, char *input)
 
 	if (!input || !*input)
 		return ;
+	if (!validate_syntax(input))
+    	return;
 	if (ft_strcmp(input, "$?") == 0)
 		return ((void)printf("%d\n", data->exit_status));
 	tokens = lexer(input);
