@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/02 13:04:47 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/02 15:52:42 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void					add_token(t_token **tokens, t_token *new_token);
 char					**tokens_to_argv(t_token *tokens);
 
 /* parsing/validation_redirection.c: */
-int						validate_redirect_syntax(char *input);
+char					*validate_redirect_syntax(char *input);
 
 /* utils/cleanup1.c: */
 void					free_data(t_data *data);

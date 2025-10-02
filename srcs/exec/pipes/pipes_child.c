@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:25:46 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 17:08:04 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/02 15:20:36 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,28 @@ static void	setup_pipe_output(int cmd_index, int cmd_count, int pipe_fd[2])
 static void	exec_external(t_cmd *cmd, t_data *shell_data)
 {
 	char	*path;
+	char	*path_env;
 
+	path_env = get_env_var(shell_data->envp, "PATH");
+	if ((!path_env || path_env[0] == '\0') && !ft_strchr(cmd->args[0], '/'))
+	{
+		printf("minishell: %s: No such file or directory\n", cmd->args[0]);
+		exit(127);
+	}
 	path = find_executable(cmd->args[0], shell_data->envp);
 	if (!path)
 	{
-		printf("minishell: %s: command not found\n", cmd->args[0]);
+		if (ft_strchr(cmd->args[0], '/'))
+		{
+			if (access(cmd->args[0], F_OK) == 0)
+				printf("minishell: %s: Permission denied\n", cmd->args[0]);
+			else
+				printf("minishell: %s: No such file or directory\n", cmd->args[0]);
+		}
+		else
+		{
+			printf("minishell: %s: command not found\n", cmd->args[0]);
+		}
 		exit(127);
 	}
 	if (execve(path, cmd->args, shell_data->envp) == -1)
