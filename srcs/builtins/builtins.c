@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:47:43 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:59:29 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/06 13:59:07 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	is_exit_command(const char *input)
 	i = 0;
 	skip_spaces(input, &i);
 	if (ft_strncmp(input + i, "exit", 4) == 0 && (input[i + 4] == '\0'
-			|| input[i + 4] == ' ' || (input[i + 4] >= 9
-				&& input[i + 4] <= 13)))
+			|| input[i + 4] == ' ' || (input[i + 4] >= 9 && input[i
+				+ 4] <= 13)))
 		return (1);
 	return (0);
 }
@@ -54,6 +54,10 @@ bool	is_builtin(char *cmd)
 		return (true);
 	if (ft_strcmp(cmd, "exit") == 0)
 		return (true);
+	if (ft_strcmp(cmd, ":") == 0)
+		return (true);
+	if (ft_strcmp(cmd, "!") == 0)
+		return (true);
 	return (false);
 }
 
@@ -73,4 +77,8 @@ void	exec_builtin(t_data *data, t_cmd *cmd)
 		ft_env(data, cmd);
 	else if (ft_strcmp(cmd->args[0], "exit") == 0)
 		ft_exit(data, cmd->args);
+	else if (ft_strcmp(cmd->args[0], ":") == 0)
+		data->exit_status = 0;
+	else if (ft_strcmp(cmd->args[0], "!") == 0)
+		data->exit_status = 0;
 }
