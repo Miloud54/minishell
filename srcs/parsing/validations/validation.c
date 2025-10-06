@@ -18,6 +18,16 @@ int		validate_syntax(char *input)
 {
 	if (!input || !*input)
 		return (1);
+	if (ft_strnstr(input, "&&", ft_strlen(input)))
+	{
+		write(2, "minishell: syntax error near unexpected token `&&'\n", 52);
+		return (0);
+	}
+	if (ft_strnstr(input, "||", ft_strlen(input)))
+	{
+		write(2, "minishell: syntax error near unexpected token `||'\n", 52);
+		return (0);
+	}
 	if (has_unclosed_quotes(input))
 	{
 		write(2, "minishell: syntax error: unclosed quotes\n", 41);
@@ -31,9 +41,9 @@ int		validate_syntax(char *input)
 	char	*unexpected = validate_redirect_syntax(input);
 	if (unexpected)
 	{
-		write(2, "minishell: syntax error near unexpected token `", 47);
+		write(2, "minishell: syntax error near unexpected token `", 46);
 		write(2, unexpected, ft_strlen(unexpected));
-		write(2, "\'\n", 2);
+		write(2, "'\n", 2);
 		free(unexpected);
 		return (0);
 	}

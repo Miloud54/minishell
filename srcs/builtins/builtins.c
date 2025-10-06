@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:47:43 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/06 13:59:07 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/06 17:44:47 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	is_exit_command(const char *input)
 	i = 0;
 	skip_spaces(input, &i);
 	if (ft_strncmp(input + i, "exit", 4) == 0 && (input[i + 4] == '\0'
-			|| input[i + 4] == ' ' || (input[i + 4] >= 9 && input[i
-				+ 4] <= 13)))
+			|| input[i + 4] == ' '
+			|| (input[i + 4] >= 9 && input[i + 4] <= 13)))
 		return (1);
 	return (0);
 }
