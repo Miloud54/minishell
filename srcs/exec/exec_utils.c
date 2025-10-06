@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:21:47 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 17:17:04 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/06 17:17:31 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,19 @@ static void	child_execve(char *cmd_path, t_cmd *cmd, t_data *data)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	execve(cmd_path, cmd->args, data->envp);
-	perror("minishell: execve");
-	exit(127);
+	if (!cmd_path || !cmd->args[0] || cmd->args[0][0] == '\0')
+		exit(0);
+	if (execve(cmd_path, cmd->args, data->envp) == -1)
+	{
+		struct stat st;
+		if (stat(cmd_path, &st) == 0 && S_ISDIR(st.st_mode))
+			fprintf(stderr, "minishell: %s: Is a directory\n", cmd_path);
+		else if (errno == EACCES)
+			fprintf(stderr, "minishell: %s: Permission denied\n", cmd_path);
+		else
+			fprintf(stderr, "minishell: %s: %s\n", cmd_path, strerror(errno));
+		exit(126);
+	}
 }
 
 static int	parent_wait_and_status(pid_t pid, char *cmd_path, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:25:46 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/02 15:20:36 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/06 17:17:31 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static void	exec_external(t_cmd *cmd, t_data *shell_data)
 		printf("minishell: %s: No such file or directory\n", cmd->args[0]);
 		exit(127);
 	}
+	if (!cmd->args[0] || cmd->args[0][0] == '\0')
+		exit(0);
 	path = find_executable(cmd->args[0], shell_data->envp);
 	if (!path)
 	{
@@ -66,9 +68,15 @@ static void	exec_external(t_cmd *cmd, t_data *shell_data)
 	}
 	if (execve(path, cmd->args, shell_data->envp) == -1)
 	{
-		perror("execve");
+		struct stat st;
+		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+			fprintf(stderr, "minishell: %s: Is a directory\n", path);
+		else if (errno == EACCES)
+			fprintf(stderr, "minishell: %s: Permission denied\n", path);
+		else
+			fprintf(stderr, "minishell: %s: %s\n", path, strerror(errno));
 		free(path);
-		exit(127);
+		exit(126);
 	}
 	free(path);
 }
