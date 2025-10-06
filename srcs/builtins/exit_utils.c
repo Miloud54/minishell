@@ -6,11 +6,12 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 16:00:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:05 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/06 12:14:00 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <limits.h>
 
 int	overflow(long long result, int digit, int sign)
 {
@@ -42,19 +43,28 @@ int	parse_sign(const char *str, int *i)
 
 int	parse_digits(const char *str, int *i, int sign, t_parse_result *res)
 {
-	int	digit;
+	unsigned long long	acc;
+	unsigned long long	limit;
+	int					digit;
 
+	acc = 0ULL;
+	if (sign == 1)
+		limit = (unsigned long long)LLONG_MAX;
+	else
+		limit = (unsigned long long)LLONG_MAX + 1ULL;
 	while (str[*i] && str[*i] >= '0' && str[*i] <= '9')
 	{
 		digit = str[*i] - '0';
-		if (overflow((long long)(res->result), digit, sign))
+		if (acc > limit / 10ULL || (acc == limit / 10ULL
+				&& (unsigned long long)digit > (limit % 10ULL)))
 		{
 			res->overflow = 1;
 			return (0);
 		}
-		res->result = (res->result) * 10 + digit;
+		acc = acc * 10ULL + (unsigned long long)digit;
 		(*i)++;
 	}
+	res->result = (long long)acc;
 	return (1);
 }
 

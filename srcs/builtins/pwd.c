@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:17 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/02 11:14:03 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/06 10:48:50 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ int	ft_pwd(char **argv)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		perror("pwd");
+		write(2,
+			"pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n",
+			95);
 		return (1);
 	}
 	printf("%s\n", cwd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:20 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/02 15:36:40 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/06 12:17:17 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ int	ft_atol(const char *str, int *overflow_flag)
 	skip_spaces(str, &i);
 	sign = parse_sign(str, &i);
 	if (!parse_digits(str, &i, sign, &res))
+	{
+		*overflow_flag = 1;
 		return (0);
+	}
 	skip_spaces(str, &i);
 	if (str[i] != '\0')
 		res.overflow = 1;
@@ -82,14 +85,15 @@ int	ft_exit(t_data *data, char **argv)
 		free_data(data);
 		exit(data->exit_status);
 	}
+	error = 0;
+	val = ft_atol(argv[1], &error);
+	if (!is_valid_number(argv[1]) || error)
+		exit_numeric_error(data, argv[1]);
 	if (argv[1] && argv[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	val = ft_atol(argv[1], &error);
-	if (!is_valid_number(argv[1]) || error)
-		exit_numeric_error(data, argv[1]);
 	write(1, "exit\n", 5);
 	free_data(data);
 	exit((unsigned char)val);
