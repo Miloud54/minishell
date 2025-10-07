@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:20 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/06 12:17:17 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/07 17:22:09 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ int	is_valid_number(char *str)
 
 void	exit_numeric_error(t_data *data, char *arg)
 {
-	write(1, "exit\n", 5);
+	if (isatty(STDIN_FILENO))
+		write(1, "exit\n", 5);
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
@@ -81,7 +82,8 @@ int	ft_exit(t_data *data, char **argv)
 
 	if (!argv[1])
 	{
-		write(1, "exit\n", 5);
+		if (isatty(STDIN_FILENO))
+			write(1, "exit\n", 5);
 		free_data(data);
 		exit(data->exit_status);
 	}
@@ -94,7 +96,8 @@ int	ft_exit(t_data *data, char **argv)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	write(1, "exit\n", 5);
+	if (isatty(STDIN_FILENO))
+		write(1, "exit\n", 5);
 	free_data(data);
 	exit((unsigned char)val);
 	return (0);
