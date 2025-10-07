@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:21:47 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/06 17:17:31 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/06 19:00:24 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,11 @@ static int	parent_wait_and_status(pid_t pid, char *cmd_path, t_data *data)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	init_signals();
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		write(1, "\n", 1);
 	free(cmd_path);
+	// Réinstalle les signaux dans le parent après l'exécution du fils
+	init_signals();
 	if (WIFEXITED(status))
 		data->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
