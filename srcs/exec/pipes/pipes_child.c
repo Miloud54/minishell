@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_child.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:25:46 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/06 17:17:31 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:53:39 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,14 @@ static void	exec_external(t_cmd *cmd, t_data *shell_data)
 {
 	char	*path;
 	char	*path_env;
+		struct stat st;
 
 	path_env = get_env_var(shell_data->envp, "PATH");
 	if ((!path_env || path_env[0] == '\0') && !ft_strchr(cmd->args[0], '/'))
 	{
-		printf("minishell: %s: No such file or directory\n", cmd->args[0]);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->args[0], 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		exit(127);
 	}
 	if (!cmd->args[0] || cmd->args[0][0] == '\0')
@@ -56,19 +59,28 @@ static void	exec_external(t_cmd *cmd, t_data *shell_data)
 		if (ft_strchr(cmd->args[0], '/'))
 		{
 			if (access(cmd->args[0], F_OK) == 0)
-				printf("minishell: %s: Permission denied\n", cmd->args[0]);
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(cmd->args[0], 2);
+				ft_putendl_fd(": Permission denied", 2);
+			}
 			else
-				printf("minishell: %s: No such file or directory\n", cmd->args[0]);
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(cmd->args[0], 2);
+				ft_putendl_fd(": No such file or directory", 2);
+			}
 		}
 		else
 		{
-			printf("minishell: %s: command not found\n", cmd->args[0]);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmd->args[0], 2);
+			ft_putendl_fd(": command not found", 2);
 		}
 		exit(127);
 	}
 	if (execve(path, cmd->args, shell_data->envp) == -1)
 	{
-		struct stat st;
 		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 			fprintf(stderr, "minishell: %s: Is a directory\n", path);
 		else if (errno == EACCES)

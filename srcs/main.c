@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/06 18:40:03 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:13:57 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,14 @@ static void	main_loop(t_data *data)
 		{
 			data->exit_status = 130;
 			g_signal_status = 0;
+			write(1, "\n", 1);
 		}
 		input = readline(PROMPT);
 		if (g_signal_status == SIGINT)
 		{
 			g_signal_status = 0;
 			free(input);
-			continue;
+			continue ;
 		}
 		if (!input)
 		{
