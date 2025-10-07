@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/02 16:00:54 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/06 18:40:03 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ static void	main_loop(t_data *data)
 			g_signal_status = 0;
 		}
 		input = readline(PROMPT);
+		if (g_signal_status == SIGINT)
+		{
+			g_signal_status = 0;
+			free(input);
+			continue;
+		}
 		if (!input)
 		{
 			printf("exit\n");
