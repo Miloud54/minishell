@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:50:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/02 13:55:00 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/08 12:33:18 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	parse_args(t_cmd *cmd, t_token *start, t_token *end)
 			if (is_cd)
 				cmd->args[arg_index] = ft_strdup(current->value);
 			else
-				cmd->args[arg_index] = remove_quotes(current->value);
+				cmd->args[arg_index] = ft_strdup(current->value);
 			if (!cmd->args[arg_index])
 				return (-1);
 			arg_index++;

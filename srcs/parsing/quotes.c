@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 19:39:46 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/06 15:55:27 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/08 12:33:18 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,51 +28,52 @@ int	find_quote_end(char *str, int start, char quote)
 /* Checks if the input string contains any unclosed quotes */
 int	has_unclosed_quotes(char *input)
 {
-	int		i;
-	char	quote;
+	int	i;
+	int	in_single;
+	int	in_double;
 
 	i = 0;
+	in_single = 0;
+	in_double = 0;
 	while (input[i])
 	{
-		if (input[i] == '\'' || input[i] == '"')
-		{
-			quote = input[i];
-			if (find_quote_end(input, i, quote) == -1)
-				return (1);
-			i = find_quote_end(input, i, quote) + 1;
-		}
-		else
-			i++;
+		if (input[i] == '\'' && !in_double)
+			in_single = !in_single;
+		else if (input[i] == '"' && !in_single)
+			in_double = !in_double;
+		i++;
 	}
-	return (0);
+	return (in_single || in_double);
 }
 
 /* Calculates the length of the string without quotes */
 static int	count_unquoted_len(char *str)
 {
-	int		i;
-	int		len;
-	char	quote;
-	int		quote_end;
+	int	i;
+	int	len;
+	int	in_single;
+	int	in_double;
 
 	i = 0;
 	len = 0;
+	in_single = 0;
+	in_double = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '"')
+		if (str[i] == '\'' && !in_double)
 		{
-			quote = str[i];
-			quote_end = find_quote_end(str, i, quote);
-			if (quote_end == -1)
-				return (-1);
-			len += quote_end - i - 1;
-			i = quote_end + 1;
-		}
-		else
-		{
-			len++;
+			in_single = !in_single;
 			i++;
+			continue ;
 		}
+		if (str[i] == '"' && !in_single)
+		{
+			in_double = !in_double;
+			i++;
+			continue ;
+		}
+		len++;
+		i++;
 	}
 	return (len);
 }
@@ -80,26 +81,30 @@ static int	count_unquoted_len(char *str)
 /* Copies the string to 'result' without quotes */
 static void	copy_without_quotes(char *str, char *result)
 {
-	int		i;
-	int		j;
-	char	quote;
-	int		quote_end;
+	int	i;
+	int	j;
+	int	in_single;
+	int	in_double;
 
 	i = 0;
 	j = 0;
+	in_single = 0;
+	in_double = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '"')
+		if (str[i] == '\'' && !in_double)
 		{
-			quote = str[i];
-			quote_end = find_quote_end(str, i, quote);
+			in_single = !in_single;
 			i++;
-			while (i < quote_end)
-				result[j++] = str[i++];
-			i++;
+			continue ;
 		}
-		else
-			result[j++] = str[i++];
+		if (str[i] == '"' && !in_single)
+		{
+			in_double = !in_double;
+			i++;
+			continue ;
+		}
+		result[j++] = str[i++];
 	}
 	result[j] = '\0';
 }
@@ -112,9 +117,9 @@ char	*remove_quotes(char *str)
 
 	if (!str)
 		return (NULL);
-	len = count_unquoted_len(str);
-	if (len == -1)
+	if (has_unclosed_quotes(str))
 		return (NULL);
+	len = count_unquoted_len(str);
 	result = malloc(len + 1);
 	if (!result)
 		return (NULL);

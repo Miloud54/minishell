@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 19:31:03 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/02 16:05:16 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/08 12:39:07 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 /* Checks that the command line entered by the user has a correct syntax before
 parsing it or executing it*/
-int		validate_syntax(char *input)
+int	validate_syntax(char *input)
 {
+	char	*unexpected;
+
 	if (!input || !*input)
 		return (1);
 	if (ft_strnstr(input, "&&", ft_strlen(input)))
@@ -33,12 +35,16 @@ int		validate_syntax(char *input)
 		write(2, "minishell: syntax error: unclosed quotes\n", 41);
 		return (0);
 	}
-	if (!validate_pipe_syntax(input))
+	unexpected = validate_pipe_syntax(input);
+	if (unexpected)
 	{
-		write(2, "minishell: syntax error near unexpected token `|'\n", 51);
+		write(2, "minishell: syntax error near unexpected token `", 46);
+		write(2, unexpected, ft_strlen(unexpected));
+		write(2, "'\n", 2);
+		free(unexpected);
 		return (0);
 	}
-	char	*unexpected = validate_redirect_syntax(input);
+	unexpected = validate_redirect_syntax(input);
 	if (unexpected)
 	{
 		write(2, "minishell: syntax error near unexpected token `", 46);
