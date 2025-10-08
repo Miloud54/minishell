@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/02 15:52:42 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/08 12:24:31 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,12 +195,12 @@ void					skip_spaces(const char *str, int *i);
 int						validate_syntax(char *input);
 
 /* parsing/validation_pipe.c */
-int						validate_pipe_syntax(char *input);
+char			*validate_pipe_syntax(char *input);
 
 /* parsing/quotes.c: */
-int						find_quote_end(char *str, int start, char quote);
-char					*remove_quotes(char *str);
-int						has_unclosed_quotes(char *input);
+int			find_quote_end(char *str, int start, char quote);
+char			*remove_quotes(char *str);
+int			has_unclosed_quotes(char *input);
 
 /* parsing/tokens.c: */
 t_token					*create_token(char *value, t_token_type type);

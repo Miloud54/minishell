@@ -3,82 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   validation_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:07:28 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/01 16:44:00 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/08 12:36:30 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-/* Checks if there is non-space content before the pipe position */
-static int	has_content_before(char *input, int pipe_pos)
+/* Returns a malloc'd unexpected token string if pipe syntax is invalid,
+   otherwise NULL. This function skips quoted regions. */
+char	*validate_pipe_syntax(char *input)
 {
-	int		i;
-
-	i = pipe_pos - 1;
-	while (i >= 0)
-	{
-		if (!ft_isspace(input[i]))
-			return (1);
-		i--;
-	}
-	return (0);
-}
-
-/* Checks if there is non-space content after the pipe position */
-static int	has_content_after(char *input, int pipe_pos)
-{
-	int		i;
-
-	i = pipe_pos + 1;
-	while (input[i])
-	{
-		if (!ft_isspace(input[i]))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-/* Checks if there is content both before and after the pipe */
-static int	has_content_around_pipe(char *input, int pipe_pos)
-{
-	return (has_content_before(input, pipe_pos)
-		&& has_content_after(input, pipe_pos));
-}
-
-/* Checks if the pipe is not followed by another pipe and is surrounded by
-content */
-static int	check_pipe_position(char *input, int i)
-{
-	int		next_non_space;
-
-	next_non_space = i + 1;
-	while (input[next_non_space] && ft_isspace(input[next_non_space]))
-		next_non_space++;
-	if (input[next_non_space] == '|')
-		return (0);
-	if (!has_content_around_pipe(input, i))
-		return (0);
-	return (1);
-}
-
-/* Validates the overall pipe syntax in the input line */
-int	validate_pipe_syntax(char *input)
-{
-	int		i;
+	int	i;
+	int	k;
+	int	j;
 
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '|')
+		if (input[i] == '\'' || input[i] == '"')
+			i = skip_quotes(input, i, input[i]);
+		else if (input[i] == '|')
 		{
-			if (!check_pipe_position(input, i))
-				return (0);
+			/* Check for content before the pipe */
+			k = i - 1;
+			while (k >= 0 && ft_isspace(input[k]))
+			{
+				if (input[k] == '\n')
+					return (ft_strdup("|"));
+				k--;
+			}
+			if (k < 0)
+				return (ft_strdup("|"));
+			/* Find next non-space token */
+			j = i + 1;
+			while (input[j] && ft_isspace(input[j]))
+				j++;
+			if (!input[j])
+				return (ft_strdup("newline"));
+			if (input[j] == '|')
+			{
+				/* Collect consecutive '|' characters starting at j */
+				k = j;
+				while (input[k] == '|')
+					k++;
+				return (ft_substr(input, j, k - j));
+			}
+			/* Otherwise there is content after the pipe: continue */
+			i++;
 		}
-		i++;
+		else
+			i++;
 	}
-	return (1);
+	return (NULL);
 }

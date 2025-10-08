@@ -6,29 +6,11 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:40 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:30 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/08 12:29:31 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
-
-/*Manages the state of single quotes (opening/closing) in the input
-string, to know if you are inside or outside single quotes*/
-
-static int	handle_quote_char(char c, int *in_single_quotes)
-{
-	if (c == '\'' && !(*in_single_quotes))
-	{
-		*in_single_quotes = 1;
-		return (1);
-	}
-	else if (c == '\'' && *in_single_quotes)
-	{
-		*in_single_quotes = 0;
-		return (1);
-	}
-	return (0);
-}
 
 /*Retrieves the name of an environment variable after a $,
 gets its value, and copies this value into the result string*/
@@ -72,26 +54,50 @@ static void	process_expansion_loop(char *input, t_copy_context *ctx,
 		int *in_single_quotes)
 {
 	int	i;
+	int	in_single;
+	int	in_double;
 
 	i = *(ctx->i);
+	in_single = 0;
+	in_double = 0;
 	while (input[i])
 	{
-		if (handle_quote_char(input[i], in_single_quotes))
+		/* Single quote char: copy it and toggle single-quote state (ignored inside double quotes) */
+		if (input[i] == '\'' && !in_double)
+		{
 			ctx->result[(*(ctx->j))++] = input[i++];
-		else if (input[i] == '$' && should_expand_int_quotes(input, i,
-				*in_single_quotes))
+			in_single = !in_single;
+		}
+		/* Double quote char: copy it and toggle double-quote state (ignored inside single quotes) */
+		else if (input[i] == '"' && !in_single)
+		{
+			ctx->result[(*(ctx->j))++] = input[i++];
+			in_double = !in_double;
+		}
+		/* Variable expansion allowed only outside single quotes */
+		else if (input[i] == '$' && !in_single
+			&& should_expand_int_quotes(input, i, in_single))
+		{
+			*(ctx->i) = i;
 			expand_and_copy_variable(ctx);
+			i = *(ctx->i);
+		}
 		else
+		{
 			ctx->result[(*(ctx->j))++] = input[i++];
+		}
 		*(ctx->i) = i;
-		i = *(ctx->i);
 	}
+	/* propagate single-quote state back if caller relies on it */
+	if (in_single)
+		*(in_single_quotes) = 1;
+	else
+		*(in_single_quotes) = 0;
 }
 
 /*Main function called to perform expansion: allocates the result buffer,
 initializes the context, runs the expansion loop, terminates the string,
 and returns the result*/
-
 char	*perform_expansion(char *input, t_data *data, int expanded_size)
 {
 	char			*result;
