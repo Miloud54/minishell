@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 16:43:08 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:12 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/07 16:15:40 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,12 @@ void	ft_export(t_cmd *cmd, t_data *data)
 	}
 	while (cmd->args[i])
 	{
-		if (!is_valid_identifier_for_export(cmd->args[i]))
+		if (ft_strcmp(cmd->args[i], "=") == 0)
+		{
+			printf("minishell: export: `=': not a valid identifier\n");
+			error = 1;
+		}
+		else if (!is_valid_identifier_for_export(cmd->args[i]))
 		{
 			printf("minishell: export: `%s': not a valid identifier\n",
 				cmd->args[i]);
