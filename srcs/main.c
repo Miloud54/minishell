@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/07 17:13:57 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:34:50 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,21 @@ static void	main_loop(t_data *data)
 
 	while (1)
 	{
-		if (g_signal_status == SIGINT)
-		{
-			data->exit_status = 130;
-			g_signal_status = 0;
-			write(1, "\n", 1);
-		}
 		input = readline(PROMPT);
-		if (g_signal_status == SIGINT)
-		{
-			g_signal_status = 0;
-			free(input);
-			continue ;
-		}
 		if (!input)
 		{
 			printf("exit\n");
 			break ;
+		}
+		if (g_signal_status == SIGINT)
+		{
+			data->exit_status = 130;
+			g_signal_status = 0;
+			if (*input == '\0')
+			{
+				free(input);
+				continue ;
+			}
 		}
 		if (*input)
 			add_history(input);
