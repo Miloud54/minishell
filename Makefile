@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edidier <edidier@student.42.fr>            +#+  +:+       +#+         #
+#    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/10/10 14:08:37 by edidier          ###   ########.fr        #
+#    Updated: 2025/10/10 15:09:06 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRCS			= \
 	$(SRC_DIR)/parsing/parser/parser_memory.c \
 	$(SRC_DIR)/parsing/parser/parser_processing.c \
 	$(SRC_DIR)/parsing/parser/parser_validation.c \
+	$(SRC_DIR)/parsing/parser/parser_utils.c \
 	$(SRC_DIR)/parsing/quotes.c \
 	$(SRC_DIR)/parsing/tokens.c \
 	$(SRC_DIR)/parsing/tokens_utils.c \
