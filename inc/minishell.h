@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 14:33:52 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/10 15:11:27 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,13 @@ int						fill_cmd_content(t_cmd *cmd, t_token *start,
 							t_token *end);
 void					cleanup_commands_on_error(t_cmd **commands, int count);
 
+/* parsing/parser/parser_utils: */
+int						is_redir_token(t_token *token);
+int						is_cd_token(t_token *start);
+int						add_arg_to_cmd(t_cmd *cmd, t_token *current,
+							int arg_index);
+void					skip_redirect_tokens(t_token **current, t_token *end);
+
 /* exec/exec.c */
 char					*find_executable(char *cmd, char **envp);
 int						execute_single_command(t_cmd *cmd, t_data *data);
@@ -381,7 +388,5 @@ char					*cd_apply_cdpath_if_needed(char **argv, char *path,
 							t_data *data, char *expanded);
 int						cd_handle_home_empty(char **argv, char *path,
 							t_data *data, char *expanded);
-
-/* ************************************************************************** */
 
 #endif
