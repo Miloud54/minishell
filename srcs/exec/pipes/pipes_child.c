@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:25:46 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/07 17:53:39 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/10 17:41:45 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ static void	setup_pipe_output(int cmd_index, int cmd_count, int pipe_fd[2])
 
 static void	exec_external(t_cmd *cmd, t_data *shell_data)
 {
-	char	*path;
-	char	*path_env;
-		struct stat st;
+	char		*path;
+	char		*path_env;
+	struct stat	st;
 
 	path_env = get_env_var(shell_data->envp, "PATH");
 	if ((!path_env || path_env[0] == '\0') && !ft_strchr(cmd->args[0], '/'))

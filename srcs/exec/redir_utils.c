@@ -65,14 +65,20 @@ int	handle_out_redir(t_redirect *redir, t_data *data)
 
 int	handle_heredoc_redir(t_redirect *redir, t_data *data)
 {
-	if (redir->heredoc_fd != -1)
+	if (redir->heredoc_fd == -1)
 	{
-		if (dup2(redir->heredoc_fd, STDIN_FILENO) == -1)
-		{
-			perror("dup2");
-			data->exit_status = 1;
+		if (setup_heredoc(redir, data) == -1)
 			return (-1);
-		}
 	}
+	if (dup2(redir->heredoc_fd, STDIN_FILENO) == -1)
+	{
+		perror("dup2");
+		data->exit_status = 1;
+		close(redir->heredoc_fd);
+		redir->heredoc_fd = -1;
+		return (-1);
+	}
+	close(redir->heredoc_fd);
+	redir->heredoc_fd = -1;
 	return (0);
 }
