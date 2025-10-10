@@ -172,8 +172,6 @@ typedef struct s_dyn_array
 	int					capacity;
 }						t_dyn_array;
 
-# define IS_IFS(c) ((c) == ' ' || (c) == '\t' || (c) == '\n')
-
 /* process_input.c: */
 void					process_input(t_data *data, char *input);
 

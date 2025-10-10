@@ -150,8 +150,6 @@ debug: $(NAME)
 
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"
-	@echo "Current directory contents:"
-	@ls -la | grep -E "(objs|obj)"
 	@echo "Removing directory: $(OBJ_DIR)"
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@rm -rf $(OBJ_DIR)

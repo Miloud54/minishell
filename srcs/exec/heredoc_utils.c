@@ -51,14 +51,11 @@ void	write_heredoc_line(int fd, char *line, t_data *data, int expand)
 }
 
 void	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
-		int expand)
+        int expand)
 {
 	char	*line;
-	char	*prompt;
-
-	prompt = ft_strjoin(delimiter, "> ");
-	if (!prompt)
-		prompt = ft_strdup("> ");
+	const char	*prompt;
+	prompt = "> ";
 	while (1)
 	{
 		line = readline(prompt);
@@ -75,6 +72,4 @@ void	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
 		write_heredoc_line(write_fd, line, data, expand);
 		free(line);
 	}
-	if (prompt)
-		free(prompt);
 }

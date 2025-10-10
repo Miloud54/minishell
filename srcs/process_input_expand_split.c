@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+static int	is_ifs(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n')
+		return (1);
+	return (0);
+}
+
 static int	handle_split_escape(char *arg, int *index, t_quote_state *state)
 {
 	if (arg[*index] != '\\' || state->in_single)
@@ -48,7 +55,8 @@ static int	find_field_end(char *arg, int index)
 			state.in_single = !state.in_single;
 		else if (arg[index] == '"' && !state.in_single)
 			state.in_double = !state.in_double;
-		else if (!state.in_single && !state.in_double && IS_IFS(arg[index]))
+		else if (!state.in_single && !state.in_double
+			&& is_ifs(arg[index]))
 			break ;
 		index++;
 	}
@@ -77,7 +85,7 @@ static int	add_next_field(char *arg, int *index, t_dyn_array *fields)
 {
 	int	status;
 
-	while (arg[*index] && IS_IFS(arg[*index]))
+	while (arg[*index] && is_ifs(arg[*index]))
 		(*index)++;
 	if (!arg[*index])
 		return (0);

@@ -28,6 +28,8 @@ static int	fork_and_fill_heredoc(int *pipe_fd, t_redirect *redirect,
 	}
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		close(pipe_fd[0]);
 		read_heredoc_input(pipe_fd[1], redirect->file, data,
 			!redirect->heredoc_quoted);
@@ -37,7 +39,15 @@ static int	fork_and_fill_heredoc(int *pipe_fd, t_redirect *redirect,
 	else
 	{
 		close(pipe_fd[1]);
-		wait(&status);
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			close(pipe_fd[0]);
+			redirect->heredoc_fd = -1;
+			data->exit_status = 130;
+			g_signal_status = SIGINT;
+			return (-1);
+		}
 		redirect->heredoc_fd = pipe_fd[0];
 		return (0);
 	}

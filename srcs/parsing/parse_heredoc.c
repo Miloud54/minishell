@@ -51,11 +51,9 @@ static void	write_to_pipe(int fd, char *line, t_data *data)
 static int	fill_heredoc_pipe(int write_fd, char *delimiter, t_data *data)
 {
 	char	*line;
-	char	*prompt;
+	const char	*prompt;
 
-	prompt = ft_strjoin(delimiter, "> ");
-	if (!prompt)
-		prompt = ft_strdup("> ");
+	prompt = "> ";
 	while (1)
 	{
 		line = readline(prompt);
@@ -72,8 +70,6 @@ static int	fill_heredoc_pipe(int write_fd, char *delimiter, t_data *data)
 		write_to_pipe(write_fd, line, data);
 		free(line);
 	}
-	if (prompt)
-		free(prompt);
 	return (0);
 }
 
@@ -95,11 +91,9 @@ int	setup_heredoc_at_parse(t_redirect *redirect, t_data *data)
 int	write_heredoc_to_file(int fd, char *delimiter, t_data *data)
 {
 	char	*line;
-	char	*prompt;
+	const char	*prompt;
 
-	prompt = ft_strjoin(delimiter, "> ");
-	if (!prompt)
-		prompt = ft_strdup("> ");
+	prompt = "> ";
 	while (1)
 	{
 		line = readline(prompt);
@@ -116,7 +110,5 @@ int	write_heredoc_to_file(int fd, char *delimiter, t_data *data)
 		write_to_pipe(fd, line, data);
 		free(line);
 	}
-	if (prompt)
-		free(prompt);
 	return (0);
 }
