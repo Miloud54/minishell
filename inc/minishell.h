@@ -54,6 +54,7 @@ extern void				rl_redisplay(void);
 /* ************************************************************************** */
 
 extern int				g_signal_status;
+extern int				g_in_readline;
 
 /* ************************************************************************** */
 /*                                ENUMS                                       */
@@ -86,6 +87,7 @@ typedef struct s_redirect
 	t_token_type		type;
 	char				*file;
 	int					heredoc_fd;
+	int					heredoc_quoted;
 }						t_redirect;
 
 typedef struct s_cmd
@@ -130,6 +132,12 @@ typedef struct s_size_context
 	int					*in_single_quotes;
 }						t_size_context;
 
+typedef struct s_quote_state
+{
+	int					in_single;
+	int					in_double;
+}						t_quote_state;
+
 typedef struct s_pipe_data
 {
 	int					cmd_index;
@@ -158,20 +166,30 @@ typedef struct s_iter_args
 	t_data				*data;
 }						t_iter_args;
 
-typedef struct s_quote_state
+typedef struct s_dyn_array
 {
-	int					in_single;
-	int					in_double;
-}						t_quote_state;
+	char				**items;
+	int					count;
+	int					capacity;
+}						t_dyn_array;
+
+# define IS_IFS(c) ((c) == ' ' || (c) == '\t' || (c) == '\n')
 
 /* process_input.c: */
 void					process_input(t_data *data, char *input);
 
 /* process_input_utils.c: */
-void					expand_regular_cmds(t_cmd **cmds, int cmd_count,
+int						expand_regular_cmds(t_cmd **cmds, int cmd_count,
 							t_data *data);
 void					cleanup_cmds(t_token *tokens, t_cmd **cmds,
 							int cmd_count);
+
+/* process_input_expand_split.c */
+char					**split_expanded_argument(char *arg);
+
+/* process_input_expand_array.c */
+int						append_field(t_dyn_array *array, char *value);
+int						append_clean_fields(char **fields, t_dyn_array *array);
 
 /* builtins/builtins.c: */
 int						is_exit_command(const char *input);
@@ -328,9 +346,10 @@ char					*search_path_in_env(char *cmd, char **envp);
 int						run_external_command(char *cmd_path, t_cmd *cmd,
 							t_data *data);
 int						is_delimiter(char *line, char *delimiter);
-void					write_heredoc_line(int fd, char *line, t_data *data);
+void					write_heredoc_line(int fd, char *line, t_data *data,
+							int expand);
 void					read_heredoc_input(int write_fd, char *delimiter,
-							t_data *data);
+							t_data *data, int expand);
 
 /* exec/executor.c */
 int						execute_cmds(t_cmd **commands, int cmd_count,
@@ -366,9 +385,10 @@ int						handle_heredoc_redirect(t_redirect *redirect,
 
 /* exec/heredoc_utils.c: */
 int						is_delimiter(char *line, char *delimiter);
-void					write_heredoc_line(int fd, char *line, t_data *data);
+void					write_heredoc_line(int fd, char *line, t_data *data,
+							int expand);
 void					read_heredoc_input(int write_fd, char *delimiter,
-							t_data *data);
+							t_data *data, int expand);
 
 /* parsing/parse_heredoc.c */
 int						setup_heredoc_at_parse(t_redirect *redirect,

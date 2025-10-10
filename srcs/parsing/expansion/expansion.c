@@ -19,23 +19,12 @@ and returns the expanded string. If any step fails, it returns NULL*/
 
 char	*expand_variables(char *input, t_data *data)
 {
-	char	*var_name;
-	char	*var_value;
+	int		expanded_size;
 
 	if (!input || !data)
 		return (NULL);
-	if (input[0] == '$' && input[1] != '\0')
-	{
-		var_name = input + 1;
-		if (ft_strcmp(var_name, "?") == 0)
-		{
-			return (ft_itoa(data->exit_status));
-		}
-		var_value = get_env_var(data->envp, var_name);
-		if (var_value)
-			return (ft_strdup(var_value));
-		else
-			return (ft_strdup(""));
-	}
-	return (ft_strdup(input));
+	expanded_size = calculate_expanded_size(input, data);
+	if (expanded_size < 0)
+		return (NULL);
+	return (perform_expansion(input, data, expanded_size));
 }

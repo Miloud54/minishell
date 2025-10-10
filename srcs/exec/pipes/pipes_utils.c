@@ -37,23 +37,43 @@ int	handle_parent_process(int pipe_fd[2], int prev_pipe, int is_last_cmd)
 	return (-1);
 }
 
+static void	handle_signal_status(int status, int *printed_quit)
+{
+	int	sig;
+
+	if (!WIFSIGNALED(status))
+		return ;
+	sig = WTERMSIG(status);
+	if (sig == SIGINT)
+		write(STDOUT_FILENO, "\n", 1);
+	else if (sig == SIGQUIT && !*printed_quit)
+	{
+		ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
+		*printed_quit = 1;
+	}
+}
+
 int	wait_all_pipeline_children(int cmd_count)
 {
 	int	status;
 	int	last_status;
+	int	printed_quit;
 	int	i;
 
 	last_status = 0;
+	printed_quit = 0;
 	i = 0;
 	while (i < cmd_count)
 	{
-		wait(&status);
+		if (wait(&status) == -1)
+			continue ;
+		handle_signal_status(status, &printed_quit);
 		last_status = status;
 		i++;
 	}
 	if (WIFEXITED(last_status))
 		return (WEXITSTATUS(last_status));
-	else if (WIFSIGNALED(last_status))
+	if (WIFSIGNALED(last_status))
 		return (128 + WTERMSIG(last_status));
 	return (1);
 }
