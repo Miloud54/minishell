@@ -23,6 +23,7 @@ SRC_DIR			= srcs
 SRCS			= \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/process_input.c \
+	$(SRC_DIR)/process_input_utils.c \
 	$(SRC_DIR)/parsing/expansion/expansion.c \
 	$(SRC_DIR)/parsing/expansion/expansion_process.c \
 	$(SRC_DIR)/parsing/expansion/expansion_size.c \
