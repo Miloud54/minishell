@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 14:19:29 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/10 15:12:55 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,20 @@ typedef struct s_iter_args
 	t_data				*data;
 }						t_iter_args;
 
+typedef struct s_quote_state
+{
+	int					in_single;
+	int					in_double;
+}						t_quote_state;
+
 /* process_input.c: */
 void					process_input(t_data *data, char *input);
+
+/* process_input_utils.c: */
+void					expand_regular_cmds(t_cmd **cmds, int cmd_count,
+							t_data *data);
+void					cleanup_cmds(t_token *tokens, t_cmd **cmds,
+							int cmd_count);
 
 /* builtins/builtins.c: */
 int						is_exit_command(const char *input);
@@ -314,7 +326,7 @@ void					read_heredoc_input(int write_fd, char *delimiter,
 							t_data *data);
 
 /* exec/executor.c */
-int						execute_commands(t_cmd **commands, int cmd_count,
+int						execute_cmds(t_cmd **commands, int cmd_count,
 							t_data *data);
 
 /* exec/pipes/everything */

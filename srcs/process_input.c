@@ -3,35 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   process_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 14:04:51 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/02 16:02:00 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/10 15:05:36 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	expand_cmd_args(t_cmd *cmd, t_data *data)
+static int	input_prechecks(t_data *data, char *input)
 {
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	while (cmd->args && cmd->args[i])
+	if (!input || !*input)
+		return (0);
+	if (!validate_syntax(input))
+		return (0);
+	if (ft_strcmp(input, "$?") == 0)
 	{
-		tmp = expand_variables(cmd->args[i], data);
-		if (tmp != cmd->args[i])
-			free(cmd->args[i]);
-		cmd->args[i] = tmp;
-		tmp = remove_quotes(cmd->args[i]);
-		if (tmp != cmd->args[i])
-		{
-			free(cmd->args[i]);
-			cmd->args[i] = tmp;
-		}
-		i++;
+		printf("%d\n", data->exit_status);
+		return (0);
 	}
+	return (1);
 }
 
 static int	is_exit_cmd(t_cmd **cmds, int cmd_count)
@@ -40,25 +32,27 @@ static int	is_exit_cmd(t_cmd **cmds, int cmd_count)
 		&& cmds[0]->args[0] && ft_strcmp(cmds[0]->args[0], "exit") == 0);
 }
 
-static void	free_all_cmds(t_cmd **cmds, int cmd_count)
+static int	init_cmds(char *input, t_token **tokens, t_cmd ***cmds,
+		int *cmd_count)
 {
-	int	i;
-
-	i = 0;
-	while (i < cmd_count)
+	*tokens = lexer(input);
+	if (!*tokens)
+		return (0);
+	*cmds = parser(*tokens, cmd_count);
+	if (!*cmds)
 	{
-		free_cmd(cmds[i]);
-		i++;
+		free_tokens(*tokens);
+		*tokens = NULL;
+		return (0);
 	}
-	free(cmds);
+	return (1);
 }
 
 static void	handle_exit_cmd(t_data *data, t_cmd **cmds, int cmd_count,
 		t_token *tokens)
 {
 	exec_builtin(data, cmds[0]);
-	free_all_cmds(cmds, cmd_count);
-	free_tokens(tokens);
+	cleanup_cmds(tokens, cmds, cmd_count);
 	exit(data->exit_status);
 }
 
@@ -67,33 +61,15 @@ void	process_input(t_data *data, char *input)
 	t_token	*tokens;
 	t_cmd	**cmds;
 	int		cmd_count;
-	int		i;
 
-	if (!input || !*input)
+	if (!input_prechecks(data, input))
 		return ;
-	if (!validate_syntax(input))
-    	return;
-	if (ft_strcmp(input, "$?") == 0)
-		return ((void)printf("%d\n", data->exit_status));
-	tokens = lexer(input);
-	if (!tokens)
+	if (!init_cmds(input, &tokens, &cmds, &cmd_count))
 		return ;
-	cmds = parser(tokens, &cmd_count);
-	if (!cmds)
-		return (free_tokens(tokens), (void)0);
-	i = -1;
-	while (++i < cmd_count)
-	{
-		if (cmds[i]->args && cmds[i]->args[0] &&
-			(ft_strcmp(cmds[i]->args[0], "cd") == 0
-				/* || ft_strcmp(cmds[i]->args[0], "echo") == 0 */))
-			continue ;
-		expand_cmd_args(cmds[i], data);
-	}
+	expand_regular_cmds(cmds, cmd_count, data);
 	if (is_exit_cmd(cmds, cmd_count))
 		return (handle_exit_cmd(data, cmds, cmd_count, tokens), (void)0);
 	if (cmd_count > 0)
-		execute_commands(cmds, cmd_count, data);
-	free_all_cmds(cmds, cmd_count);
-	free_tokens(tokens);
+		execute_cmds(cmds, cmd_count, data);
+	cleanup_cmds(tokens, cmds, cmd_count);
 }
