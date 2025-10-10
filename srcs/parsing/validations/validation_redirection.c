@@ -6,14 +6,13 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 20:07:10 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/06 14:01:28 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/10 15:16:51 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-/* Skips over the filename after a redirection operator, handling quotes if
-present*/
+/* Skip filename after a redirection token. */
 static int	skip_redirect_filename(char *input, int start)
 {
 	int	i;
@@ -30,63 +29,48 @@ static int	skip_redirect_filename(char *input, int start)
 	return (i);
 }
 
-/* Checks if a redirection is followed by a valid filename (not empty,
-	not another operator) */
+static int	redirect_length(char *input, int index)
+{
+	if (input[index] == '<' && input[index + 1] == '<')
+		return (2);
+	if (input[index] == '<' && input[index + 1] == '>')
+		return (2);
+	if (input[index] == '>' && input[index + 1] == '>')
+		return (2);
+	return (1);
+}
+
+static char	*dup_redirect_token(char *input, int index)
+{
+	if (input[index] == '<' && input[index + 1] == '<')
+		return (ft_strdup("<<"));
+	if (input[index] == '<' && input[index + 1] == '>')
+		return (ft_strdup("<>"));
+	if (input[index] == '<')
+		return (ft_strdup("<"));
+	if (input[index] == '>' && input[index + 1] == '>')
+		return (ft_strdup(">>"));
+	return (ft_strdup(">"));
+}
+
 static char	*handle_redirect_char(char *input, int *i)
 {
-	char	*token;
-	int		advance;
+	int		step;
 
-	token = NULL;
-	advance = 1;
-	if (input[*i] == '<' && input[*i + 1] == '<')
-		token = ft_strdup("<<"), advance = 2;
-	else if (input[*i] == '<' && input[*i + 1] == '>')
-		token = ft_strdup("<>"), advance = 2;
-	else if (input[*i] == '>' && input[*i + 1] == '>')
-		token = ft_strdup(">>"), advance = 2;
-	else if (input[*i] == '<')
-		token = ft_strdup("<"), advance = 1;
-	else if (input[*i] == '>')
-		token = ft_strdup(">"), advance = 1;
-	*i += advance;
+	step = redirect_length(input, *i);
+	*i += step;
 	while (input[*i] && ft_isspace(input[*i]))
 		(*i)++;
 	if (!input[*i])
-	{
-		free(token);
 		return (ft_strdup("newline"));
-	}
 	if (input[*i] == '|')
-	{
-		free(token);
 		return (ft_strdup("|"));
-	}
-	if (input[*i] == '<')
-	{
-		free(token);
-		if (input[*i + 1] == '<')
-			return (ft_strdup("<<"));
-		else if (input[*i + 1] == '>')
-			return (ft_strdup("<>"));
-		else
-			return (ft_strdup("<"));
-	}
-	if (input[*i] == '>')
-	{
-		free(token);
-		if (input[*i + 1] == '>')
-			return (ft_strdup(">>"));
-		else
-			return (ft_strdup(">"));
-	}
-	free(token);
+	if (input[*i] == '<' || input[*i] == '>')
+		return (dup_redirect_token(input, *i));
 	*i = skip_redirect_filename(input, *i);
 	return (NULL);
 }
 
-/* Validates the overall redirection syntax in the input line,
-	returns token fautif ou NULL */
 char	*validate_redirect_syntax(char *input)
 {
 	int		i;
