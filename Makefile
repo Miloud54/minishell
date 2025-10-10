@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
+#    By: edidier <edidier@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/10/01 17:05:53 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/10/10 14:08:37 by edidier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,8 +49,13 @@ SRCS			= \
 	$(SRC_DIR)/utils/init_data.c \
 	$(SRC_DIR)/utils/init_signals.c \
 	$(SRC_DIR)/builtins/builtins.c \
-	$(SRC_DIR)/builtins/cd.c \
-	$(SRC_DIR)/builtins/cd_utils.c \
+	$(SRC_DIR)/builtins/cd/cd.c \
+	$(SRC_DIR)/builtins/cd/cd_cdpath.c \
+	$(SRC_DIR)/builtins/cd/cd_change.c \
+	$(SRC_DIR)/builtins/cd/cd_env.c \
+	$(SRC_DIR)/builtins/cd/cd_path.c \
+	$(SRC_DIR)/builtins/cd/cd_utils.c \
+	$(SRC_DIR)/builtins/cd/cd_utils2.c \
 	$(SRC_DIR)/builtins/env.c \
 	$(SRC_DIR)/builtins/exit.c \
 	$(SRC_DIR)/builtins/exit_utils.c \
@@ -77,6 +82,7 @@ OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 OBJ_DIR			= objs
 OBJ_DIRS		= $(OBJ_DIR)/$(SRC_DIR) \
 			  	$(OBJ_DIR)/$(SRC_DIR)/builtins \
+				  $(OBJ_DIR)/$(SRC_DIR)/builtins/cd \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/expansion \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/lexer \
