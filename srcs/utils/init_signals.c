@@ -18,12 +18,6 @@ void	handler_sigint(int sig)
 	(void)sig;
 	g_signal_status = SIGINT;
 	write(1, "\n", 1);
-	if (g_in_readline)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
 }
 
 void	handler_sigquit(int sig)
