@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/08 12:24:31 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/10 14:19:29 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,12 +195,12 @@ void					skip_spaces(const char *str, int *i);
 int						validate_syntax(char *input);
 
 /* parsing/validation_pipe.c */
-char			*validate_pipe_syntax(char *input);
+char					*validate_pipe_syntax(char *input);
 
 /* parsing/quotes.c: */
-int			find_quote_end(char *str, int start, char quote);
-char			*remove_quotes(char *str);
-int			has_unclosed_quotes(char *input);
+int						find_quote_end(char *str, int start, char quote);
+char					*remove_quotes(char *str);
+int						has_unclosed_quotes(char *input);
 
 /* parsing/tokens.c: */
 t_token					*create_token(char *value, t_token_type type);
@@ -356,6 +356,31 @@ int						setup_heredoc_at_parse(t_redirect *redirect,
 							t_data *data);
 int						write_heredoc_to_file(int fd, char *delimiter,
 							t_data *data);
+
+/* ************************************************************************** */
+
+/* builtins/cd helpers */
+char					*get_cd_path(char **argv, t_data *data);
+int						is_not_directory(const char *path, t_data *data);
+void					print_cd_error(const char *path);
+int						change_directory(const char *path, const char *orig_arg,
+							t_data *data);
+char					*try_cdpath(const char *arg, char **envp);
+
+/* cd public/coordination */
+int						cd_perform(t_data *data, char **argv);
+int						cd_invalid_option(char **argv, t_data *data);
+
+/* cd helpers split across files */
+char					*cd_resolve_path(char **argv, t_data *data,
+							char **expanded);
+int						cd_count_args(char **argv);
+int						cd_handle_too_many_arguments(char **argv, t_data *data,
+							char *expanded);
+char					*cd_apply_cdpath_if_needed(char **argv, char *path,
+							t_data *data, char *expanded);
+int						cd_handle_home_empty(char **argv, char *path,
+							t_data *data, char *expanded);
 
 /* ************************************************************************** */
 
