@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:17 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/06 10:48:50 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/10 13:43:58 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ int	ft_pwd(char **argv)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		write(2,
-			"pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n",
-			95);
+		write(2, "pwd: error retrieving current directory: getcwd: ", 49);
+		write(2, "cannot access parent directories: No such file or ", 50);
+		write(2, "directory\n", 10);
 		return (1);
 	}
 	printf("%s\n", cwd);

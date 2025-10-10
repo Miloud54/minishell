@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 16:43:08 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/07 16:15:40 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/10 13:38:11 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,15 @@ static void	print_export_env(char **envp)
 /* Builtin export: adds/modifies env variables or prints them if no args */
 void	ft_export(t_cmd *cmd, t_data *data)
 {
-	int	i;
-	int	error;
-
-	i = 1;
-	error = 0;
+	int (i) = 0;
+	int (error) = 0;
 	if (!cmd->args[1])
 	{
 		print_export_env(data->envp);
 		data->exit_status = 0;
 		return ;
 	}
-	while (cmd->args[i])
+	while (cmd->args[++i])
 	{
 		if (ft_strcmp(cmd->args[i], "=") == 0)
 		{
@@ -84,7 +81,6 @@ void	ft_export(t_cmd *cmd, t_data *data)
 		}
 		else
 			add_or_update_env(data, cmd->args[i]);
-		i++;
 	}
 	data->exit_status = error;
 }
