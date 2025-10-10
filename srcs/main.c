@@ -28,9 +28,7 @@ static void	main_loop(t_data *data)
 
 	while (1)
 	{
-		g_in_readline = 1;
 		input = readline(PROMPT);
-		g_in_readline = 0;
 		if (!input)
 		{
 			printf("exit\n");
