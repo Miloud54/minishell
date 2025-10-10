@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:21:47 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/06 19:00:24 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/10 14:21:43 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,31 @@ char	*search_path_in_env(char *cmd, char **envp)
 	return (NULL);
 }
 
+static void	print_execve_error(char *cmd_path)
+{
+	struct stat	st;
+
+	if (stat(cmd_path, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd_path, 2);
+		ft_putendl_fd(": Is a directory", 2);
+	}
+	else if (errno == EACCES)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd_path, 2);
+		ft_putendl_fd(": Permission denied", 2);
+	}
+	else
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd_path, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
+	}
+}
+
 static void	child_execve(char *cmd_path, t_cmd *cmd, t_data *data)
 {
 	signal(SIGINT, SIG_DFL);
@@ -49,13 +74,7 @@ static void	child_execve(char *cmd_path, t_cmd *cmd, t_data *data)
 		exit(0);
 	if (execve(cmd_path, cmd->args, data->envp) == -1)
 	{
-		struct stat st;
-		if (stat(cmd_path, &st) == 0 && S_ISDIR(st.st_mode))
-			fprintf(stderr, "minishell: %s: Is a directory\n", cmd_path);
-		else if (errno == EACCES)
-			fprintf(stderr, "minishell: %s: Permission denied\n", cmd_path);
-		else
-			fprintf(stderr, "minishell: %s: %s\n", cmd_path, strerror(errno));
+		print_execve_error(cmd_path);
 		exit(126);
 	}
 }
@@ -70,7 +89,6 @@ static int	parent_wait_and_status(pid_t pid, char *cmd_path, t_data *data)
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		write(1, "\n", 1);
 	free(cmd_path);
-	// Réinstalle les signaux dans le parent après l'exécution du fils
 	init_signals();
 	if (WIFEXITED(status))
 		data->exit_status = WEXITSTATUS(status);
