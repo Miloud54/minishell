@@ -66,7 +66,8 @@ void	process_input(t_data *data, char *input)
 		return ;
 	if (!init_cmds(input, &tokens, &cmds, &cmd_count))
 		return ;
-	expand_regular_cmds(cmds, cmd_count, data);
+	if (!expand_regular_cmds(cmds, cmd_count, data))
+		return (cleanup_cmds(tokens, cmds, cmd_count), (void)0);
 	if (is_exit_cmd(cmds, cmd_count))
 		return (handle_exit_cmd(data, cmds, cmd_count, tokens), (void)0);
 	if (cmd_count > 0)

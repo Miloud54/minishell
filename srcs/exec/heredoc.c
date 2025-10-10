@@ -29,7 +29,8 @@ static int	fork_and_fill_heredoc(int *pipe_fd, t_redirect *redirect,
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
-		read_heredoc_input(pipe_fd[1], redirect->file, data);
+		read_heredoc_input(pipe_fd[1], redirect->file, data,
+			!redirect->heredoc_quoted);
 		close(pipe_fd[1]);
 		exit(0);
 	}

@@ -13,3 +13,4 @@
 #include "../../inc/minishell.h"
 
 int	g_signal_status = 0;
+int	g_in_readline = 0;

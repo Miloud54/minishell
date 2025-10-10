@@ -22,10 +22,26 @@ int	is_special_char(char c)
 int	skip_quotes(char *input, int i, char quote)
 {
 	i++;
-	while (input[i] && input[i] != quote)
+	while (input[i])
+	{
+		if (quote == '"' && input[i] == '\\' && input[i + 1]
+			&& ft_strchr("\"$\\`", input[i + 1]))
+		{
+			i += 2;
+			continue ;
+		}
+		if (quote == '"' && input[i] == '\\' && input[i + 1] == '\n')
+		{
+			i += 2;
+			continue ;
+		}
+		if (input[i] == quote)
+		{
+			i++;
+			break ;
+		}
 		i++;
-	if (input[i] == quote)
-		i++;
+	}
 	return (i);
 }
 

@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 19:39:46 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/08 12:33:18 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/10 16:40:54 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,57 +18,108 @@ int	find_quote_end(char *str, int start, char quote)
 	int	i;
 
 	i = start + 1;
-	while (str[i] && str[i] != quote)
+	while (str[i])
+	{
+		if (quote == '"' && str[i] == '\\' && str[i + 1] && ft_strchr("\"$\\`",
+				str[i + 1]))
+		{
+			i += 2;
+			continue ;
+		}
+		if (quote == '"' && str[i] == '\\' && str[i + 1] == '\n')
+		{
+			i += 2;
+			continue ;
+		}
+		if (str[i] == quote)
+			return (i);
 		i++;
-	if (str[i] == quote)
-		return (i);
+	}
 	return (-1);
 }
 
 /* Checks if the input string contains any unclosed quotes */
 int	has_unclosed_quotes(char *input)
 {
-	int	i;
-	int	in_single;
-	int	in_double;
+	int				i;
+	t_quote_state	state;
 
 	i = 0;
-	in_single = 0;
-	in_double = 0;
+	state.in_single = 0;
+	state.in_double = 0;
 	while (input[i])
 	{
-		if (input[i] == '\'' && !in_double)
-			in_single = !in_single;
-		else if (input[i] == '"' && !in_single)
-			in_double = !in_double;
-		i++;
+		if (input[i] == '\\' && !state.in_single)
+		{
+			if (state.in_double && input[i + 1] && ft_strchr("\"$\\`", input[i
+					+ 1]))
+				i += 2;
+			else if (state.in_double && input[i + 1] == '\n')
+				i += 2;
+			else if (!state.in_double && input[i + 1])
+				i += 2;
+			else
+				i++;
+		}
+		else if (input[i] == '\'' && !state.in_double)
+		{
+			state.in_single = !state.in_single;
+			i++;
+		}
+		else if (input[i] == '"' && !state.in_single)
+		{
+			state.in_double = !state.in_double;
+			i++;
+		}
+		else
+			i++;
 	}
-	return (in_single || in_double);
+	return (state.in_single || state.in_double);
 }
 
 /* Calculates the length of the string without quotes */
 static int	count_unquoted_len(char *str)
 {
-	int	i;
-	int	len;
-	int	in_single;
-	int	in_double;
+	int				i;
+	int				len;
+	t_quote_state	state;
 
 	i = 0;
 	len = 0;
-	in_single = 0;
-	in_double = 0;
+	state.in_single = 0;
+	state.in_double = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' && !in_double)
+		if (str[i] == '\\' && !state.in_single)
 		{
-			in_single = !in_single;
+			if (state.in_double && str[i + 1] && ft_strchr("\"$\\`", str[i
+					+ 1]))
+			{
+				len++;
+				i += 2;
+				continue ;
+			}
+			if (state.in_double && str[i + 1] == '\n')
+			{
+				i += 2;
+				continue ;
+			}
+			if (!state.in_double && str[i + 1])
+			{
+				len++;
+				i += 2;
+				continue ;
+			}
+		}
+		if (str[i] == '\'' && !state.in_double)
+		{
+			state.in_single = !state.in_single;
 			i++;
 			continue ;
 		}
-		if (str[i] == '"' && !in_single)
+		if (str[i] == '"' && !state.in_single)
 		{
-			in_double = !in_double;
+			state.in_double = !state.in_double;
 			i++;
 			continue ;
 		}
@@ -81,26 +132,46 @@ static int	count_unquoted_len(char *str)
 /* Copies the string to 'result' without quotes */
 static void	copy_without_quotes(char *str, char *result)
 {
-	int	i;
-	int	j;
-	int	in_single;
-	int	in_double;
+	int				i;
+	int				j;
+	t_quote_state	state;
 
 	i = 0;
 	j = 0;
-	in_single = 0;
-	in_double = 0;
+	state.in_single = 0;
+	state.in_double = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' && !in_double)
+		if (str[i] == '\\' && !state.in_single)
 		{
-			in_single = !in_single;
+			if (state.in_double && str[i + 1] && ft_strchr("\"$\\`", str[i
+					+ 1]))
+			{
+				result[j++] = str[i + 1];
+				i += 2;
+				continue ;
+			}
+			if (state.in_double && str[i + 1] == '\n')
+			{
+				i += 2;
+				continue ;
+			}
+			if (!state.in_double && str[i + 1])
+			{
+				result[j++] = str[i + 1];
+				i += 2;
+				continue ;
+			}
+		}
+		if (str[i] == '\'' && !state.in_double)
+		{
+			state.in_single = !state.in_single;
 			i++;
 			continue ;
 		}
-		if (str[i] == '"' && !in_single)
+		if (str[i] == '"' && !state.in_single)
 		{
-			in_double = !in_double;
+			state.in_double = !state.in_double;
 			i++;
 			continue ;
 		}

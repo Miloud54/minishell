@@ -30,25 +30,28 @@ int	is_delimiter(char *line, char *delimiter)
 			len_delim) == 0);
 }
 
-void	write_heredoc_line(int fd, char *line, t_data *data)
+void	write_heredoc_line(int fd, char *line, t_data *data, int expand)
 {
 	char	*expanded;
 
-	expanded = expand_variables(line, data);
-	if (expanded)
+	if (expand)
 	{
-		write(fd, expanded, ft_strlen(expanded));
-		write(fd, "\n", 1);
-		free(expanded);
+		expanded = expand_variables(line, data);
+		if (!expanded)
+			expanded = ft_strdup("");
+		if (expanded)
+		{
+			write(fd, expanded, ft_strlen(expanded));
+			free(expanded);
+		}
 	}
 	else
-	{
 		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-	}
+	write(fd, "\n", 1);
 }
 
-void	read_heredoc_input(int write_fd, char *delimiter, t_data *data)
+void	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
+		int expand)
 {
 	char	*line;
 	char	*prompt;
@@ -69,7 +72,7 @@ void	read_heredoc_input(int write_fd, char *delimiter, t_data *data)
 			free(line);
 			break ;
 		}
-		write_heredoc_line(write_fd, line, data);
+		write_heredoc_line(write_fd, line, data, expand);
 		free(line);
 	}
 	if (prompt)

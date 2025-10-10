@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:40 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 15:12:41 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/10 16:41:01 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,23 @@ static void	expand_and_copy_variable(t_copy_context *ctx)
 {
 	char	*var_name;
 	char	*var_value;
+	char	next_char;
 
 	(*(ctx->i))++;
+	next_char = ctx->input[*(ctx->i)];
+	if (next_char == '\'' || next_char == '"')
+		return ;
 	var_name = get_var_name(ctx->input, ctx->i);
+	if (!var_name || var_name[0] == '\0')
+	{
+		ctx->result[(*(ctx->j))++] = '$';
+		free(var_name);
+		return ;
+	}
 	var_value = get_var_value(var_name, ctx->data);
 	copy_variable_value(var_value, ctx->result, ctx->j);
-	free(var_name);
 	free(var_value);
+	free(var_name);
 }
 
 static void	init_expansion_context(t_copy_context *ctx, char *input,
@@ -40,9 +50,37 @@ static void	init_expansion_context(t_copy_context *ctx, char *input,
 	ctx->j = &j;
 }
 
+static int	handle_backslash_copy(char *input, t_copy_context *ctx,
+		t_quote_state *state, int i)
+{
+	if (input[i] != '\\' || state->in_single)
+		return (i);
+	if (!input[i + 1])
+		return (i + 1);
+	if (state->in_double && input[i + 1] == '\n')
+		return (i + 2);
+	if (state->in_double && ft_strchr("\"$\\`", input[i + 1]))
+	{
+		ctx->result[(*(ctx->j))++] = input[i + 1];
+		return (i + 2);
+	}
+	if (!state->in_double)
+	{
+		ctx->result[(*(ctx->j))++] = input[i + 1];
+		return (i + 2);
+	}
+	ctx->result[(*(ctx->j))++] = input[i];
+	return (i + 1);
+}
+
 static int	handle_expansion_char(char *input, t_copy_context *ctx,
 		t_quote_state *state, int i)
 {
+	int	next;
+
+	next = handle_backslash_copy(input, ctx, state, i);
+	if (next != i)
+		return (next);
 	if (input[i] == '\'' && !state->in_double)
 	{
 		ctx->result[(*(ctx->j))++] = input[i++];
