@@ -6,13 +6,50 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 19:39:46 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/10 18:18:59 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:40:21 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-/* Finds the index of the closing quote starting from 'start' */
+static int	skip_escape(char *input, int *i, t_quote_state *state)
+{
+	if (input[*i] != '\\' || state->in_single)
+		return (0);
+	if (state->in_double && input[*i + 1] == '\n')
+	{
+		*i += 2;
+		return (1);
+	}
+	if (state->in_double && input[*i + 1] && ft_strchr("\"$\\`", input[*i + 1]))
+	{
+		*i += 2;
+		return (1);
+	}
+	if (!state->in_double && input[*i + 1])
+	{
+		*i += 2;
+		return (1);
+	}
+	(*i)++;
+	return (1);
+}
+
+static int	toggle_quote_state(char c, t_quote_state *state)
+{
+	if (c == '\'' && !state->in_double)
+	{
+		state->in_single = !state->in_single;
+		return (1);
+	}
+	if (c == '"' && !state->in_single)
+	{
+		state->in_double = !state->in_double;
+		return (1);
+	}
+	return (0);
+}
+
 int	find_quote_end(char *str, int start, char quote)
 {
 	int	i;
@@ -20,13 +57,13 @@ int	find_quote_end(char *str, int start, char quote)
 	i = start + 1;
 	while (str[i])
 	{
-		if (quote == '"' && str[i] == '\\' && str[i + 1] && ft_strchr("\"$\\`",
-				str[i + 1]))
+		if (quote == '"' && str[i] == '\\' && str[i + 1] == '\n')
 		{
 			i += 2;
 			continue ;
 		}
-		if (quote == '"' && str[i] == '\\' && str[i + 1] == '\n')
+		if (quote == '"' && str[i] == '\\' && str[i + 1] && ft_strchr("\"$\\`",
+				str[i + 1]))
 		{
 			i += 2;
 			continue ;
@@ -38,149 +75,30 @@ int	find_quote_end(char *str, int start, char quote)
 	return (-1);
 }
 
-/* Checks if the input string contains any unclosed quotes */
 int	has_unclosed_quotes(char *input)
 {
 	int				i;
 	t_quote_state	state;
 
-	i = 0;
+	if (!input)
+		return (0);
 	state.in_single = 0;
 	state.in_double = 0;
+	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '\\' && !state.in_single)
+		if (skip_escape(input, &i, &state))
+			continue ;
+		if (toggle_quote_state(input[i], &state))
 		{
-			if (state.in_double && input[i + 1] && ft_strchr("\"$\\`", 
-				input[i + 1]))
-				i += 2;
-			else if (state.in_double && input[i + 1] == '\n')
-				i += 2;
-			else if (!state.in_double && input[i + 1])
-				i += 2;
-			else
-				i++;
-		}
-		else if (input[i] == '\'' && !state.in_double)
-		{
-			state.in_single = !state.in_single;
 			i++;
+			continue ;
 		}
-		else if (input[i] == '"' && !state.in_single)
-		{
-			state.in_double = !state.in_double;
-			i++;
-		}
-		else
-			i++;
+		i++;
 	}
 	return (state.in_single || state.in_double);
 }
 
-/* Calculates the length of the string without quotes */
-static int	count_unquoted_len(char *str)
-{
-	int				i;
-	int				len;
-	t_quote_state	state;
-
-	i = 0;
-	len = 0;
-	state.in_single = 0;
-	state.in_double = 0;
-	while (str[i])
-	{
-		if (str[i] == '\\' && !state.in_single)
-		{
-			if (state.in_double && str[i + 1] && ft_strchr("\"$\\`", str[i
-					+ 1]))
-			{
-				len++;
-				i += 2;
-				continue ;
-			}
-			if (state.in_double && str[i + 1] == '\n')
-			{
-				i += 2;
-				continue ;
-			}
-			if (!state.in_double && str[i + 1])
-			{
-				len++;
-				i += 2;
-				continue ;
-			}
-		}
-		if (str[i] == '\'' && !state.in_double)
-		{
-			state.in_single = !state.in_single;
-			i++;
-			continue ;
-		}
-		if (str[i] == '"' && !state.in_single)
-		{
-			state.in_double = !state.in_double;
-			i++;
-			continue ;
-		}
-		len++;
-		i++;
-	}
-	return (len);
-}
-
-/* Copies the string to 'result' without quotes */
-static void	copy_without_quotes(char *str, char *result)
-{
-	int				i;
-	int				j;
-	t_quote_state	state;
-
-	i = 0;
-	j = 0;
-	state.in_single = 0;
-	state.in_double = 0;
-	while (str[i])
-	{
-		if (str[i] == '\\' && !state.in_single)
-		{
-			if (state.in_double && str[i + 1] && ft_strchr("\"$\\`", str[i
-					+ 1]))
-			{
-				result[j++] = str[i + 1];
-				i += 2;
-				continue ;
-			}
-			if (state.in_double && str[i + 1] == '\n')
-			{
-				i += 2;
-				continue ;
-			}
-			if (!state.in_double && str[i + 1])
-			{
-				result[j++] = str[i + 1];
-				i += 2;
-				continue ;
-			}
-		}
-		if (str[i] == '\'' && !state.in_double)
-		{
-			state.in_single = !state.in_single;
-			i++;
-			continue ;
-		}
-		if (str[i] == '"' && !state.in_single)
-		{
-			state.in_double = !state.in_double;
-			i++;
-			continue ;
-		}
-		result[j++] = str[i++];
-	}
-	result[j] = '\0';
-}
-
-/* Returns a new string with all quotes removed */
 char	*remove_quotes(char *str)
 {
 	char	*result;
