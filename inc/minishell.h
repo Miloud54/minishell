@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 19:23:08 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 21:27:20 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include <string.h>
 
 /* Readline function declarations à retirer car juste pour Mac */
 extern void				rl_replace_line(const char *text, int clear_undo);
