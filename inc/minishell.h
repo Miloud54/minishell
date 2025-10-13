@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 17:45:59 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/13 17:46:28 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,15 +122,6 @@ typedef struct s_copy_context
 	int					*j;
 }						t_copy_context;
 
-typedef struct s_size_context
-{
-	char				*input;
-	t_data				*data;
-	int					*i;
-	int					*size;
-	int					*in_single_quotes;
-}						t_size_context;
-
 typedef struct s_quote_state
 {
 	int					in_single;
@@ -172,12 +163,20 @@ typedef struct s_dyn_array
 	int					capacity;
 }						t_dyn_array;
 
-typedef struct s_size_ctx
+typedef struct s_size_context
 {
 	int					index;
 	int					size;
 	t_quote_state		state;
-}						t_size_ctx;
+}						t_size_context;
+
+typedef struct s_quote_context
+{
+	int					index;
+	int					len;
+	char				*result;
+	t_quote_state		state;
+}						t_quote_context;
 
 /* process_input.c: */
 void					process_input(t_data *data, char *input);
@@ -238,6 +237,10 @@ char					*validate_pipe_syntax(char *input);
 int						find_quote_end(char *str, int start, char quote);
 char					*remove_quotes(char *str);
 int						has_unclosed_quotes(char *input);
+
+/* parsing/quotes_utils.c: */
+int						count_unquoted_len(char *str);
+void					copy_without_quotes(char *str, char *result);
 
 /* parsing/tokens.c: */
 t_token					*create_token(char *value, t_token_type type);
