@@ -42,6 +42,7 @@ SRCS			= \
 	$(SRC_DIR)/parsing/parser/parser_validation.c \
 	$(SRC_DIR)/parsing/parser/parser_utils.c \
 	$(SRC_DIR)/parsing/quotes.c \
+	$(SRC_DIR)/parsing/quotes_state.c \
 	$(SRC_DIR)/parsing/quotes_utils.c \
 	$(SRC_DIR)/parsing/tokens.c \
 	$(SRC_DIR)/parsing/tokens_utils.c \

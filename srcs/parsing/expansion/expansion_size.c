@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 17:48:51 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:52:00 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static int	handle_backslash_size(char *input, t_size_context *context)
 	return (1);
 }
 
-static void	add_variable_size(char *input, t_data *data, t_size_context *context)
+static void	add_variable_size(char *input, t_data *data,
+		t_size_context *context)
 {
 	char	*var_name;
 	char	*var_value;
@@ -74,7 +75,8 @@ static void	add_variable_size(char *input, t_data *data, t_size_context *context
 	context->index = tmp_i;
 }
 
-static void	process_char_for_size(char *input, t_data *data, t_size_context *context)
+static void	process_char_for_size(char *input, t_data *data,
+		t_size_context *context)
 {
 	if (handle_backslash_size(input, context))
 		return ;
@@ -91,7 +93,8 @@ static void	process_char_for_size(char *input, t_data *data, t_size_context *con
 		context->index++;
 	}
 	else if (input[context->index] == '$' && !context->state.in_single
-		&& should_expand_int_quotes(input, context->index, context->state.in_single))
+		&& should_expand_int_quotes(input, context->index,
+			context->state.in_single))
 		add_variable_size(input, data, context);
 	else
 	{
