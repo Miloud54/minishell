@@ -50,7 +50,7 @@ static void	write_to_pipe(int fd, char *line, t_data *data)
 
 static int	fill_heredoc_pipe(int write_fd, char *delimiter, t_data *data)
 {
-	char	*line;
+	char		*line;
 	const char	*prompt;
 
 	prompt = "> ";
@@ -90,7 +90,7 @@ int	setup_heredoc_at_parse(t_redirect *redirect, t_data *data)
 
 int	write_heredoc_to_file(int fd, char *delimiter, t_data *data)
 {
-	char	*line;
+	char		*line;
 	const char	*prompt;
 
 	prompt = "> ";
