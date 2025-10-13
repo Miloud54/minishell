@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   process_input_expand_split.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 16:20:12 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 16:40:36 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:16:03 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	is_ifs(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\n')
-		return (1);
-	return (0);
-}
 
 static int	handle_split_escape(char *arg, int *index, t_quote_state *state)
 {

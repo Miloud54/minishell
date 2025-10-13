@@ -188,6 +188,9 @@ int						expand_regular_cmds(t_cmd **cmds, int cmd_count,
 void					cleanup_cmds(t_token *tokens, t_cmd **cmds,
 							int cmd_count);
 
+/* process_input_utils2.c: */
+int						is_ifs(char c);
+
 /* process_input_expand_split.c */
 char					**split_expanded_argument(char *arg);
 
