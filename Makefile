@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/10/13 17:17:03 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/10/13 17:47:58 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,8 @@ SRCS			= \
 	$(SRC_DIR)/exec/pipes/pipes.c \
 	$(SRC_DIR)/exec/pipes/pipes_utils.c \
 	$(SRC_DIR)/exec/pipes/pipes_heredoc.c \
-	$(SRC_DIR)/exec/pipes/pipes_child.c 
+	$(SRC_DIR)/exec/pipes/pipes_child.c \
+	$(SRC_DIR)/exec/pipes/pipes_exec.c \
 
 
 OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))

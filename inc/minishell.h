@@ -435,4 +435,7 @@ char					*cd_apply_cdpath_if_needed(char **argv, char *path,
 int						cd_handle_home_empty(char **argv, char *path,
 							t_data *data, char *expanded);
 
+/* exec/external.c */
+void exec_external(t_cmd *cmd, t_data *shell_data);
+
 #endif
