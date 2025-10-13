@@ -93,6 +93,9 @@ int	ft_exit(t_data *data, char **argv)
 		exit_numeric_error(data, argv[1]);
 	if (argv[1] && argv[2])
 	{
+		if (isatty(STDIN_FILENO))
+			write(1, "exit\n", 5);
+		data->exit_status = 1;
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
