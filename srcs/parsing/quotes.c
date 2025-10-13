@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 19:39:46 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/10 16:40:54 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/10 18:18:59 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	has_unclosed_quotes(char *input)
 	{
 		if (input[i] == '\\' && !state.in_single)
 		{
-			if (state.in_double && input[i + 1] && ft_strchr("\"$\\`", input[i
-					+ 1]))
+			if (state.in_double && input[i + 1] && ft_strchr("\"$\\`", 
+				input[i + 1]))
 				i += 2;
 			else if (state.in_double && input[i + 1] == '\n')
 				i += 2;
