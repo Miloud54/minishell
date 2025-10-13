@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:20 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/07 17:22:09 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 21:11:08 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,11 @@ void	exit_numeric_error(t_data *data, char *arg)
 	exit(2);
 }
 
-int	ft_exit(t_data *data, char **argv)
+static int	handle_exit_args(t_data *data, char **argv)
 {
 	int		error;
 	long	val;
 
-	if (!argv[1])
-	{
-		if (isatty(STDIN_FILENO))
-			write(1, "exit\n", 5);
-		free_data(data);
-		exit(data->exit_status);
-	}
 	error = 0;
 	val = ft_atol(argv[1], &error);
 	if (!is_valid_number(argv[1]) || error)
@@ -104,6 +97,18 @@ int	ft_exit(t_data *data, char **argv)
 	free_data(data);
 	exit((unsigned char)val);
 	return (0);
+}
+
+int	ft_exit(t_data *data, char **argv)
+{
+	if (!argv[1])
+	{
+		if (isatty(STDIN_FILENO))
+			write(1, "exit\n", 5);
+		free_data(data);
+		exit(data->exit_status);
+	}
+	return (handle_exit_args(data, argv));
 }
 
 // int	main(void)
