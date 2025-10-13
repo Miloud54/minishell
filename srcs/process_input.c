@@ -14,15 +14,11 @@
 
 static int	input_prechecks(t_data *data, char *input)
 {
+	(void)data;
 	if (!input || !*input)
 		return (0);
 	if (!validate_syntax(input))
 		return (0);
-	if (ft_strcmp(input, "$?") == 0)
-	{
-		printf("%d\n", data->exit_status);
-		return (0);
-	}
 	return (1);
 }
 
@@ -51,8 +47,12 @@ static int	init_cmds(char *input, t_token **tokens, t_cmd ***cmds,
 static void	handle_exit_cmd(t_data *data, t_cmd **cmds, int cmd_count,
 		t_token *tokens)
 {
-	exec_builtin(data, cmds[0]);
+	int	exit_request;
+
+	exit_request = ft_exit(data, cmds[0]->args);
 	cleanup_cmds(tokens, cmds, cmd_count);
+	if (exit_request == 1)
+		return ;
 	exit(data->exit_status);
 }
 
