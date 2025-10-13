@@ -238,6 +238,10 @@ int						find_quote_end(char *str, int start, char quote);
 char					*remove_quotes(char *str);
 int						has_unclosed_quotes(char *input);
 
+/* parsing/quotes_state.c: */
+int						handle_escape(char *str, t_quote_context *context);
+int						handle_quote_toggle(char c, t_quote_context *context);
+
 /* parsing/quotes_utils.c: */
 int						count_unquoted_len(char *str);
 void					copy_without_quotes(char *str, char *result);
