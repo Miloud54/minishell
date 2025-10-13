@@ -6,7 +6,7 @@
 #    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/10/10 15:09:06 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/10/13 17:08:44 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS			= \
 	$(SRC_DIR)/process_input_expand_array.c \
 	$(SRC_DIR)/parsing/expansion/expansion.c \
 	$(SRC_DIR)/parsing/expansion/expansion_process.c \
+	$(SRC_DIR)/parsing/expansion/expansion_process_utils.c \
 	$(SRC_DIR)/parsing/expansion/expansion_size.c \
 	$(SRC_DIR)/parsing/expansion/expansion_vars.c \
 	$(SRC_DIR)/parsing/lexer/lexer.c \

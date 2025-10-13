@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_process.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:40 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 16:41:01 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:07:50 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,6 @@ static void	expand_and_copy_variable(t_copy_context *ctx)
 	copy_variable_value(var_value, ctx->result, ctx->j);
 	free(var_value);
 	free(var_name);
-}
-
-static void	init_expansion_context(t_copy_context *ctx, char *input,
-		t_data *data, char *result)
-{
-	static int	i;
-	static int	j;
-
-	i = 0;
-	j = 0;
-	ctx->input = input;
-	ctx->data = data;
-	ctx->result = result;
-	ctx->i = &i;
-	ctx->j = &j;
 }
 
 static int	handle_backslash_copy(char *input, t_copy_context *ctx,
