@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 17:23:12 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/10 18:18:10 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 15:53:32 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	write_heredoc_line(int fd, char *line, t_data *data, int expand)
 void	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
 		int expand)
 {
-	char		*line;
+	char		    *line;
 	const char	*prompt;
 
 	prompt = "> ";
