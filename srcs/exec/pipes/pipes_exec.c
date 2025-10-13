@@ -86,8 +86,15 @@ void	exec_external(t_cmd *cmd, t_data *shell_data)
 {
 	char	*path;
 
-	if (!cmd->args[0] || cmd->args[0][0] == '\0')
+	if (!cmd->args[0])
 		exit(0);
+	if (cmd->args[0][0] == '\0')
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->args[0], 2);
+		ft_putendl_fd(": command not found", 2);
+		exit(127);
+	}
 	path = get_cmd_path(cmd, shell_data);
 	if (execve(path, cmd->args, shell_data->envp) == -1)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 18:01:15 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/13 19:23:08 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <string.h>
 
 /* Readline function declarations à retirer car juste pour Mac */
 extern void				rl_replace_line(const char *text, int clear_undo);
@@ -380,7 +381,8 @@ int						create_pipe_if_needed(int i, int cmd_count,
 							int pipe_fd[2]);
 int						handle_parent_process(int pipe_fd[2], int prev_pipe,
 							int is_last_cmd);
-int						wait_all_pipeline_children(int cmd_count);
+int						wait_all_pipeline_children(int cmd_count,
+							pid_t last_pid);
 void					execute_piped_command(t_cmd *cmd, t_pipe_data *data,
 							t_data *shell_data);
 int						setup_pipeline_heredocs(t_cmd **commands, int cmd_count,

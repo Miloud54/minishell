@@ -34,5 +34,7 @@ int	execute_cmds(t_cmd **cmds, int cmd_count, t_data *data)
 	}
 	else
 		exit_code = execute_pipeline(cmds, cmd_count, data);
+	if (exit_code >= 0)
+		data->exit_status = exit_code;
 	return (exit_code);
 }

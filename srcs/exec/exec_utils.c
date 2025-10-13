@@ -86,8 +86,6 @@ static int	parent_wait_and_status(pid_t pid, char *cmd_path, t_data *data)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		write(1, "\n", 1);
 	free(cmd_path);
 	init_signals();
 	if (WIFEXITED(status))

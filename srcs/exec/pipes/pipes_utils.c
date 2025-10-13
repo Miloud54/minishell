@@ -44,31 +44,41 @@ static void	handle_signal_status(int status, int *printed_quit)
 	if (!WIFSIGNALED(status))
 		return ;
 	sig = WTERMSIG(status);
-	if (sig == SIGINT)
-		write(STDOUT_FILENO, "\n", 1);
-	else if (sig == SIGQUIT && !*printed_quit)
+	if (sig == SIGQUIT && !*printed_quit)
 	{
 		ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
 		*printed_quit = 1;
 	}
 }
 
-int	wait_all_pipeline_children(int cmd_count)
+int	wait_all_pipeline_children(int cmd_count, pid_t last_pid)
 {
 	int	status;
 	int	last_status;
 	int	printed_quit;
 	int	i;
+	int	last_found;
+	pid_t	waited_pid;
 
 	last_status = 0;
 	printed_quit = 0;
+	last_found = (last_pid <= 0);
 	i = 0;
 	while (i < cmd_count)
 	{
-		if (wait(&status) == -1)
+		waited_pid = wait(&status);
+		if (waited_pid == -1)
 			continue ;
 		handle_signal_status(status, &printed_quit);
-		last_status = status;
+		if (!last_found && waited_pid == last_pid)
+		{
+			last_status = status;
+			last_found = 1;
+		}
+		else if (!last_found && i == cmd_count - 1)
+			last_status = status;
+		else if (last_found == 0)
+			last_status = status;
 		i++;
 	}
 	if (WIFEXITED(last_status))
