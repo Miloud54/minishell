@@ -6,110 +6,111 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 16:41:03 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:29:16 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-static int	handle_backslash_size(char *input, t_quote_state *state, int *i,
-		int *size)
+static int	handle_backslash_in_double(char *input, t_size_ctx *ctx)
 {
-	if (input[*i] != '\\' || state->in_single)
+	if (!ctx->state.in_double)
 		return (0);
-	if (!input[*i + 1])
+	if (input[ctx->index + 1] == '\n')
 	{
-		(*i)++;
+		ctx->index += 2;
 		return (1);
 	}
-	if (state->in_double && input[*i + 1] == '\n')
+	if (ft_strchr("\"$\\`", input[ctx->index + 1]))
 	{
-		*i += 2;
+		ctx->size++;
+		ctx->index += 2;
 		return (1);
 	}
-	if (state->in_double && ft_strchr("\"$\\`", input[*i + 1]))
-	{
-		(*size)++;
-		*i += 2;
-		return (1);
-	}
-	if (!state->in_double)
-	{
-		(*size)++;
-		*i += 2;
-		return (1);
-	}
-	(*size)++;
-	(*i)++;
+	ctx->size++;
+	ctx->index++;
 	return (1);
 }
 
-static void	add_variable_size(char *input, t_data *data, int *i, int *size)
+static int	handle_backslash_size(char *input, t_size_ctx *ctx)
+{
+	if (input[ctx->index] != '\\' || ctx->state.in_single)
+		return (0);
+	if (!input[ctx->index + 1])
+	{
+		ctx->index++;
+		return (1);
+	}
+	if (handle_backslash_in_double(input, ctx))
+		return (1);
+	ctx->size++;
+	ctx->index += 2;
+	return (1);
+}
+
+static void	add_variable_size(char *input, t_data *data, t_size_ctx *ctx)
 {
 	char	*var_name;
 	char	*var_value;
 	int		temp_i;
 
-	(*i)++;
-	if (input[*i] == '\'' || input[*i] == '"')
+	ctx->index++;
+	if (input[ctx->index] == '\'' || input[ctx->index] == '"')
 		return ;
-	temp_i = *i;
+	temp_i = ctx->index;
 	var_name = get_var_name(input, &temp_i);
 	if (!var_name || var_name[0] == '\0')
 	{
-		*size += 1;
+		ctx->size += 1;
 		free(var_name);
-		*i = temp_i;
+		ctx->index = temp_i;
 		return ;
 	}
 	var_value = get_var_value(var_name, data);
 	if (var_value)
-		*size += ft_strlen(var_value);
+		ctx->size += ft_strlen(var_value);
 	free(var_value);
 	free(var_name);
-	*i = temp_i;
+	ctx->index = temp_i;
 }
 
-static void	process_char_for_size(char *input, t_data *data, int *i, int *size,
-		t_quote_state *state)
+static void	process_char_for_size(char *input, t_data *data, t_size_ctx *ctx)
 {
-	if (handle_backslash_size(input, state, i, size))
+	if (handle_backslash_size(input, ctx))
 		return ;
-	if (input[*i] == '\'' && !state->in_double)
+	if (input[ctx->index] == '\'' && !ctx->state.in_double)
 	{
-		state->in_single = !state->in_single;
-		(*size)++;
-		(*i)++;
+		ctx->state.in_single = !ctx->state.in_single;
+		ctx->size++;
+		ctx->index++;
 	}
-	else if (input[*i] == '"' && !state->in_single)
+	else if (input[ctx->index] == '"' && !ctx->state.in_single)
 	{
-		state->in_double = !state->in_double;
-		(*size)++;
-		(*i)++;
+		ctx->state.in_double = !ctx->state.in_double;
+		ctx->size++;
+		ctx->index++;
 	}
-	else if (input[*i] == '$' && !state->in_single
-		&& should_expand_int_quotes(input, *i, state->in_single))
-		add_variable_size(input, data, i, size);
+	else if (input[ctx->index] == '$' && !ctx->state.in_single
+		&& should_expand_int_quotes(input, ctx->index, ctx->state.in_single))
+		add_variable_size(input, data, ctx);
 	else
 	{
-		(*size)++;
-		(*i)++;
+		ctx->size++;
+		ctx->index++;
 	}
 }
 
 int	calculate_expanded_size(char *input, t_data *data)
 {
-	t_quote_state	state;
-	int				i;
-	int				size;
+	t_size_ctx	ctx;
 
 	if (!input || !data)
 		return (-1);
-	state.in_single = 0;
-	state.in_double = 0;
-	i = 0;
-	size = 0;
-	while (input[i])
-		process_char_for_size(input, data, &i, &size, &state);
-	return (size);
+	ctx.state.in_single = 0;
+	ctx.state.in_double = 0;
+	ctx.index = 0;
+	ctx.size = 0;
+	while (input[ctx.index])
+		process_char_for_size(input, data, &ctx);
+	return (ctx.size);
 }
