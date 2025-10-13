@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 17:46:28 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 18:01:15 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,6 +440,6 @@ int						cd_handle_home_empty(char **argv, char *path,
 							t_data *data, char *expanded);
 
 /* exec/external.c */
-void exec_external(t_cmd *cmd, t_data *shell_data);
+void					exec_external(t_cmd *cmd, t_data *shell_data);
 
 #endif
