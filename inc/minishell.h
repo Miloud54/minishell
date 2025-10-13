@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 19:23:08 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 21:25:31 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,15 @@ typedef struct s_quote_context
 	char				*result;
 	t_quote_state		state;
 }						t_quote_context;
+
+typedef struct s_wait_ctx {
+	int 				last_status;
+	int 				last_found;
+	int 				printed_quit;
+	int					cmd_count;
+	pid_t 				last_pid;
+	int 				i;
+}						t_wait_ctx;
 
 /* process_input.c: */
 void					process_input(t_data *data, char *input);

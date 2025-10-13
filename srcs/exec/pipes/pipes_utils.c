@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 16:24:13 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 18:18:13 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 21:26:44 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,39 +51,43 @@ static void	handle_signal_status(int status, int *printed_quit)
 	}
 }
 
+static void	update_wait_ctx(t_wait_ctx *ctx, pid_t waited_pid, int status)
+{
+	if (!(ctx->last_found) && waited_pid == ctx->last_pid)
+	{
+		ctx->last_status = status;
+		ctx->last_found = 1;
+	}
+	else if (!(ctx->last_found) && ctx->i == ctx->cmd_count - 1)
+		ctx->last_status = status;
+	else if (ctx->last_found == 0)
+		ctx->last_status = status;
+}
+
 int	wait_all_pipeline_children(int cmd_count, pid_t last_pid)
 {
-	int	status;
-	int	last_status;
-	int	printed_quit;
-	int	i;
-	int	last_found;
-	pid_t	waited_pid;
+	int			status;
+	pid_t		waited_pid;
+	t_wait_ctx	ctx;
 
-	last_status = 0;
-	printed_quit = 0;
-	last_found = (last_pid <= 0);
-	i = 0;
-	while (i < cmd_count)
+	ctx.last_status = 0;
+	ctx.printed_quit = 0;
+	ctx.last_found = (last_pid <= 0);
+	ctx.cmd_count = cmd_count;
+	ctx.last_pid = last_pid;
+	ctx.i = 0;
+	while (ctx.i < ctx.cmd_count)
 	{
 		waited_pid = wait(&status);
 		if (waited_pid == -1)
 			continue ;
-		handle_signal_status(status, &printed_quit);
-		if (!last_found && waited_pid == last_pid)
-		{
-			last_status = status;
-			last_found = 1;
-		}
-		else if (!last_found && i == cmd_count - 1)
-			last_status = status;
-		else if (last_found == 0)
-			last_status = status;
-		i++;
+		handle_signal_status(status, &ctx.printed_quit);
+		update_wait_ctx(&ctx, waited_pid, status);
+		ctx.i++;
 	}
-	if (WIFEXITED(last_status))
-		return (WEXITSTATUS(last_status));
-	if (WIFSIGNALED(last_status))
-		return (128 + WTERMSIG(last_status));
+	if (WIFEXITED(ctx.last_status))
+		return (WEXITSTATUS(ctx.last_status));
+	if (WIFSIGNALED(ctx.last_status))
+		return (128 + WTERMSIG(ctx.last_status));
 	return (1);
 }
