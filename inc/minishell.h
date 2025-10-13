@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 17:16:46 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/13 17:29:44 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,13 @@ typedef struct s_dyn_array
 	int					count;
 	int					capacity;
 }						t_dyn_array;
+
+typedef struct s_size_ctx
+{
+	int					index;
+	int					size;
+	t_quote_state		state;
+}						t_size_ctx;
 
 /* process_input.c: */
 void					process_input(t_data *data, char *input);
