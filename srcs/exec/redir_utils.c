@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 15:46:46 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/02 17:00:05 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/13 19:22:55 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	print_redir_error(char *file)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(file, STDERR_FILENO);
+	if (errno == EACCES)
+		ft_putendl_fd(": Permission denied", STDERR_FILENO);
+	else if (errno == ENOENT)
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+	else if (errno == EISDIR)
+		ft_putendl_fd(": Is a directory", STDERR_FILENO);
+	else
+	{
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
+	}
+}
 
 int	handle_in_redir(t_redirect *redir, t_data *data)
 {
@@ -19,9 +36,7 @@ int	handle_in_redir(t_redirect *redir, t_data *data)
 	fd = open(redir->file, O_RDONLY);
 	if (fd == -1)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(redir->file, 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		print_redir_error(redir->file);
 		data->exit_status = 1;
 		return (-1);
 	}
@@ -47,9 +62,7 @@ int	handle_out_redir(t_redirect *redir, t_data *data)
 	fd = open(redir->file, flags, 0644);
 	if (fd == -1)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(redir->file, 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		print_redir_error(redir->file);
 		data->exit_status = 1;
 		return (-1);
 	}

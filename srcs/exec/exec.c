@@ -66,6 +66,14 @@ int	execute_single_command(t_cmd *cmd, t_data *data)
 
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (0);
+	if (cmd->args[0][0] == '\0')
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->args[0], 2);
+		ft_putendl_fd(": command not found", 2);
+		data->exit_status = 127;
+		return (127);
+	}
 	if (is_builtin(cmd->args[0]))
 	{
 		exec_builtin(data, cmd);

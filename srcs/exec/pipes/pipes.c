@@ -34,7 +34,7 @@ static int	lauch_pipeline_child(t_child_args *args)
 	return (pid);
 }
 
-static int	launch_pipeline_iteration(t_iter_args *args)
+static pid_t	launch_pipeline_iteration(t_iter_args *args)
 {
 	int				pipe_fd[2];
 	pid_t			pid;
@@ -55,16 +55,19 @@ static int	launch_pipeline_iteration(t_iter_args *args)
 		return (-1);
 	*(args->prev_pipe) = handle_parent_process(pipe_fd, *(args->prev_pipe),
 			(args->i == args->cmd_count - 1));
-	return (0);
+	return (pid);
 }
 
 static int	lauch_pipeline_loop(t_cmd **cmds, int cmd_count, t_data *data)
 {
 	int			prev_pipe;
 	int			i;
+	pid_t		last_pid;
+	pid_t		current_pid;
 	t_iter_args	args;
 
 	prev_pipe = -1;
+	last_pid = -1;
 	i = 0;
 	args.cmds = cmds;
 	args.cmd_count = cmd_count;
@@ -73,11 +76,14 @@ static int	lauch_pipeline_loop(t_cmd **cmds, int cmd_count, t_data *data)
 	while (i < cmd_count)
 	{
 		args.i = i;
-		if (launch_pipeline_iteration(&args) == -1)
+		current_pid = launch_pipeline_iteration(&args);
+		if (current_pid == -1)
 			return (-1);
+		if (i == cmd_count - 1)
+			last_pid = current_pid;
 		i++;
 	}
-	return (wait_all_pipeline_children(cmd_count));
+	return (wait_all_pipeline_children(cmd_count, last_pid));
 }
 
 int	execute_pipeline(t_cmd **cmds, int cmd_count, t_data *data)

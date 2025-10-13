@@ -39,6 +39,8 @@ static void	setup_pipe_output(int cmd_index, int cmd_count, int pipe_fd[2])
 
 void	execute_piped_command(t_cmd *cmd, t_pipe_data *data, t_data *shell_data)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	setup_pipe_input(data->cmd_index, data->prev_pipe);
 	setup_pipe_output(data->cmd_index, data->cmd_count, data->pipe_fd);
 	if (setup_redirections(cmd, shell_data) == -1)
