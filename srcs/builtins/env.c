@@ -56,6 +56,11 @@ void	ft_env(t_data *data, t_cmd *cmd)
 	i = 0;
 	while (data->envp[i])
 	{
+		if (g_signal_status == SIGINT)
+		{
+			data->exit_status = 130;
+			return ;
+		}
 		printf("%s\n", data->envp[i]);
 		i++;
 	}
