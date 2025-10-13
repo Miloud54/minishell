@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 15:12:55 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:11:00 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,10 @@ int						calculate_expanded_size(char *input, t_data *data);
 /* parsing/expansion/expansion_process.c: */
 char					*perform_expansion(char *input, t_data *data,
 							int expanded_size);
+
+/* parsing/expansion/expansion_process_utils.c: */
+void					init_expansion_context(t_copy_context *ctx, char *input,
+							t_data *data, char *result);
 
 /* parsing/lexer/lexer.c: */
 int						is_special_char(char c);
