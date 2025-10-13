@@ -20,8 +20,11 @@ static void	expand_and_copy_variable(t_copy_context *ctx)
 
 	(*(ctx->i))++;
 	next_char = ctx->input[*(ctx->i)];
-	if (next_char == '\'' || next_char == '"')
+	if (!next_char || next_char == '\'' || next_char == '"')
+	{
+		ctx->result[(*(ctx->j))++] = '$';
 		return ;
+	}
 	var_name = get_var_name(ctx->input, ctx->i);
 	if (!var_name || var_name[0] == '\0')
 	{
