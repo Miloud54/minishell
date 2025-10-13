@@ -54,10 +54,15 @@ static void	add_variable_size(char *input, t_data *data,
 	char	*var_name;
 	char	*var_value;
 	int		tmp_i;
+	char	next_char;
 
 	context->index++;
-	if (input[context->index] == '\'' || input[context->index] == '"')
+	next_char = input[context->index];
+	if (!next_char || next_char == '\'' || next_char == '"')
+	{
+		context->size++;
 		return ;
+	}
 	tmp_i = context->index;
 	var_name = get_var_name(input, &tmp_i);
 	if (!var_name || var_name[0] == '\0')
