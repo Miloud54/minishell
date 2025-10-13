@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 17:11:00 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/13 17:16:46 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,9 @@ int						expand_regular_cmds(t_cmd **cmds, int cmd_count,
 							t_data *data);
 void					cleanup_cmds(t_token *tokens, t_cmd **cmds,
 							int cmd_count);
+
+/* process_input_utils2.c: */
+int						is_ifs(char c);
 
 /* process_input_expand_split.c */
 char					**split_expanded_argument(char *arg);
