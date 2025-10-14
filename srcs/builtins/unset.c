@@ -6,7 +6,7 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:37:30 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/02 15:26:26 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/14 20:14:35 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,23 @@ static int	is_valid_identifier_for_unset(const char *str)
 	return (1);
 }
 
-/* Removes the variable with the given name from the environment */
+/* Removes the variable with the given name from the environment, even if it
+has no value (i.e. VAR=) */
 static void	remove_var(t_data *data, const char *name)
 {
-	int	i;
 	int	j;
 	int	len;
 
 	if (!data->envp)
 		return ;
 	len = ft_strlen(name);
-	i = 0;
+	int (i) = 0;
 	while (data->envp[i])
 	{
-		if (ft_strncmp(data->envp[i], name, len) == 0
-			&& data->envp[i][len] == '=')
+		if ((ft_strncmp(data->envp[i], name, len) == 0
+				&& data->envp[i][len] == '=')
+				|| (ft_strncmp(data->envp[i], name, len) == 0
+				&& data->envp[i][len] == '\0'))
 		{
 			free(data->envp[i]);
 			j = i;
