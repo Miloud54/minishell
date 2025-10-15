@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:50:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 15:09:06 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:57:01 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ int	parse_args(t_cmd *cmd, t_token *start, t_token *end)
 {
 	t_token	*current;
 	int		arg_index;
-	int		is_cd;
 
 	current = start;
 	arg_index = 0;
-	is_cd = is_cd_token(start);
 	while (current && current != end)
 	{
 		if (current->type == TOKEN_WORD)

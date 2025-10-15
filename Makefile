@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
+#    By: edidier <edidier@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/10/13 17:47:58 by bde-la-p         ###   ########.fr        #
+#    Updated: 2025/10/15 14:57:40 by edidier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME			= minishell
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -g
 INCLUDE_DIRS	= -I./inc -I./libft/inc
-READLINE_FLAGS	= -lreadline -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include #retirer tout après -lreadline, à garder que pour Mac
+READLINE_FLAGS	= -lreadline
 
 LIBFT_DIR		= libft
 LIBFT			= $(LIBFT_DIR)/libft.a
