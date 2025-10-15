@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 18:42:54 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/13 18:45:00 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/15 17:54:58 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int	print_env(char **envp)
 	{
 		if (g_signal_status == SIGINT)
 			return (0);
-		printf("%s\n", envp[i]);
+		if (ft_strchr(envp[i], '='))
+			printf("%s\n", envp[i]);
 		i++;
 	}
 	return (1);
