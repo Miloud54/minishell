@@ -6,19 +6,11 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:52:26 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 14:47:40 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/15 18:16:04 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-typedef struct s_cd_ctx
-{
-	char	*path;
-	char	**argv;
-	char	*cdpath_result;
-	char	*expanded;
-}			t_cd_ctx;
 
 static int	should_print_path(char **argv, char *cdpath_result)
 {
@@ -29,33 +21,48 @@ static int	should_print_path(char **argv, char *cdpath_result)
 	return (0);
 }
 
-static int	perform_cd(t_data *data, t_cd_ctx *ctx)
+static void	print_target_if_needed(t_data *data, t_cd_context *context,
+		int ret, int print_path)
+{
+	char	*to_print;
+
+	if (ret != 0 || !print_path)
+		return ;
+	to_print = context->cdpath_result;
+	if (!to_print)
+		to_print = get_env_var(data->envp, "PWD");
+	if (to_print)
+	{
+		ft_putstr_fd(to_print, 1);
+		ft_putchar_fd('\n', 1);
+	}
+}
+
+static int	perform_cd(t_data *data, t_cd_context *context)
 {
 	char	*target;
 	int		ret;
+	int		print_path;
 
-	target = ctx->path;
-	if (ctx->cdpath_result)
-		target = ctx->cdpath_result;
-	ret = change_directory(target, ctx->argv[1], data);
-	if (ret == 0 && should_print_path(ctx->argv, ctx->cdpath_result))
-	{
-		ft_putstr_fd(target, 1);
-		ft_putchar_fd('\n', 1);
-	}
-	if (ctx->cdpath_result)
-		free(ctx->cdpath_result);
-	if (ctx->expanded)
-		free(ctx->expanded);
+	target = context->path;
+	if (context->cdpath_result)
+		target = context->cdpath_result;
+	print_path = should_print_path(context->argv, context->cdpath_result);
+	ret = change_directory(target, context->argv[1], data);
+	print_target_if_needed(data, context, ret, print_path);
+	if (context->cdpath_result)
+		free(context->cdpath_result);
+	if (context->expanded)
+		free(context->expanded);
 	return (ret);
 }
 
 static int	ft_cd_impl(t_data *data, char **argv)
 {
-	char		*expanded;
-	char		*path;
-	char		*cdpath_result;
-	t_cd_ctx	ctx;
+	char			*expanded;
+	char			*path;
+	char			*cdpath_result;
+	t_cd_context	context;
 
 	expanded = NULL;
 	cdpath_result = NULL;
@@ -72,11 +79,11 @@ static int	ft_cd_impl(t_data *data, char **argv)
 	if (cd_handle_too_many_arguments(argv, data, expanded))
 		return (1);
 	cdpath_result = cd_apply_cdpath_if_needed(argv, path, data, expanded);
-	ctx.path = path;
-	ctx.argv = argv;
-	ctx.cdpath_result = cdpath_result;
-	ctx.expanded = expanded;
-	return (perform_cd(data, &ctx));
+	context.path = path;
+	context.argv = argv;
+	context.cdpath_result = cdpath_result;
+	context.expanded = expanded;
+	return (perform_cd(data, &context));
 }
 
 int	ft_cd(t_data *data, char **argv)
