@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 14:43:58 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/10 14:44:00 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/15 18:15:02 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ char	*cd_apply_cdpath_if_needed(char **argv, char *path, t_data *data,
 
 int	cd_handle_home_empty(char **argv, char *path, t_data *data, char *expanded)
 {
-	if ((argv[1] == NULL || (argv[1] && ft_strcmp(argv[1], "~") == 0))
-		&& path && path[0] == '\0')
+	if ((argv[1] == NULL || (argv[1] && ft_strcmp(argv[1], "~") == 0)) && path
+		&& path[0] == '\0')
 	{
 		data->exit_status = 0;
 		if (expanded)
@@ -60,4 +60,22 @@ int	cd_handle_home_empty(char **argv, char *path, t_data *data, char *expanded)
 		return (1);
 	}
 	return (0);
+}
+
+char	*get_env_var(char **envp, char *name)
+{
+	int	i;
+	int	name_ln;
+
+	if (!envp || !name)
+		return (NULL);
+	name_ln = ft_strlen(name);
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], name, name_ln) == 0 && envp[i][name_ln] == '=')
+			return (envp[i] + name_ln + 1);
+		i++;
+	}
+	return (NULL);
 }
