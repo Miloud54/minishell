@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 21:31:27 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/15 14:58:01 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-/* Readline function declarations à retirer car juste pour Mac */
-extern void				rl_replace_line(const char *text, int clear_undo);
-extern void				rl_redisplay(void);
-
 // #define TOKEN_REDIR_IN 1      // "<"
 // #define TOKEN_HEREDOC 2       // "<<"
 // #define TOKEN_REDIR_OUT 3     // ">"
@@ -39,9 +35,6 @@ extern void				rl_redisplay(void);
 // #define TOKEN_CMD 6           // Command
 // #define TOKEN_WORD 7			// Word
 
-/* ************************************************************************** */
-
-/*Ajout bru 21/09/25: */
 
 /* ************************************************************************** */
 /*                                 DEFINES                                    */
