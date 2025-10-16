@@ -62,6 +62,7 @@ void	free_data(t_data *data)
 {
 	if (!data)
 		return ;
+	rl_clear_history();
 	if (data->envp)
 		free_envp(data->envp);
 	if (data->pwd)

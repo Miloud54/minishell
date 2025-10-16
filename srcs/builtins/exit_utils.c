@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 16:00:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/06 12:14:00 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/16 17:27:11 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,22 @@ void	skip_spaces(const char *str, int *i)
 {
 	while (str[*i] == ' ' || (str[*i] >= 9 && str[*i] <= 13))
 		(*i)++;
+}
+
+int	is_valid_number(char *str)
+{
+	int	i;
+
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	skip_spaces(str, &i);
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	if (!str[i] || str[i] < '0' || str[i] > '9')
+		return (0);
+	while (str[i] >= '0' && str[i] <= '9')
+		i++;
+	skip_spaces(str, &i);
+	return (str[i] == '\0');
 }

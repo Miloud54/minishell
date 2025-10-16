@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:20 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 21:11:08 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/16 17:26:43 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,56 +46,44 @@ int	ft_atol(const char *str, int *overflow_flag)
 	return ((int)((res.result * sign) % 256));
 }
 
-int	is_valid_number(char *str)
-{
-	int	i;
-
-	if (!str || !*str)
-		return (0);
-	i = 0;
-	skip_spaces(str, &i);
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	if (!str[i] || str[i] < '0' || str[i] > '9')
-		return (0);
-	while (str[i] >= '0' && str[i] <= '9')
-		i++;
-	skip_spaces(str, &i);
-	return (str[i] == '\0');
-}
-
-void	exit_numeric_error(t_data *data, char *arg)
+static int	print_exit_and_set_status(t_data *data, int status)
 {
 	if (isatty(STDIN_FILENO))
 		write(1, "exit\n", 5);
-	ft_putstr_fd("minishell: exit: ", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
-	free_data(data);
-	exit(2);
+	data->exit_status = status;
+	return (0);
+}
+
+static int	validate_exit_args(t_data *data, char **argv, long *val)
+{
+	int	error;
+
+	error = 0;
+	*val = ft_atol(argv[1], &error);
+	if (!is_valid_number(argv[1]) || error)
+	{
+		print_exit_and_set_status(data, 2);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putendl_fd(": numeric argument required", 2);
+		return (0);
+	}
+	return (1);
 }
 
 static int	handle_exit_args(t_data *data, char **argv)
 {
-	int		error;
 	long	val;
 
-	error = 0;
-	val = ft_atol(argv[1], &error);
-	if (!is_valid_number(argv[1]) || error)
-		exit_numeric_error(data, argv[1]);
+	if (!validate_exit_args(data, argv, &val))
+		return (0);
 	if (argv[1] && argv[2])
 	{
-		if (isatty(STDIN_FILENO))
-			write(1, "exit\n", 5);
-		data->exit_status = 1;
+		print_exit_and_set_status(data, 1);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	if (isatty(STDIN_FILENO))
-		write(1, "exit\n", 5);
-	free_data(data);
-	exit((unsigned char)val);
+	print_exit_and_set_status(data, (unsigned char)val);
 	return (0);
 }
 
@@ -105,8 +93,7 @@ int	ft_exit(t_data *data, char **argv)
 	{
 		if (isatty(STDIN_FILENO))
 			write(1, "exit\n", 5);
-		free_data(data);
-		exit(data->exit_status);
+		return (0);
 	}
 	return (handle_exit_args(data, argv));
 }
