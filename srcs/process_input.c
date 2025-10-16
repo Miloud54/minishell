@@ -53,6 +53,7 @@ static void	handle_exit_cmd(t_data *data, t_cmd **cmds, int cmd_count,
 	cleanup_cmds(tokens, cmds, cmd_count);
 	if (exit_request == 1)
 		return ;
+	free_data(data);
 	exit(data->exit_status);
 }
 
