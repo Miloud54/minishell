@@ -12,6 +12,24 @@
 
 #include "minishell.h"
 
+static int	prepare_cmd_heredocs(t_cmd *cmd, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < cmd->redirect_count)
+	{
+		if (cmd->redirects[i].type == TOKEN_REDIR_HEREDOC
+			&& cmd->redirects[i].heredoc_fd == -1)
+		{
+			if (setup_heredoc(&cmd->redirects[i], data) == -1)
+				return (-1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 static int	handle_one_redirection(t_redirect *redir, t_data *data)
 {
 	if (redir->type == TOKEN_REDIR_IN)
@@ -41,6 +59,8 @@ int	setup_redirections(t_cmd *cmd, t_data *data)
 	i = 0;
 	if (!cmd || !cmd->redirects)
 		return (0);
+	if (prepare_cmd_heredocs(cmd, data) == -1)
+		return (-1);
 	while (i < cmd->redirect_count)
 	{
 		redir = &cmd->redirects[i];

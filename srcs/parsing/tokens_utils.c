@@ -36,7 +36,7 @@ char	**tokens_to_argv(t_token *tokens)
 	int		count;
 
 	count = count_token_words(tokens);
-	argv = malloc(sizeof(char *) * (count + 1));
+	argv = ft_calloc(count + 1, sizeof(char *));
 	if (!argv)
 		return (NULL);
 	tmp = tokens;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 17:23:12 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/13 15:58:00 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:26:38 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,25 @@ void	write_heredoc_line(int fd, char *line, t_data *data, int expand)
 	write(fd, "\n", 1);
 }
 
+void	print_heredoc_eof_warning(t_data *data, char *delimiter)
+{
+	ft_putstr_fd("minishell: warning: here-document", STDERR_FILENO);
+	if (data)
+	{
+		ft_putstr_fd(" at line ", STDERR_FILENO);
+		ft_putnbr_fd((int)data->line_number, STDERR_FILENO);
+	}
+	ft_putstr_fd(" delimited by end-of-file", STDERR_FILENO);
+	if (delimiter)
+	{
+		ft_putstr_fd(" (wanted `", STDERR_FILENO);
+		ft_putstr_fd(delimiter, STDERR_FILENO);
+		ft_putendl_fd("')", STDERR_FILENO);
+	}
+	else
+		ft_putendl_fd("", STDERR_FILENO);
+}
+
 void	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
 		int expand)
 {
@@ -62,7 +81,7 @@ void	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
 		line = readline(prompt);
 		if (!line)
 		{
-			printf("\n");
+			print_heredoc_eof_warning(data, delimiter);
 			break ;
 		}
 		if (is_delimiter(line, delimiter))
