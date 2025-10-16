@@ -43,6 +43,7 @@ static int	process_redirect_token(t_cmd *cmd, t_token **current,
 
 	if (*redir_idx >= cmd->redirect_count)
 		return (-1);
+	cmd->redirects[*redir_idx] = (t_redirect){0};
 	cmd->redirects[*redir_idx].type = (*current)->type;
 	*current = (*current)->next;
 	if (!*current || (*current)->type != TOKEN_WORD)

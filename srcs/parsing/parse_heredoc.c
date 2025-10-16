@@ -59,7 +59,8 @@ static int	fill_heredoc_pipe(int write_fd, char *delimiter, t_data *data)
 		line = readline(prompt);
 		if (!line)
 		{
-			printf("\n");
+			ft_putstr_fd("\n", STDOUT_FILENO);
+			print_heredoc_eof_warning(data, delimiter);
 			break ;
 		}
 		if (is_delimiter_parse(line, delimiter))
@@ -99,7 +100,8 @@ int	write_heredoc_to_file(int fd, char *delimiter, t_data *data)
 		line = readline(prompt);
 		if (!line)
 		{
-			printf("\n");
+			ft_putstr_fd("\n", STDOUT_FILENO);
+			print_heredoc_eof_warning(data, delimiter);
 			break ;
 		}
 		if (is_delimiter_parse(line, delimiter))

@@ -95,6 +95,7 @@ void	init_data(t_data *data, char **envp)
 	data->exit_status = 0;
 	data->stdin_backup = -1;
 	data->stdout_backup = -1;
+	data->line_number = 1;
 	data->envp = copy_envp(envp);
 	if (!data->envp)
 		error_exit("Failed to copy environnement", 1);

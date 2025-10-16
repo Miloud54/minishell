@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/15 17:55:43 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/16 16:13:42 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_data
 	char				*oldpwd;
 	int					stdin_backup;
 	int					stdout_backup;
+	unsigned int		line_number;
 }						t_data;
 
 typedef struct s_parse_result
@@ -419,6 +420,8 @@ void					write_heredoc_line(int fd, char *line, t_data *data,
 							int expand);
 void					read_heredoc_input(int write_fd, char *delimiter,
 							t_data *data, int expand);
+void					print_heredoc_eof_warning(t_data *data,
+							char *delimiter);
 
 /* parsing/parse_heredoc.c */
 int						setup_heredoc_at_parse(t_redirect *redirect,

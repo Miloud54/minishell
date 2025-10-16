@@ -25,7 +25,7 @@ void	init_cmd_defaults(t_cmd *cmd)
 
 int	allocate_cmd_args(t_cmd *cmd, int arg_count)
 {
-	cmd->args = malloc(sizeof(char *) * (arg_count + 1));
+	cmd->args = ft_calloc(arg_count + 1, sizeof(char *));
 	if (!cmd->args)
 		return (0);
 	return (1);
@@ -37,7 +37,7 @@ int	allocate_cmd_redirects(t_cmd *cmd, int redir_count)
 {
 	if (redir_count > 0)
 	{
-		cmd->redirects = malloc(sizeof(t_redirect) * redir_count);
+		cmd->redirects = ft_calloc(redir_count, sizeof(t_redirect));
 		if (!cmd->redirects)
 			return (0);
 	}

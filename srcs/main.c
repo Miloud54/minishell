@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/09 17:34:50 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/16 16:37:45 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,30 @@ static int	validate_args(int ac)
 	return (0);
 }
 
+static int	handle_signal_state(t_data *data, char *input)
+{
+	if (g_signal_status != SIGINT)
+		return (1);
+	data->exit_status = 130;
+	g_signal_status = 0;
+	if (*input == '\0')
+	{
+		free(input);
+		return (0);
+	}
+	return (1);
+}
+
+static void	process_line(t_data *data, char *input)
+{
+	if (*input)
+		add_history(input);
+	process_input(data, input);
+	if (*input)
+		data->line_number++;
+	free(input);
+}
+
 static void	main_loop(t_data *data)
 {
 	char	*input;
@@ -31,23 +55,17 @@ static void	main_loop(t_data *data)
 		input = readline(PROMPT);
 		if (!input)
 		{
+			if (g_signal_status == SIGINT)
+			{
+				data->exit_status = 130;
+				g_signal_status = 0;
+			}
 			printf("exit\n");
 			break ;
 		}
-		if (g_signal_status == SIGINT)
-		{
-			data->exit_status = 130;
-			g_signal_status = 0;
-			if (*input == '\0')
-			{
-				free(input);
-				continue ;
-			}
-		}
-		if (*input)
-			add_history(input);
-		process_input(data, input);
-		free(input);
+		if (!handle_signal_state(data, input))
+			continue ;
+		process_line(data, input);
 	}
 }
 
