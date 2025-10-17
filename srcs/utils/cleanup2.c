@@ -27,6 +27,21 @@ static void	free_cmd_args(t_cmd *cmd)
 	free(cmd->args);
 }
 
+static void	free_redirect(t_redirect *redirect)
+{
+	if (redirect->file)
+	{
+		free(redirect->file);
+		redirect->file = NULL;
+	}
+	if (redirect->heredoc_fd != -1)
+	{
+		close(redirect->heredoc_fd);
+		redirect->heredoc_fd = -1;
+	}
+	cleanup_heredoc_tmpfile(&redirect->heredoc_tmpfile);
+}
+
 static void	free_cmd_redirects(t_cmd *cmd)
 {
 	int	i;
@@ -36,22 +51,7 @@ static void	free_cmd_redirects(t_cmd *cmd)
 	i = 0;
 	while (i < cmd->redirect_count)
 	{
-		if (cmd->redirects[i].file)
-		{
-			free(cmd->redirects[i].file);
-			cmd->redirects[i].file = NULL;
-		}
-		if (cmd->redirects[i].heredoc_fd != -1)
-		{
-			close(cmd->redirects[i].heredoc_fd);
-			cmd->redirects[i].heredoc_fd = -1;
-		}
-		if (cmd->redirects[i].heredoc_tmpfile)
-		{
-			unlink(cmd->redirects[i].heredoc_tmpfile);
-			free(cmd->redirects[i].heredoc_tmpfile);
-			cmd->redirects[i].heredoc_tmpfile = NULL;
-		}
+		free_redirect(&cmd->redirects[i]);
 		i++;
 	}
 	free(cmd->redirects);

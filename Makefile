@@ -52,6 +52,7 @@ SRCS			= \
 	$(SRC_DIR)/parsing/validations/validation_redirection.c \
 	$(SRC_DIR)/utils/cleanup1.c \
 	$(SRC_DIR)/utils/cleanup2.c \
+	$(SRC_DIR)/utils/cleanup_fd.c \
 	$(SRC_DIR)/utils/exits.c \
 	$(SRC_DIR)/utils/globals.c \
 	$(SRC_DIR)/utils/init_data.c \
@@ -76,6 +77,8 @@ SRCS			= \
 	$(SRC_DIR)/exec/exec_utils.c \
 	$(SRC_DIR)/exec/executor.c \
 	$(SRC_DIR)/exec/heredoc.c \
+	$(SRC_DIR)/exec/heredoc_setup.c \
+	$(SRC_DIR)/exec/heredoc_files.c \
 	$(SRC_DIR)/exec/heredoc_utils.c \
 	$(SRC_DIR)/exec/redir.c \
 	$(SRC_DIR)/exec/redir_utils.c \
