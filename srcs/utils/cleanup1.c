@@ -12,6 +12,12 @@
 
 #include "../../inc/minishell.h"
 
+#if defined(__APPLE__)
+# define RL_CLEAR_HISTORY() clear_history()
+#else
+# define RL_CLEAR_HISTORY() rl_clear_history()
+#endif
+
 void	free_tokens(t_token *tokens)
 {
 	t_token	*current;
@@ -62,11 +68,43 @@ void	free_data(t_data *data)
 {
 	if (!data)
 		return ;
-	rl_clear_history();
+	RL_CLEAR_HISTORY();
 	if (data->envp)
+	{
 		free_envp(data->envp);
+		data->envp = NULL;
+	}
 	if (data->pwd)
+	{
 		free(data->pwd);
+		data->pwd = NULL;
+	}
 	if (data->oldpwd)
+	{
 		free(data->oldpwd);
+		data->oldpwd = NULL;
+	}
+}
+
+void	close_backup_fds(t_data *data)
+{
+	if (!data)
+		return ;
+	if (data->stdin_backup != -1)
+	{
+		close(data->stdin_backup);
+		data->stdin_backup = -1;
+	}
+	if (data->stdout_backup != -1)
+	{
+		close(data->stdout_backup);
+		data->stdout_backup = -1;
+	}
+}
+
+void	exit_child(t_data *data, int status)
+{
+	close_backup_fds(data);
+	free_data(data);
+	exit(status);
 }

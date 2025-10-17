@@ -46,6 +46,12 @@ static void	free_cmd_redirects(t_cmd *cmd)
 			close(cmd->redirects[i].heredoc_fd);
 			cmd->redirects[i].heredoc_fd = -1;
 		}
+		if (cmd->redirects[i].heredoc_tmpfile)
+		{
+			unlink(cmd->redirects[i].heredoc_tmpfile);
+			free(cmd->redirects[i].heredoc_tmpfile);
+			cmd->redirects[i].heredoc_tmpfile = NULL;
+		}
 		i++;
 	}
 	free(cmd->redirects);

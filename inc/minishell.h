@@ -6,7 +6,7 @@
 /*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/17 15:02:14 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/10/17 16:25:24 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../libft/inc/libft.h"
 # include <errno.h>
+# include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -80,6 +81,7 @@ typedef struct s_redirect
 	char				*file;
 	int					heredoc_fd;
 	int					heredoc_quoted;
+	char				*heredoc_tmpfile;
 }						t_redirect;
 
 typedef struct s_cmd
@@ -273,6 +275,8 @@ char					*validate_redirect_syntax(char *input);
 void					free_data(t_data *data);
 void					free_tokens(t_token *tokens);
 void					free_argv(char **argv);
+void					close_backup_fds(t_data *data);
+void					exit_child(t_data *data, int status);
 
 /* utils/cleanup2.c: */
 void					free_cmd(t_cmd *cmd);
@@ -379,7 +383,7 @@ int						run_external_command(char *cmd_path, t_cmd *cmd,
 int						is_delimiter(char *line, char *delimiter);
 void					write_heredoc_line(int fd, char *line, t_data *data,
 							int expand);
-void					read_heredoc_input(int write_fd, char *delimiter,
+int						read_heredoc_input(int write_fd, char *delimiter,
 							t_data *data, int expand);
 
 /* exec/executor.c */
@@ -419,7 +423,7 @@ int						handle_heredoc_redirect(t_redirect *redirect,
 int						is_delimiter(char *line, char *delimiter);
 void					write_heredoc_line(int fd, char *line, t_data *data,
 							int expand);
-void					read_heredoc_input(int write_fd, char *delimiter,
+int						read_heredoc_input(int write_fd, char *delimiter,
 							t_data *data, int expand);
 void					print_heredoc_eof_warning(t_data *data,
 							char *delimiter);

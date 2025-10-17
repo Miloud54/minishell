@@ -37,7 +37,7 @@ static void	print_execve_error(const char *path)
 	}
 }
 
-static void	handle_cmd_not_found(t_cmd *cmd)
+static void	handle_cmd_not_found(t_cmd *cmd, t_data *data)
 {
 	if (ft_strchr(cmd->args[0], '/'))
 	{
@@ -46,12 +46,14 @@ static void	handle_cmd_not_found(t_cmd *cmd)
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd->args[0], 2);
 			ft_putendl_fd(": Permission denied", 2);
+			exit_child(data, 126);
 		}
 		else
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd->args[0], 2);
 			ft_putendl_fd(": No such file or directory", 2);
+			exit_child(data, 127);
 		}
 	}
 	else
@@ -60,7 +62,7 @@ static void	handle_cmd_not_found(t_cmd *cmd)
 		ft_putstr_fd(cmd->args[0], 2);
 		ft_putendl_fd(": command not found", 2);
 	}
-	exit(127);
+	exit_child(data, 127);
 }
 
 static char	*get_cmd_path(t_cmd *cmd, t_data *shell_data)
@@ -74,11 +76,11 @@ static char	*get_cmd_path(t_cmd *cmd, t_data *shell_data)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->args[0], 2);
 		ft_putendl_fd(": No such file or directory", 2);
-		exit(127);
+		exit_child(shell_data, 127);
 	}
 	path = find_executable(cmd->args[0], shell_data->envp);
 	if (!path)
-		handle_cmd_not_found(cmd);
+		handle_cmd_not_found(cmd, shell_data);
 	return (path);
 }
 
@@ -87,20 +89,21 @@ void	exec_external(t_cmd *cmd, t_data *shell_data)
 	char	*path;
 
 	if (!cmd->args[0])
-		exit(0);
+		exit_child(shell_data, 0);
 	if (cmd->args[0][0] == '\0')
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->args[0], 2);
 		ft_putendl_fd(": command not found", 2);
-		exit(127);
+		exit_child(shell_data, 127);
 	}
 	path = get_cmd_path(cmd, shell_data);
+	close_backup_fds(shell_data);
 	if (execve(path, cmd->args, shell_data->envp) == -1)
 	{
 		print_execve_error(path);
 		free(path);
-		exit(126);
+		exit_child(shell_data, 126);
 	}
 	free(path);
 }
