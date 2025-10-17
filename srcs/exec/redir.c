@@ -20,7 +20,7 @@ static int	prepare_cmd_heredocs(t_cmd *cmd, t_data *data)
 	while (i < cmd->redirect_count)
 	{
 		if (cmd->redirects[i].type == TOKEN_REDIR_HEREDOC
-			&& cmd->redirects[i].heredoc_fd == -1)
+			&& cmd->redirects[i].heredoc_tmpfile == NULL)
 		{
 			if (setup_heredoc(&cmd->redirects[i], data) == -1)
 				return (-1);

@@ -6,83 +6,91 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 17:00:00 by bde-la-p         #+#    #+#             */
-/*   Updated: 2025/09/30 17:00:00 by bde-la-p        ###   ########.fr       */
+/*   Updated: 2025/10/18 17:22:00 by bde-la-p        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	run_heredoc_child(int *pipe_fd, t_redirect *redirect, t_data *data)
+static void	cleanup_tmpfile(char **path)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	close(pipe_fd[0]);
-	read_heredoc_input(pipe_fd[1], redirect->file, data,
-		!redirect->heredoc_quoted);
-	close(pipe_fd[1]);
-	exit(0);
+	if (!path || !*path)
+		return ;
+	unlink(*path);
+	free(*path);
+	*path = NULL;
 }
 
-static int	finalize_heredoc(pid_t pid, int *pipe_fd, t_redirect *redirect,
-	t_data *data)
+static int	create_tmpfile(char **path)
 {
-	int	status;
+	char	template[] = "/tmp/minishell_hdXXXXXX";
+	int		fd;
 
-	close(pipe_fd[1]);
-	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	fd = mkstemp(template);
+	if (fd == -1)
+		return (-1);
+	*path = ft_strdup(template);
+	if (!*path)
 	{
-		close(pipe_fd[0]);
-		redirect->heredoc_fd = -1;
-		data->exit_status = 130;
-		g_signal_status = SIGINT;
+		close(fd);
+		unlink(template);
 		return (-1);
 	}
-	redirect->heredoc_fd = pipe_fd[0];
-	return (0);
-}
-
-static int	fork_and_fill_heredoc(int *pipe_fd, t_redirect *redirect,
-	t_data *data)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		return (-1);
-	}
-	if (pid == 0)
-		run_heredoc_child(pipe_fd, redirect, data);
-	return (finalize_heredoc(pid, pipe_fd, redirect, data));
+	return (fd);
 }
 
 int	setup_heredoc(t_redirect *redirect, t_data *data)
 {
-	int	pipe_fd[2];
+	char	*tmp_path;
+	int		fd;
 
-	if (pipe(pipe_fd) == -1)
+	fd = create_tmpfile(&tmp_path);
+	if (fd == -1)
+		return (-1);
+	if (read_heredoc_input(fd, redirect->file, data,
+			!redirect->heredoc_quoted) == -1)
 	{
-		perror("pipe");
+		close(fd);
+		cleanup_tmpfile(&tmp_path);
+		data->exit_status = 130;
 		return (-1);
 	}
-	return (fork_and_fill_heredoc(pipe_fd, redirect, data));
+	close(fd);
+	if (redirect->heredoc_tmpfile)
+		cleanup_tmpfile(&redirect->heredoc_tmpfile);
+	redirect->heredoc_tmpfile = tmp_path;
+	redirect->heredoc_fd = -1;
+	return (0);
 }
 
 int	handle_heredoc_redirect(t_redirect *redirect, t_data *data)
 {
-	if (redirect->heredoc_fd == -1)
+	int	fd;
+
+	if (!redirect->heredoc_tmpfile)
 	{
 		if (setup_heredoc(redirect, data) == -1)
 			return (-1);
+		if (!redirect->heredoc_tmpfile)
+			return (-1);
 	}
-	if (dup2(redirect->heredoc_fd, STDIN_FILENO) == -1)
+	fd = open(redirect->heredoc_tmpfile, O_RDONLY);
+	if (fd == -1)
+ 	{
+ 		perror("open");
+ 		data->exit_status = 1;
+ 		cleanup_tmpfile(&redirect->heredoc_tmpfile);
+ 		return (-1);
+ 	}
+	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2");
+		close(fd);
+		data->exit_status = 1;
 		return (-1);
 	}
+	close(fd);
+	cleanup_tmpfile(&redirect->heredoc_tmpfile);
+	redirect->heredoc_fd = -1;
 	return (0);
 }

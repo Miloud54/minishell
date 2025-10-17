@@ -44,11 +44,11 @@ void	execute_piped_command(t_cmd *cmd, t_pipe_data *data, t_data *shell_data)
 	setup_pipe_input(data->cmd_index, data->prev_pipe);
 	setup_pipe_output(data->cmd_index, data->cmd_count, data->pipe_fd);
 	if (setup_redirections(cmd, shell_data) == -1)
-		exit(1);
+		exit_child(shell_data, 1);
 	if (is_builtin(cmd->args[0]))
 	{
 		exec_builtin(shell_data, cmd);
-		exit(shell_data->exit_status);
+		exit_child(shell_data, shell_data->exit_status);
 	}
 	exec_external(cmd, shell_data);
 }

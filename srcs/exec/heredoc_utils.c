@@ -69,7 +69,7 @@ void	print_heredoc_eof_warning(t_data *data, char *delimiter)
 		ft_putendl_fd("", STDERR_FILENO);
 }
 
-void	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
+int	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
 		int expand)
 {
 	char		*line;
@@ -81,6 +81,8 @@ void	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
 		line = readline(prompt);
 		if (!line)
 		{
+			if (g_signal_status == SIGINT)
+				return (-1);
 			print_heredoc_eof_warning(data, delimiter);
 			break ;
 		}
@@ -92,4 +94,5 @@ void	read_heredoc_input(int write_fd, char *delimiter, t_data *data,
 		write_heredoc_line(write_fd, line, data, expand);
 		free(line);
 	}
+	return (0);
 }
