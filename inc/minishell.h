@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/16 16:13:42 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/17 15:02:14 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,7 @@ int						parse_sign(const char *str, int *i);
 int						parse_digits(const char *str, int *i, int sign,
 							t_parse_result *res);
 void					skip_spaces(const char *str, int *i);
+int	          is_valid_number(char *str);
 
 /* parsing/validation.c: */
 int						validate_syntax(char *input);
