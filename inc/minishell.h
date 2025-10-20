@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/20 16:15:40 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/10/20 16:17:58 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,7 @@ char					**tokens_to_argv(t_token *tokens);
 char					*validate_redirect_syntax(char *input);
 
 /* utils/cleanup1.c: */
-void          clear_history_safe(void);
+void					clear_history_safe(void);
 void					free_data(t_data *data);
 void					cleanup_execution_context(t_data *data);
 void					free_tokens(t_token *tokens);
