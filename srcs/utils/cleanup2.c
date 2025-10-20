@@ -3,69 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:00:37 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/01 13:51:10 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/20 16:11:53 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	free_cmd_args(t_cmd *cmd)
+static void	free_envp(char **envp)
 {
 	int	i;
 
-	if (!cmd->args)
+	if (!envp)
 		return ;
 	i = 0;
-	while (cmd->args[i])
+	while (envp[i])
 	{
-		free(cmd->args[i]);
+		free(envp[i]);
 		i++;
 	}
-	free(cmd->args);
+	free(envp);
 }
 
-static void	free_redirect(t_redirect *redirect)
+void	free_data(t_data *data)
 {
-	if (redirect->file)
-	{
-		free(redirect->file);
-		redirect->file = NULL;
-	}
-	if (redirect->heredoc_fd != -1)
-	{
-		close(redirect->heredoc_fd);
-		redirect->heredoc_fd = -1;
-	}
-	cleanup_heredoc_tmpfile(&redirect->heredoc_tmpfile);
-}
-
-static void	free_cmd_redirects(t_cmd *cmd)
-{
-	int	i;
-
-	if (!cmd->redirects || cmd->redirect_count <= 0)
+	if (!data)
 		return ;
-	i = 0;
-	while (i < cmd->redirect_count)
+	cleanup_execution_context(data);
+	clear_history_safe();
+	if (data->envp)
 	{
-		free_redirect(&cmd->redirects[i]);
-		i++;
+		free_envp(data->envp);
+		data->envp = NULL;
 	}
-	free(cmd->redirects);
-	cmd->redirects = NULL;
-	cmd->redirect_count = 0;
-}
-
-void	free_cmd(t_cmd *cmd)
-{
-	if (!cmd)
-		return ;
-	free_cmd_args(cmd);
-	free_cmd_redirects(cmd);
-	free(cmd);
+	if (data->pwd)
+	{
+		free(data->pwd);
+		data->pwd = NULL;
+	}
+	if (data->oldpwd)
+	{
+		free(data->oldpwd);
+		data->oldpwd = NULL;
+	}
 }
 
 char	*ft_strjoin_free(char *s1, char *s2)
