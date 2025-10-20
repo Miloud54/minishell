@@ -17,6 +17,19 @@ static void	clear_history_safe(void)
 	rl_clear_history();
 }
 
+void	cleanup_execution_context(t_data *data)
+{
+	if (!data)
+		return ;
+	if (!data->current_tokens && !data->current_cmds)
+		return ;
+	cleanup_cmds(data->current_tokens, data->current_cmds,
+		data->current_cmd_count);
+	data->current_tokens = NULL;
+	data->current_cmds = NULL;
+	data->current_cmd_count = 0;
+}
+
 void	free_tokens(t_token *tokens)
 {
 	t_token	*current;
@@ -67,6 +80,7 @@ void	free_data(t_data *data)
 {
 	if (!data)
 		return ;
+	cleanup_execution_context(data);
 	clear_history_safe();
 	if (data->envp)
 	{
