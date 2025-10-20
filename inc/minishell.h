@@ -282,6 +282,10 @@ void					exit_child(t_data *data, int status);
 void					free_cmd(t_cmd *cmd);
 char					*ft_strjoin_free(char *s1, char *s2);
 
+/* utils/cleanup_fd.c: */
+void					close_backup_fds(t_data *data);
+void					exit_child(t_data *data, int status);
+
 /* utils/exits.c: */
 void					error_exit(char *msg, int exit_code);
 void					perror_exit(char *msg, int exit_code);
@@ -415,6 +419,8 @@ int						handle_out_redir(t_redirect *redir, t_data *data);
 int						handle_heredoc_redir(t_redirect *redir, t_data *data);
 
 /* exec/heredoc.c */
+void					cleanup_heredoc_tmpfile(char **path);
+int						create_heredoc_tmpfile(char **path);
 int						setup_heredoc(t_redirect *redirect, t_data *data);
 int						handle_heredoc_redirect(t_redirect *redirect,
 							t_data *data);

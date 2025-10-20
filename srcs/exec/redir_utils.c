@@ -29,13 +29,14 @@ static void	print_redir_error(char *file)
 	}
 }
 
-static void	cleanup_heredoc_tmpfile(t_redirect *redir)
+static int	open_heredoc_tmp(t_redirect *redir)
 {
-	if (!redir->heredoc_tmpfile)
-		return ;
-	unlink(redir->heredoc_tmpfile);
-	free(redir->heredoc_tmpfile);
-	redir->heredoc_tmpfile = NULL;
+	int	fd;
+
+	fd = open(redir->heredoc_tmpfile, O_RDONLY);
+	if (fd == -1)
+		print_redir_error(redir->heredoc_tmpfile);
+	return (fd);
 }
 
 int	handle_in_redir(t_redirect *redir, t_data *data)
@@ -96,24 +97,19 @@ int	handle_heredoc_redir(t_redirect *redir, t_data *data)
 		if (!redir->heredoc_tmpfile)
 			return (-1);
 	}
-	fd = open(redir->heredoc_tmpfile, O_RDONLY);
+	fd = open_heredoc_tmp(redir);
 	if (fd == -1)
-	{
-		print_redir_error(redir->heredoc_tmpfile);
-		data->exit_status = 1;
-		cleanup_heredoc_tmpfile(redir);
 		return (-1);
-	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2");
 		data->exit_status = 1;
 		close(fd);
-		cleanup_heredoc_tmpfile(redir);
+		cleanup_heredoc_tmpfile(&redir->heredoc_tmpfile);
 		return (-1);
 	}
 	close(fd);
-	cleanup_heredoc_tmpfile(redir);
+	cleanup_heredoc_tmpfile(&redir->heredoc_tmpfile);
 	redir->heredoc_fd = -1;
 	return (0);
 }
