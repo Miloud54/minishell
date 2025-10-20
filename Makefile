@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edidier <edidier@student.42.fr>            +#+  +:+       +#+         #
+#    By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/10/15 14:57:40 by edidier          ###   ########.fr        #
+#    Updated: 2025/10/20 16:12:08 by emiliedidie      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SRCS			= \
 	$(SRC_DIR)/parsing/validations/validation_redirection.c \
 	$(SRC_DIR)/utils/cleanup1.c \
 	$(SRC_DIR)/utils/cleanup2.c \
+	$(SRC_DIR)/utils/cleanup_cmd.c \
 	$(SRC_DIR)/utils/cleanup_fd.c \
 	$(SRC_DIR)/utils/exits.c \
 	$(SRC_DIR)/utils/globals.c \
