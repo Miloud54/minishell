@@ -44,13 +44,14 @@ static int	init_cmds(char *input, t_token **tokens, t_cmd ***cmds,
 	return (1);
 }
 
-static void	handle_exit_cmd(t_data *data, t_cmd **cmds, int cmd_count,
-		t_token *tokens)
+static void	handle_exit_cmd(t_data *data)
 {
 	int	exit_request;
 
-	exit_request = ft_exit(data, cmds[0]->args);
-	cleanup_cmds(tokens, cmds, cmd_count);
+	if (!data->current_cmds || !data->current_cmds[0])
+		return ;
+	exit_request = ft_exit(data, data->current_cmds[0]->args);
+	cleanup_execution_context(data);
 	if (exit_request == 1)
 		return ;
 	free_data(data);
@@ -67,11 +68,14 @@ void	process_input(t_data *data, char *input)
 		return ;
 	if (!init_cmds(input, &tokens, &cmds, &cmd_count))
 		return ;
+	data->current_tokens = tokens;
+	data->current_cmds = cmds;
+	data->current_cmd_count = cmd_count;
 	if (!expand_regular_cmds(cmds, cmd_count, data))
-		return (cleanup_cmds(tokens, cmds, cmd_count), (void)0);
+		return (cleanup_execution_context(data), (void)0);
 	if (is_exit_cmd(cmds, cmd_count))
-		return (handle_exit_cmd(data, cmds, cmd_count, tokens), (void)0);
+		return (handle_exit_cmd(data), (void)0);
 	if (cmd_count > 0)
 		execute_cmds(cmds, cmd_count, data);
-	cleanup_cmds(tokens, cmds, cmd_count);
+	cleanup_execution_context(data);
 }

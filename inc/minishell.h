@@ -101,6 +101,9 @@ typedef struct s_data
 	int					stdin_backup;
 	int					stdout_backup;
 	unsigned int		line_number;
+	t_token				*current_tokens;
+	t_cmd				**current_cmds;
+	int					current_cmd_count;
 }						t_data;
 
 typedef struct s_parse_result
@@ -273,6 +276,7 @@ char					*validate_redirect_syntax(char *input);
 
 /* utils/cleanup1.c: */
 void					free_data(t_data *data);
+void					cleanup_execution_context(t_data *data);
 void					free_tokens(t_token *tokens);
 void					free_argv(char **argv);
 void					close_backup_fds(t_data *data);

@@ -72,10 +72,14 @@ static void	child_execve(char *cmd_path, t_cmd *cmd, t_data *data)
 	signal(SIGQUIT, SIG_DFL);
 	close_backup_fds(data);
 	if (!cmd_path || !cmd->args[0] || cmd->args[0][0] == '\0')
+	{
+		free(cmd_path);
 		exit_child(data, 0);
+	}
 	if (execve(cmd_path, cmd->args, data->envp) == -1)
 	{
 		print_execve_error(cmd_path);
+		free(cmd_path);
 		exit_child(data, 126);
 	}
 }
