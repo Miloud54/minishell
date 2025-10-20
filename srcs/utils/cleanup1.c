@@ -6,7 +6,7 @@
 /*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:50:55 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/17 16:51:33 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/10/20 13:47:12 by emiliedidie      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	clear_history_safe(void)
 {
 	rl_clear_history();
 }
+
+
 
 void	free_tokens(t_token *tokens)
 {
