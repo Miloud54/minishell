@@ -73,11 +73,9 @@ static int	append_clean_field(char **fields, t_dyn_array *args, int index)
 
 int	append_field(t_dyn_array *fields, char *value)
 {
-	if (fields->capacity <= fields->count)
-	{
+	while (fields->capacity < fields->count + 2)
 		if (!grow_array(fields))
 			return (0);
-	}
 	fields->items[fields->count] = value;
 	fields->count++;
 	fields->items[fields->count] = NULL;
