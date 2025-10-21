@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 19:31:03 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/10 17:11:32 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:58:44 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ static int	print_token_error(const char *token)
 	return (0);
 }
 
+
 static int	check_basic_syntax(char *input)
 {
 	if (!input || !*input)
 		return (1);
-	if (ft_strnstr(input, "&&", ft_strlen(input)))
+	if (has_unquoted_sequence(input, "&&"))
 		return (print_token_error("&&"));
-	if (ft_strnstr(input, "||", ft_strlen(input)))
+	if (has_unquoted_sequence(input, "||"))
 		return (print_token_error("||"));
 	if (has_unclosed_quotes(input))
 		return (print_token_error("unclosed quotes"));

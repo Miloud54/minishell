@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 17:10:38 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/20 16:17:58 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:59:05 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,6 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-// #define TOKEN_REDIR_IN 1      // "<"
-// #define TOKEN_HEREDOC 2       // "<<"
-// #define TOKEN_REDIR_OUT 3     // ">"
-// #define TOKEN_APPEND 4        // ">>"
-// #define TOKEN_PIPE 5          // "|"
-// #define TOKEN_CMD 6           // Command
-// #define TOKEN_WORD 7			// Word
 
 /* ************************************************************************** */
 /*                                 DEFINES                                    */
@@ -182,7 +174,6 @@ typedef struct s_cd_context
 	char				*path;
 	char				**argv;
 	char				*cdpath_result;
-	char				*expanded;
 }						t_cd_context;
 
 typedef struct s_wait_context
@@ -230,7 +221,6 @@ void					ft_export(t_cmd *cmd, t_data *data);
 
 /* builtins/cd_utils.c */
 int						update_env_var(char ***envp, char *name, char *value);
-char					*expand_env_var(const char *arg, char **envp);
 
 /* builtins/export_utils.c: */
 void					add_or_update_env(t_data *data, const char *arg);
@@ -250,6 +240,10 @@ int						validate_syntax(char *input);
 
 /* parsing/validation_pipe.c */
 char					*validate_pipe_syntax(char *input);
+
+/* parsing/validation_sequence.c */
+int						has_unquoted_sequence(char *input,
+							const char *sequence);
 
 /* parsing/quotes.c: */
 int						find_quote_end(char *str, int start, char quote);
@@ -460,15 +454,13 @@ int						cd_perform(t_data *data, char **argv);
 int						cd_invalid_option(char **argv, t_data *data);
 
 /* cd helpers split across files */
-char					*cd_resolve_path(char **argv, t_data *data,
-							char **expanded);
+char					*cd_resolve_path(char **argv, t_data *data);
 int						cd_count_args(char **argv);
-int						cd_handle_too_many_arguments(char **argv, t_data *data,
-							char *expanded);
+int						cd_handle_too_many_arguments(char **argv, t_data *data);
 char					*cd_apply_cdpath_if_needed(char **argv, char *path,
-							t_data *data, char *expanded);
+							t_data *data);
 int						cd_handle_home_empty(char **argv, char *path,
-							t_data *data, char *expanded);
+							t_data *data);
 
 /* exec/external.c */
 void					exec_external(t_cmd *cmd, t_data *shell_data);
