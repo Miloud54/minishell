@@ -68,7 +68,7 @@ void	exec_builtin(t_data *data, t_cmd *cmd)
 	else if (ft_strcmp(cmd->args[0], "cd") == 0)
 		ft_cd(data, cmd->args);
 	else if (ft_strcmp(cmd->args[0], "pwd") == 0)
-		ft_pwd(cmd->args);
+		data->exit_status = ft_pwd(cmd->args);
 	else if (ft_strcmp(cmd->args[0], "export") == 0)
 		ft_export(cmd, data);
 	else if (ft_strcmp(cmd->args[0], "unset") == 0)

@@ -74,12 +74,6 @@ int	expand_regular_cmds(t_cmd **cmds, int cmd_count, t_data *data)
 	i = 0;
 	while (i < cmd_count)
 	{
-		if (cmds[i]->args && cmds[i]->args[0] && ft_strcmp(cmds[i]->args[0],
-				"cd") == 0)
-		{
-			i++;
-			continue ;
-		}
 		if (!rebuild_cmd_args(cmds[i], data))
 		{
 			data->exit_status = 1;

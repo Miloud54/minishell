@@ -52,37 +52,30 @@ static int	perform_cd(t_data *data, t_cd_context *context)
 	print_target_if_needed(data, context, ret, print_path);
 	if (context->cdpath_result)
 		free(context->cdpath_result);
-	if (context->expanded)
-		free(context->expanded);
 	return (ret);
 }
 
 static int	ft_cd_impl(t_data *data, char **argv)
 {
-	char			*expanded;
 	char			*path;
 	char			*cdpath_result;
 	t_cd_context	context;
 
-	expanded = NULL;
 	cdpath_result = NULL;
-	path = cd_resolve_path(argv, data, &expanded);
+	path = cd_resolve_path(argv, data);
 	if (!path)
 	{
 		data->exit_status = 1;
-		if (expanded)
-			free(expanded);
 		return (1);
 	}
-	if (cd_handle_home_empty(argv, path, data, expanded))
+	if (cd_handle_home_empty(argv, path, data))
 		return (0);
-	if (cd_handle_too_many_arguments(argv, data, expanded))
+	if (cd_handle_too_many_arguments(argv, data))
 		return (1);
-	cdpath_result = cd_apply_cdpath_if_needed(argv, path, data, expanded);
+	cdpath_result = cd_apply_cdpath_if_needed(argv, path, data);
 	context.path = path;
 	context.argv = argv;
 	context.cdpath_result = cdpath_result;
-	context.expanded = expanded;
 	return (perform_cd(data, &context));
 }
 

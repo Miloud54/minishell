@@ -44,7 +44,7 @@ int	cd_count_args(char **argv)
 	return (i);
 }
 
-int	cd_handle_too_many_arguments(char **argv, t_data *data, char *expanded)
+int	cd_handle_too_many_arguments(char **argv, t_data *data)
 {
 	int	argc;
 
@@ -53,8 +53,6 @@ int	cd_handle_too_many_arguments(char **argv, t_data *data, char *expanded)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		data->exit_status = 1;
-		if (expanded)
-			free(expanded);
 		return (1);
 	}
 	return (0);
