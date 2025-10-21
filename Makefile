@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+         #
+#    By: edidier <edidier@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/10/20 16:12:08 by emiliedidie      ###   ########.fr        #
+#    Updated: 2025/10/21 19:58:54 by edidier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS			= \
 	$(SRC_DIR)/parsing/validations/validation.c \
 	$(SRC_DIR)/parsing/validations/validation_pipe.c \
 	$(SRC_DIR)/parsing/validations/validation_redirection.c \
+	$(SRC_DIR)/parsing/validations/validation_sequence.c \
 	$(SRC_DIR)/utils/cleanup1.c \
 	$(SRC_DIR)/utils/cleanup2.c \
 	$(SRC_DIR)/utils/cleanup_cmd.c \
