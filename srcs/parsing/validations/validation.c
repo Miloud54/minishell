@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 19:31:03 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/21 19:58:44 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/21 20:06:39 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	print_token_error(const char *token)
 	ft_putstr_fd((char *)"'\n", 2);
 	return (0);
 }
-
 
 static int	check_basic_syntax(char *input)
 {
