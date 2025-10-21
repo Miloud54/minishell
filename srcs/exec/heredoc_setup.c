@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_setup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedidier <emiliedidier@student.42.f    +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 17:00:02 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/17 17:02:59 by emiliedidie      ###   ########.fr       */
+/*   Updated: 2025/10/21 14:23:07 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static int	write_heredoc_tmp(t_redirect *redirect, t_data *data,
-			char **tmp_path)
+		char **tmp_path)
 {
 	int	fd;
 

@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 19:51:51 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/21 19:57:26 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/21 20:27:03 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	has_unquoted_sequence(char *input, const char *sequence)
 	while (input[i])
 	{
 		update_quote_state(input[i], &state);
-		if (!state.in_single && !state.in_double && ft_strncmp(input + i,
-				sequence, len) == 0)
+		if (!state.in_single && !state.in_double
+			&& ft_strncmp(input + i, sequence, len) == 0)
 			return (1);
 		i++;
 	}
