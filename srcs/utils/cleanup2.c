@@ -3,53 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:00:37 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 16:05:44 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/21 14:23:59 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	free_cmd_args(t_cmd *cmd)
+static void	free_envp(char **envp)
 {
-	int		i;
+	int	i;
 
-	if (!cmd->args)
+	if (!envp)
 		return ;
 	i = 0;
-	while (cmd->args[i])
+	while (envp[i])
 	{
-		free(cmd->args[i]);
+		free(envp[i]);
 		i++;
 	}
-	free(cmd->args);
+	free(envp);
 }
 
-static void	free_cmd_redirects(t_cmd *cmd)
+void	free_data(t_data *data)
 {
-	int		i;
-
-	if (!cmd->redirects)
+	if (!data)
 		return ;
-	i = 0;
-	while (i < cmd->redirect_count)
+	cleanup_execution_context(data);
+	clear_history_safe();
+	if (data->envp)
 	{
-		if (cmd->redirects[i].file)
-			free(cmd->redirects[i].file);
-		if (cmd->redirects[i].heredoc_fd != -1)
-			close(cmd->redirects[i].heredoc_fd);
-		i++;
+		free_envp(data->envp);
+		data->envp = NULL;
 	}
-	free(cmd->redirects);
+	if (data->pwd)
+	{
+		free(data->pwd);
+		data->pwd = NULL;
+	}
+	if (data->oldpwd)
+	{
+		free(data->oldpwd);
+		data->oldpwd = NULL;
+	}
 }
 
-void	free_cmd(t_cmd *cmd)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
-	if (!cmd)
-		return ;
-	free_cmd_args(cmd);
-	free_cmd_redirects(cmd);
-	free(cmd);
+	char	*result;
+
+	if (!s1 || !s2)
+		return (NULL);
+	result = ft_strjoin(s1, s2);
+	if (s1)
+		free(s1);
+	return (result);
 }

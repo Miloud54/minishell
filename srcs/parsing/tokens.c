@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:31:45 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 16:13:43 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/01 13:51:05 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+/* Creates a new token with the given value and type */
 t_token	*create_token(char *value, t_token_type type)
 {
 	t_token	*token;
@@ -25,6 +26,7 @@ t_token	*create_token(char *value, t_token_type type)
 	return (token);
 }
 
+/* Adds a new token to the end of the token list */
 void	add_token(t_token **tokens, t_token *new_token)
 {
 	t_token	*current;
