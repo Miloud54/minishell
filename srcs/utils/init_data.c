@@ -96,6 +96,7 @@ void	init_data(t_data *data, char **envp)
 	data->stdin_backup = -1;
 	data->stdout_backup = -1;
 	data->line_number = 1;
+	data->prompt_displayed = 0;
 	data->current_tokens = NULL;
 	data->current_cmds = NULL;
 	data->current_cmd_count = 0;

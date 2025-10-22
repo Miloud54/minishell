@@ -93,6 +93,7 @@ typedef struct s_data
 	int					stdin_backup;
 	int					stdout_backup;
 	unsigned int		line_number;
+	int					prompt_displayed;
 	t_token				*current_tokens;
 	t_cmd				**current_cmds;
 	int					current_cmd_count;
@@ -194,6 +195,10 @@ int						expand_regular_cmds(t_cmd **cmds, int cmd_count,
 							t_data *data);
 void					cleanup_cmds(t_token *tokens, t_cmd **cmds,
 							int cmd_count);
+
+/* main_loop_utils.c */
+char					*readline_with_prompt(t_data *data);
+char					*next_input(t_data *data);
 
 /* process_input_utils2.c: */
 int						is_ifs(char c);

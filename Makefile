@@ -22,6 +22,7 @@ LIBFT			= $(LIBFT_DIR)/libft.a
 SRC_DIR			= srcs
 SRCS			= \
 	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/main_loop_utils.c \
 	$(SRC_DIR)/process_input.c \
 	$(SRC_DIR)/process_input_utils.c \
 	$(SRC_DIR)/process_input_utils2.c \

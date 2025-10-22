@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:43:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/16 16:37:45 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/22 17:41:07 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	handle_signal_state(t_data *data, char *input)
 	if (g_signal_status != SIGINT)
 		return (1);
 	data->exit_status = 130;
+	data->prompt_displayed = 1;
 	g_signal_status = 0;
 	if (*input == '\0')
 	{
@@ -52,17 +53,9 @@ static void	main_loop(t_data *data)
 
 	while (1)
 	{
-		input = readline(PROMPT);
+		input = next_input(data);
 		if (!input)
-		{
-			if (g_signal_status == SIGINT)
-			{
-				data->exit_status = 130;
-				g_signal_status = 0;
-			}
-			printf("exit\n");
 			break ;
-		}
 		if (!handle_signal_state(data, input))
 			continue ;
 		process_line(data, input);
