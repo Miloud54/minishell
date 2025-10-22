@@ -105,6 +105,9 @@ static void	process_char_for_size(char *input, t_data *data,
 	}
 }
 
+/*Main function that iterates through the input string, using the above helpers, 
+to compute and return the total size required for the string after all expansions*/
+
 int	calculate_expanded_size(char *input, t_data *data)
 {
 	t_size_context	context;
@@ -119,3 +122,6 @@ int	calculate_expanded_size(char *input, t_data *data)
 		process_char_for_size(input, data, &context);
 	return (context.size);
 }
+
+/*These functions work together to determine how much memory is needed to store the input 
+string after all environment variable expansions are performed, respecting quote rules.*/
