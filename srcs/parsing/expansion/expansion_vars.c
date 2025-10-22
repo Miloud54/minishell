@@ -83,6 +83,3 @@ void	copy_variable_value(char *var_value, char *result, int *j)
 	while (var_value[k])
 		result[(*j)++] = var_value[k++];
 }
-
-/*These functions are used to extract, resolve, and copy 
-environment variable values during the expansion process.*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_process.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:40 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 11:49:39 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/13 17:07:50 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,6 @@ static int	handle_expansion_char(char *input, t_copy_context *ctx,
 	return (i);
 }
 
-/*Iterates through the input string character by character, handles quotes, triggers 
-variable expansion if needed, and copies characters or values into the result */
-
 static void	process_expansion_loop(char *input, t_copy_context *ctx,
 		int *in_single_quotes)
 {
@@ -110,9 +107,6 @@ static void	process_expansion_loop(char *input, t_copy_context *ctx,
 	}
 	*in_single_quotes = state.in_single;
 }
-
-/*Main function called to perform expansion: allocates the result buffer, initializes the 
-context, runs the expansion loop, terminates the string, and returns the result*/
 
 char	*perform_expansion(char *input, t_data *data, int expanded_size)
 {
@@ -131,6 +125,3 @@ char	*perform_expansion(char *input, t_data *data, int expanded_size)
 	result[*(ctx.j)] = '\0';
 	return (result);
 }
-
-/*Each function helps manage environment variable expansion 
-in a shell command, following the rules for quotes.*/
