@@ -27,7 +27,10 @@ static int	handle_signal_state(t_data *data, char *input)
 	if (g_signal_status != SIGINT)
 		return (1);
 	data->exit_status = 130;
-	data->prompt_displayed = 1;
+	if (*input == '\0')
+		data->prompt_displayed = 1;
+	else
+		data->prompt_displayed = 0;
 	g_signal_status = 0;
 	if (*input == '\0')
 	{
