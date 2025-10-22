@@ -6,111 +6,172 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:00:20 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/16 17:26:43 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/19 15:34:57 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
- * exit
+ * builtin: exit
  * Usage: exit [n]
- * Behavior:
- *  - No argument: exits with data->exit_status
- *  - With <n> as integer: exits with (unsigned char)n
- *  - Always prints "exit\n" before exiting
+ * Comportement :
+ *  - Sans argument  : quitte avec le dernier statut (ms->last_status).
+ *  - Avec <n> entier: quitte avec (unsigned char)n.
+ *  - <n> non numérique/overflow : affiche
+ *      "minishell: exit: <arg>: numeric argument required" et quitte avec 2.
+ *  - Trop d'arguments : affiche
+ *      "minishell: exit: too many arguments", NE QUITTE PAS, retourne 1.
+ * Affichage :
+ *
+	- Imprimer "exit\n" uniquement si on quitte réellement dans le parent interactif
+ *    (pas dans un enfant/pipeline).
+ * Notes :
+ *  - Parser avec strtoll + contrôle endptr/ERANGE ; erreurs sur stderr.
  */
 
 #include "minishell.h"
 
-int	ft_atol(const char *str, int *overflow_flag)
+int overflow(long long result, int digit, int sign)
 {
-	t_parse_result	res;
-	int				i;
-	int				sign;
+	if (sign == 1)
+	{
+		if (result > (LLONG_MAX - digit) / 10)
+			return (1);
+	}
+	else
+	{
+		if (result < (LLONG_MIN - digit) / 10)
+			return (1);
+	}
+	return (0);
+}
+
+int ft_atol(const char *str, int *overflow_flag)
+{
+	unsigned long long result;
+	int i;
+	int sign;
+	int digit;
 
 	if (!str)
 		return (0);
 	i = 0;
-	res.result = 0;
-	res.overflow = 0;
-	skip_spaces(str, &i);
-	sign = parse_sign(str, &i);
-	if (!parse_digits(str, &i, sign, &res))
+	result = 0;
+	sign = 1;
+	*overflow_flag = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+		if (str[i++] == '-')
+			sign = -1;
+	while (str[i] && str[i] >= '0' && str[i] <= '9')
 	{
-		*overflow_flag = 1;
-		return (0);
+		digit = str[i] - '0';
+		if (overflow((long long)result, digit, sign))
+			return (*overflow_flag = 1, 0);
+		result = result * 10 + digit;
+		i++;
 	}
-	skip_spaces(str, &i);
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
 	if (str[i] != '\0')
-		res.overflow = 1;
-	*overflow_flag = res.overflow;
-	return ((int)((res.result * sign) % 256));
+		*overflow_flag = 1;
+	return ((int)((result * sign) % 256));
+	
 }
 
-static int	print_exit_and_set_status(t_data *data, int status)
+int is_valid_number(char *str)
 {
-	if (isatty(STDIN_FILENO))
-		write(1, "exit\n", 5);
-	data->exit_status = status;
-	return (0);
-}
+	int i;
 
-static int	validate_exit_args(t_data *data, char **argv, long *val)
-{
-	int	error;
-
-	error = 0;
-	*val = ft_atol(argv[1], &error);
-	if (!is_valid_number(argv[1]) || error)
-	{
-		print_exit_and_set_status(data, 2);
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(argv[1], 2);
-		ft_putendl_fd(": numeric argument required", 2);
+	if (!str || !*str)
 		return (0);
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	if (!str[i] || str[i] < '0' || str[i] > '9')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+			i++;
+		else if (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		{
+			while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+				i++;
+			break;
+		}
+		else 
+			return (0);
 	}
-	return (1);
+	if (str[i] == '\0')
+		return (1);
+	else 
+		return (0);
 }
 
-static int	handle_exit_args(t_data *data, char **argv)
+int should_print_exit(void)
 {
+	return (isatty(STDIN_FILENO));
+}
+
+int	ft_exit(char **argv, int last_status)
+{
+	int		error;
 	long	val;
 
-	if (!validate_exit_args(data, argv, &val))
-		return (0);
+	if (!argv[1])
+	{
+		if (should_print_exit())
+			write(1, "exit\n", 5);
+		exit(last_status);
+	}	
 	if (argv[1] && argv[2])
 	{
-		print_exit_and_set_status(data, 1);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	print_exit_and_set_status(data, (unsigned char)val);
+	if (!is_valid_number(argv[1]))
+	{
+		if (should_print_exit())
+			write(1, "exit\n", 5);
+		ft_putstr_fd("minishell: exit ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd(": numeric argument required", 2);
+		write(1, "exit\n", 5);
+		exit(2);
+	}
+	val = ft_atol(argv[1], &errno);
+	if (errno)
+	{
+		if (should_print_exit())
+			write(1, "exit\n", 5);
+		ft_putstr_fd("minishell: exit ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd(": numeric argument required", 2);
+		write(1, "exit\n", 5);
+		exit(2);
+	}
+	if (should_print_exit())
+		write(1, "exit\n", 5);
+	exit (val);
 	return (0);
 }
 
-int	ft_exit(t_data *data, char **argv)
+int	main(void)
 {
-	if (!argv[1])
-	{
-		if (isatty(STDIN_FILENO))
-			write(1, "exit\n", 5);
-		return (0);
-	}
-	return (handle_exit_args(data, argv));
+	char	*argv1[] = {"exit", "1", "2", NULL};
+	int		result1;
+	char	*argv2[] = {"exit", "abc", NULL};
+
+	printf("Test 1: exit avec trop d'arguments\n");
+	result1 = ft_exit(argv1, 4);
+	printf("Code de retour: %d\n\n", result1);
+	
+	printf("Test 2: exit avec argument invalide - va quitter!\n");
+	ft_exit(argv2, 42);
+	
+	printf("Cette ligne ne devrait pas s'afficher\n");
+	return (0);
 }
-
-// int	main(void)
-// {
-// 	char	*argv1[] = {"exit", "1", "2", NULL};
-// 	int		result1;
-// 	char	*argv2[] = {"exit", "abc", NULL};
-
-// 	printf("Test 1: exit avec trop d'arguments\n");
-// 	result1 = ft_exit(argv1, 4);
-// 	printf("Code de retour: %d\n\n", result1);
-
-// 	printf("Test 2: exit avec argument invalide - va quitter!\n");
-// 	ft_exit(argv2, 42);
-
-// 	printf("Cette ligne ne devrait pas s'afficher\n");
-// 	return (0);
-// }

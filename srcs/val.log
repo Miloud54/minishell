@@ -1,7 +1,0 @@
-==757146== Memcheck, a memory error detector
-==757146== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==757146== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==757146== Command: /usr/bin/ls
-==757146== Parent PID: 756931
-==757146== 
-==757146== FATAL: can't open suppressions file "val.supp"

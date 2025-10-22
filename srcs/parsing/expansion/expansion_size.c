@@ -6,102 +6,67 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:35 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/13 21:22:31 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/23 11:50:24 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-static int	handle_backslash_in_double(char *input, t_size_context *context)
+/*Manages the state of signle quotes in the input string, to know 
+if you are inside or outside single quotes (for expansion rules)*/
+
+static int	handle_quote_char_size(char c, int *in_single_quotes)
 {
-	if (!context->state.in_double)
-		return (0);
-	if (input[context->index + 1] == '\n')
+	if (c == '\'' && !(*in_single_quotes))
 	{
-		context->index += 2;
+		*in_single_quotes = 1;
 		return (1);
 	}
-	if (ft_strchr("\"$\\`", input[context->index + 1]))
+	else if (c == '\'' && *in_single_quotes)
 	{
-		context->size++;
-		context->index += 2;
+		*in_single_quotes = 0;
 		return (1);
 	}
-	context->size++;
-	context->index++;
-	return (1);
+	return (0);
 }
 
-static int	handle_backslash_size(char *input, t_size_context *context)
-{
-	if (input[context->index] != '\\' || context->state.in_single)
-		return (0);
-	if (!input[context->index + 1])
-	{
-		context->index++;
-		return (1);
-	}
-	if (handle_backslash_in_double(input, context))
-		return (1);
-	context->size++;
-	context->index += 2;
-	return (1);
-}
+/*When a variable is detected, gets it name and value, and adds the 
+lenght of the value to the total size needed for the expanded string*/
 
-static void	add_variable_size(char *input, t_data *data,
-		t_size_context *context)
+static void	add_variable_size(char *input, t_data *data, int *i, int *size)
 {
-	int		tmp_i;
 	char	*var_name;
 	char	*var_value;
+	int		temp_i;
 
-	context->index++;
-	if (!input[context->index] || input[context->index] == '\''
-		|| input[context->index] == '"')
-		context->size++;
-	else
-	{
-		tmp_i = context->index;
-		var_name = get_var_name(input, &tmp_i);
-		context->index = tmp_i;
-		if (!var_name || !var_name[0])
-			context->size++;
-		else
-		{
-			var_value = get_var_value(var_name, data);
-			if (var_value)
-				context->size += ft_strlen(var_value);
-			free(var_value);
-		}
-		free(var_name);
-	}
+	(*i)++;
+	temp_i = *i;
+	var_name = get_var_name(input, &temp_i);
+	var_value = get_var_value(var_name, data);
+	*size += ft_strlen(var_value);
+	free(var_name);
+	free(var_value);
+	*i = temp_i;
 }
 
-static void	process_char_for_size(char *input, t_data *data,
-		t_size_context *context)
+/*Processes the current character int the input; handles quotes, triggers variable 
+size calculation if needed, or just increments the size for normal characters*/
+
+static void	process_char_for_size(t_size_context *ctx)
 {
-	if (handle_backslash_size(input, context))
-		return ;
-	if (input[context->index] == '\'' && !context->state.in_double)
+	if (handle_quote_char_size(ctx->input[*(ctx->i)], ctx->in_single_quotes))
 	{
-		context->state.in_single = !context->state.in_single;
-		context->size++;
-		context->index++;
+		(*(ctx->size))++;
+		(*(ctx->i))++;
 	}
-	else if (input[context->index] == '"' && !context->state.in_single)
-	{
-		context->state.in_double = !context->state.in_double;
-		context->size++;
-		context->index++;
-	}
-	else if (input[context->index] == '$' && !context->state.in_single
-		&& should_expand_int_quotes(input, context->index,
-			context->state.in_single))
-		add_variable_size(input, data, context);
+	else if (ctx->input[*(ctx->i)] == '$'
+		&& should_expand_int_quotes(ctx->input, *(ctx->i),
+			*(ctx->in_single_quotes)))
+		add_variable_size(ctx->input, ctx->data, ctx->i, ctx->size);
 	else
 	{
-		context->size++;
-		context->index++;
+		(*(ctx->size))++;
+		(*(ctx->i))++;
 	}
 }
 
@@ -110,17 +75,24 @@ to compute and return the total size required for the string after all expansion
 
 int	calculate_expanded_size(char *input, t_data *data)
 {
-	t_size_context	context;
+	int				i;
+	int				size;
+	int				in_single_quotes;
+	t_size_context	ctx;
 
 	if (!input || !data)
 		return (-1);
-	context.state.in_single = 0;
-	context.state.in_double = 0;
-	context.index = 0;
-	context.size = 0;
-	while (input[context.index])
-		process_char_for_size(input, data, &context);
-	return (context.size);
+	i = 0;
+	size = 0;
+	in_single_quotes = 0;
+	ctx.input = input;
+	ctx.data = data;
+	ctx.i = &i;
+	ctx.size = &size;
+	ctx.in_single_quotes = &in_single_quotes;
+	while (input[i])
+		process_char_for_size(&ctx);
+	return (size);
 }
 
 /*These functions work together to determine how much memory is needed to store the input 

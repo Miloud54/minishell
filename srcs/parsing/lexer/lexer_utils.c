@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:52:29 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:40 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:23:33 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-/* Determines the type of redirection operator and advances the index */
 t_token_type	get_redirect_type(char *input, int *i)
 {
 	if (input[*i] == '<')
@@ -38,14 +37,12 @@ t_token_type	get_redirect_type(char *input, int *i)
 	return (TOKEN_WORD);
 }
 
-/* Creates a pipe token and advances the index */
 t_token	*handle_pipe_token(int *i)
 {
 	*i += 1;
 	return (create_token(ft_strdup("|"), TOKEN_PIPE));
 }
 
-/* Creates a redirection token and advances the index */
 t_token	*handle_redirect_token(char *input, int *i)
 {
 	char	*value;
@@ -57,7 +54,6 @@ t_token	*handle_redirect_token(char *input, int *i)
 	return (create_token(value, get_redirect_type(input, i)));
 }
 
-/* Creates a word token from the input */
 t_token	*handle_word_token(char *input, int *i)
 {
 	char	*value;

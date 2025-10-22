@@ -3,61 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:00:37 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/21 14:23:59 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:05:44 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	free_envp(char **envp)
+static void	free_cmd_args(t_cmd *cmd)
 {
-	int	i;
+	int		i;
 
-	if (!envp)
+	if (!cmd->args)
 		return ;
 	i = 0;
-	while (envp[i])
+	while (cmd->args[i])
 	{
-		free(envp[i]);
+		free(cmd->args[i]);
 		i++;
 	}
-	free(envp);
+	free(cmd->args);
 }
 
-void	free_data(t_data *data)
+static void	free_cmd_redirects(t_cmd *cmd)
 {
-	if (!data)
+	int		i;
+
+	if (!cmd->redirects)
 		return ;
-	cleanup_execution_context(data);
-	clear_history_safe();
-	if (data->envp)
+	i = 0;
+	while (i < cmd->redirect_count)
 	{
-		free_envp(data->envp);
-		data->envp = NULL;
+		if (cmd->redirects[i].file)
+			free(cmd->redirects[i].file);
+		if (cmd->redirects[i].heredoc_fd != -1)
+			close(cmd->redirects[i].heredoc_fd);
+		i++;
 	}
-	if (data->pwd)
-	{
-		free(data->pwd);
-		data->pwd = NULL;
-	}
-	if (data->oldpwd)
-	{
-		free(data->oldpwd);
-		data->oldpwd = NULL;
-	}
+	free(cmd->redirects);
 }
 
-char	*ft_strjoin_free(char *s1, char *s2)
+void	free_cmd(t_cmd *cmd)
 {
-	char	*result;
-
-	if (!s1 || !s2)
-		return (NULL);
-	result = ft_strjoin(s1, s2);
-	if (s1)
-		free(s1);
-	return (result);
+	if (!cmd)
+		return ;
+	free_cmd_args(cmd);
+	free_cmd_redirects(cmd);
+	free(cmd);
 }

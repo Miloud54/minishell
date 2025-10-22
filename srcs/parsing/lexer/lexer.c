@@ -3,49 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:28:52 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:42 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:23:38 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-/* Checks if the character is a special shell operator (<, >, |) */
 int	is_special_char(char c)
 {
 	return (c == '|' || c == '<' || c == '>');
 }
 
-/* Skips over quoted sections in the input string */
 int	skip_quotes(char *input, int i, char quote)
 {
 	i++;
-	while (input[i])
-	{
-		if (quote == '"' && input[i] == '\\' && input[i + 1]
-			&& ft_strchr("\"$\\`", input[i + 1]))
-		{
-			i += 2;
-			continue ;
-		}
-		if (quote == '"' && input[i] == '\\' && input[i + 1] == '\n')
-		{
-			i += 2;
-			continue ;
-		}
-		if (input[i] == quote)
-		{
-			i++;
-			break ;
-		}
+	while (input[i] && input[i] != quote)
 		i++;
-	}
+	if (input[i] == quote)
+		i++;
 	return (i);
 }
 
-/* Extracts a word from the input, handling quotes and special chars */
 char	*extract_word(char *input, int *i)
 {
 	int		start;
@@ -65,7 +46,6 @@ char	*extract_word(char *input, int *i)
 	return (word);
 }
 
-/* Tokenizes the input string into a linked list of tokens */
 t_token	*lexer(char *input)
 {
 	int		i;

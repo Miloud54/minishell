@@ -6,14 +6,13 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:35:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:50 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:29:31 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Initializes a command structure with safe defaults */
-
 void	init_cmd_defaults(t_cmd *cmd)
 {
 	cmd->args = NULL;
@@ -22,22 +21,20 @@ void	init_cmd_defaults(t_cmd *cmd)
 }
 
 /* Safely allocates memory for command arguments */
-
 int	allocate_cmd_args(t_cmd *cmd, int arg_count)
 {
-	cmd->args = ft_calloc(arg_count + 1, sizeof(char *));
+	cmd->args = malloc(sizeof(char *) * (arg_count + 1));
 	if (!cmd->args)
 		return (0);
 	return (1);
 }
 
 /* Safely allocates memory for command redirections */
-
 int	allocate_cmd_redirects(t_cmd *cmd, int redir_count)
 {
 	if (redir_count > 0)
 	{
-		cmd->redirects = ft_calloc(redir_count, sizeof(t_redirect));
+		cmd->redirects = malloc(sizeof(t_redirect) * redir_count);
 		if (!cmd->redirects)
 			return (0);
 	}
@@ -48,7 +45,6 @@ int	allocate_cmd_redirects(t_cmd *cmd, int redir_count)
 }
 
 /* Safely allocates memory for command arguments and redirections */
-
 int	allocate_cmd_memory(t_cmd *cmd, int arg_count, int redir_count)
 {
 	if (!allocate_cmd_args(cmd, arg_count))
@@ -61,6 +57,3 @@ int	allocate_cmd_memory(t_cmd *cmd, int arg_count, int redir_count)
 	}
 	return (1);
 }
-
-/*These functions are used to safely initialize and allocate
-memory for command structures before filling them with parsed data*/

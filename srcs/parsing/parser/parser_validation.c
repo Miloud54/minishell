@@ -6,15 +6,13 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 16:35:00 by edidier           #+#    #+#             */
-/*   Updated: 2025/10/01 13:50:53 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:35:52 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*Checks if pipe token is valid in sequence
-(not at the end and not followed by another pipe)*/
-
+/* Checks if pipe token is valid in sequence */
 static int	is_pipe_valid(t_token *current)
 {
 	if (!current->next || current->next->type == TOKEN_PIPE)
@@ -22,9 +20,7 @@ static int	is_pipe_valid(t_token *current)
 	return (1);
 }
 
-/*Checks if redirection token is valid in sequence
-(must be followed by a word token == a filename)*/
-
+/* Checks if redirection token is valid in sequence */
 static int	is_redirect_valid(t_token *current)
 {
 	if (!current->next || current->next->type != TOKEN_WORD)
@@ -32,9 +28,7 @@ static int	is_redirect_valid(t_token *current)
 	return (1);
 }
 
-/*Validates if a token sequence is valid for parsing
-(no invalid pipes or redirections)*/
-
+/* Validates if a token sequence is valid for parsing */
 int	validate_token_sequence(t_token *tokens)
 {
 	t_token	*current;
@@ -59,6 +53,3 @@ int	validate_token_sequence(t_token *tokens)
 	}
 	return (1);
 }
-
-/*These functions are used to validate the syntax
-of the token list before parsing it into commands*/

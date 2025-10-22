@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edidier <edidier@student.42.fr>            +#+  +:+       +#+         #
+#    By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/21 17:41:30 by bde-la-p          #+#    #+#              #
-#    Updated: 2025/10/21 19:53:14 by edidier          ###   ########.fr        #
+#    Updated: 2025/09/22 17:48:29 by bde-la-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,14 +22,8 @@ LIBFT			= $(LIBFT_DIR)/libft.a
 SRC_DIR			= srcs
 SRCS			= \
 	$(SRC_DIR)/main.c \
-	$(SRC_DIR)/process_input.c \
-	$(SRC_DIR)/process_input_utils.c \
-	$(SRC_DIR)/process_input_utils2.c \
-	$(SRC_DIR)/process_input_expand_split.c \
-	$(SRC_DIR)/process_input_expand_array.c \
 	$(SRC_DIR)/parsing/expansion/expansion.c \
 	$(SRC_DIR)/parsing/expansion/expansion_process.c \
-	$(SRC_DIR)/parsing/expansion/expansion_process_utils.c \
 	$(SRC_DIR)/parsing/expansion/expansion_size.c \
 	$(SRC_DIR)/parsing/expansion/expansion_vars.c \
 	$(SRC_DIR)/parsing/lexer/lexer.c \
@@ -40,71 +34,28 @@ SRCS			= \
 	$(SRC_DIR)/parsing/parser/parser_memory.c \
 	$(SRC_DIR)/parsing/parser/parser_processing.c \
 	$(SRC_DIR)/parsing/parser/parser_validation.c \
-	$(SRC_DIR)/parsing/parser/parser_utils.c \
 	$(SRC_DIR)/parsing/quotes.c \
-	$(SRC_DIR)/parsing/quotes_state.c \
-	$(SRC_DIR)/parsing/quotes_utils.c \
 	$(SRC_DIR)/parsing/tokens.c \
-	$(SRC_DIR)/parsing/tokens_utils.c \
-	$(SRC_DIR)/parsing/parse_heredoc.c \
 	$(SRC_DIR)/parsing/validations/validation.c \
 	$(SRC_DIR)/parsing/validations/validation_pipe.c \
 	$(SRC_DIR)/parsing/validations/validation_redirection.c \
-	$(SRC_DIR)/parsing/validations/validation_sequence.c \
 	$(SRC_DIR)/utils/cleanup1.c \
 	$(SRC_DIR)/utils/cleanup2.c \
-	$(SRC_DIR)/utils/cleanup_cmd.c \
-	$(SRC_DIR)/utils/cleanup_fd.c \
 	$(SRC_DIR)/utils/exits.c \
 	$(SRC_DIR)/utils/globals.c \
 	$(SRC_DIR)/utils/init_data.c \
-	$(SRC_DIR)/utils/init_signals.c \
-	$(SRC_DIR)/builtins/builtins.c \
-	$(SRC_DIR)/builtins/cd/cd.c \
-	$(SRC_DIR)/builtins/cd/cd_cdpath.c \
-	$(SRC_DIR)/builtins/cd/cd_change.c \
-	$(SRC_DIR)/builtins/cd/cd_env.c \
-	$(SRC_DIR)/builtins/cd/cd_path.c \
-	$(SRC_DIR)/builtins/cd/cd_utils.c \
-	$(SRC_DIR)/builtins/cd/cd_utils2.c \
-	$(SRC_DIR)/builtins/env.c \
-	$(SRC_DIR)/builtins/exit.c \
-	$(SRC_DIR)/builtins/exit_utils.c \
-	$(SRC_DIR)/builtins/pwd.c \
-	$(SRC_DIR)/builtins/echo.c \
-	$(SRC_DIR)/builtins/unset.c \
-	$(SRC_DIR)/builtins/export.c \
-	$(SRC_DIR)/builtins/export_utils.c \
-	$(SRC_DIR)/exec/exec.c \
-	$(SRC_DIR)/exec/exec_utils.c \
-	$(SRC_DIR)/exec/executor.c \
-	$(SRC_DIR)/exec/heredoc.c \
-	$(SRC_DIR)/exec/heredoc_setup.c \
-	$(SRC_DIR)/exec/heredoc_files.c \
-	$(SRC_DIR)/exec/heredoc_utils.c \
-	$(SRC_DIR)/exec/redir.c \
-	$(SRC_DIR)/exec/redir_utils.c \
-	$(SRC_DIR)/exec/pipes/pipes.c \
-	$(SRC_DIR)/exec/pipes/pipes_utils.c \
-	$(SRC_DIR)/exec/pipes/pipes_heredoc.c \
-	$(SRC_DIR)/exec/pipes/pipes_child.c \
-	$(SRC_DIR)/exec/pipes/pipes_exec.c \
-
+	$(SRC_DIR)/utils/init_signals.c
 
 OBJS			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 OBJ_DIR			= objs
 OBJ_DIRS		= $(OBJ_DIR)/$(SRC_DIR) \
-			  	$(OBJ_DIR)/$(SRC_DIR)/builtins \
-				  $(OBJ_DIR)/$(SRC_DIR)/builtins/cd \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/expansion \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/lexer \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/parser \
 				  $(OBJ_DIR)/$(SRC_DIR)/parsing/validations \
-				  $(OBJ_DIR)/$(SRC_DIR)/utils \
-				  $(OBJ_DIR)/$(SRC_DIR)/exec \
-				  $(OBJ_DIR)/$(SRC_DIR)/exec/pipes
+				  $(OBJ_DIR)/$(SRC_DIR)/utils
 
 # Colors
 GREEN			= \033[0;32m
@@ -160,6 +111,8 @@ debug: $(NAME)
 
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"
+	@echo "Current directory contents:"
+	@ls -la | grep -E "(objs|obj)"
 	@echo "Removing directory: $(OBJ_DIR)"
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@rm -rf $(OBJ_DIR)

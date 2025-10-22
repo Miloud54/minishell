@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:50:55 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/21 14:23:56 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:06:52 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	clear_history_safe(void)
-{
-	rl_clear_history();
-}
-
-void	cleanup_execution_context(t_data *data)
-{
-	if (!data)
-		return ;
-	if (!data->current_tokens && !data->current_cmds)
-		return ;
-	cleanup_cmds(data->current_tokens, data->current_cmds,
-		data->current_cmd_count);
-	data->current_tokens = NULL;
-	data->current_cmds = NULL;
-	data->current_cmd_count = 0;
-}
 
 void	free_tokens(t_token *tokens)
 {
@@ -46,17 +28,29 @@ void	free_tokens(t_token *tokens)
 	}
 }
 
-void	free_argv(char **argv)
+static void	free_envp(char **envp)
 {
-	int	i;
+	int		i;
 
-	i = 0;
-	if (!argv)
+	if (!envp)
 		return ;
-	while (argv[i])
+	i = 0;
+	while (envp[i])
 	{
-		free(argv[i]);
+		free(envp[i]);
 		i++;
 	}
-	free(argv);
+	free(envp);
+}
+
+void	free_data(t_data *data)
+{
+	if (!data)
+		return ;
+	if (data->envp)
+		free_envp(data->envp);
+	if (data->pwd)
+		free(data->pwd);
+	if (data->oldpwd)
+		free(data->oldpwd);
 }

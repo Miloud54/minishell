@@ -6,7 +6,7 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:51:50 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/10/01 13:49:58 by edidier          ###   ########.fr       */
+/*   Updated: 2025/09/19 12:26:40 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 /*                            ECHO - Explanation                              */
 /* ************************************************************************** */
 
-/*The echo cmd prints on the standard output (stdout) what we've given it as
+/*The echo command prints on the standard output (stdout) what we've given it as
 an argument.
 
-Example:
+Example: 
 $> echo hello world
 $> hello world
 $> echo hello world | cat -e
 $> hello world$
 
-The echo cmd only has one flag to manage in minishell: -n.
+The echo command only has one flag to manage in minishell: -n.
 If the flag -n is present, echo does not print the final \n.
 
 Example:
@@ -39,13 +39,13 @@ $> hello world%
 
 #include "minishell.h" // for ft_strcmp() for 2nd version of ft_echo
 
-/*The function is_n_option takes an argument of the echo cmd as a string and
+/*The function is_n_option takes an argument of the echo command as a string and
 returns a boolean ; either the argument is a valid option (e.g. '-n' or '-nnnn')
 or an invalid option (e.g. 'n', '-a' or '-nnnnna').*/
 
 bool	is_n_option(char *av)
 {
-	int	i;
+	int		i;
 
 	i = 1;
 	if (!av || av[0] != '-' || av[1] == '\0')
@@ -59,33 +59,32 @@ bool	is_n_option(char *av)
 	return (true);
 }
 
-void	ft_echo(t_cmd *cmd, t_data *data)
+void	ft_echo(char **command)
 {
 	int		i;
 	bool	need_newline;
 
-	i = 1;
+	i = 0;
 	need_newline = true;
-	if (!cmd->args[0])
+	if (!command[i])
 	{
 		write(1, "\n", 1);
 		return ;
 	}
-	while (cmd->args[i] != NULL && is_n_option(cmd->args[i]) == true)
+	while (command[i] != NULL && is_n_option(command[i]) == true)
 	{
 		need_newline = false;
 		i++;
 	}
-	while (cmd->args[i] != NULL)
+	while (command[i] != NULL)
 	{
-		printf("%s", cmd->args[i]);
-		if (cmd->args[i + 1] != NULL)
+		printf("%s", command[i]);
+		if (command[i + 1] != NULL)
 			printf(" ");
 		i++;
 	}
 	if (need_newline == true)
 		printf("\n");
-	data->exit_status = 0;
 }
 
 /* ************************************************************************** */
@@ -100,21 +99,21 @@ void	ft_echo(t_cmd *cmd, t_data *data)
 //	return (0);
 // }
 
-/*Main to test the 'ft_echo' short function (not commented, with i = 0):
+/*Main to test the 'ft_echo' short function (not commented, with i = 0): 
 (the tests have to be executed 1 by 1 to see actual \n (% or $) with cat -e*/
 
 // int		main(void)
 // {
-// char	*test1[] = {"-n", "-nn", "hello", "world", "-n", NULL};
-// char	*test2[] = {NULL};
-// char	*test3[] = {"hello", "-n", "world", NULL};
-// char	*test4[] = {"-nnnn", "-n", "hello", "-n", NULL};
-// char	*test5[] = {"-n", NULL};
-// char	*test6[] = {"hello", "-n", NULL};
-// char	*test7[] = {"-na", "hello", NULL};
+	// char	*test1[] = {"-n", "-nn", "hello", "world", "-n", NULL};
+	// char	*test2[] = {NULL};
+	// char	*test3[] = {"hello", "-n", "world", NULL};
+	// char	*test4[] = {"-nnnn", "-n", "hello", "-n", NULL};
+	// char	*test5[] = {"-n", NULL};
+	// char	*test6[] = {"hello", "-n", NULL};
+	// char	*test7[] = {"-na", "hello", NULL};
 
-// ft_echo(test7);
-// return (0);
+	// ft_echo(test7);
+	// return (0);
 // }
 
 /* ************************************************************************** */
@@ -123,33 +122,33 @@ void	ft_echo(t_cmd *cmd, t_data *data)
 
 /*Long version of ft_echo that can take as av[0] either echo or the next av:*/
 
-// void	ft_echo(char **cmd)
+// void	ft_echo(char **command)
 // {
 // 	int		i;
 // 	bool	need_newline;
 // 	bool	printed = false;
 
-// 	if (cmd[0] && ft_strcmp(cmd[0], "echo") == 0)
+// 	if (command[0] && ft_strcmp(command[0], "echo") == 0)
 // 		i = 1;
 // 	else
 // 		i = 0;
 // 	need_newline = true;
-// 	if (!cmd[i])
+// 	if (!command[i])
 // 	{
 // 		write(1, "\n", 1);
 // 		return ;
 // 	}
-// 	while (cmd[i] != NULL && is_n_option(cmd[i]) == true)
+// 	while (command[i] != NULL && is_n_option(command[i]) == true)
 // 	{
 // 		need_newline = false;
 // 		i++;
 // 	}
 // 	int j = i;
-// 	while (cmd[j] != NULL)
+// 	while (command[j] != NULL)
 // 	{
-// 		printf("%s", cmd[j]);
+// 		printf("%s", command[j]);
 // 		printed = true;
-// 		if (cmd[j + 1] != NULL)
+// 		if (command[j + 1] != NULL)
 // 			printf(" ");
 // 		j++;
 // 	}
@@ -157,18 +156,18 @@ void	ft_echo(t_cmd *cmd, t_data *data)
 // 		printf("\n");
 // }
 
-/*Main to test the 'ft_echo' long function:
+/*Main to test the 'ft_echo' long function: 
 (the tests have to be executed 1 by 1 to see actual \n (% or $) with cat -e*/
 // int		main(void)
 // {
-// char	*test1[] = {"echo", "-n", "-nn", "hello", "world", "-n", NULL};
-// char	*test2[] = {"echo", NULL};
-// char	*test3[] = {"echo", "hello", "-n", "world", NULL};
-// char	*test4[] = {"echo", "-nnnn", "-n", "hello", "-n", NULL};
-// char	*test5[] = {"echo", "-n", NULL};
-// char	*test6[] = {"echo", "hello", "-n", NULL};
-// char	*test7[] = {"echo", "-na", "hello", NULL};
+	// char	*test1[] = {"echo", "-n", "-nn", "hello", "world", "-n", NULL};
+	// char	*test2[] = {"echo", NULL};
+	// char	*test3[] = {"echo", "hello", "-n", "world", NULL};
+	// char	*test4[] = {"echo", "-nnnn", "-n", "hello", "-n", NULL};
+	// char	*test5[] = {"echo", "-n", NULL};
+	// char	*test6[] = {"echo", "hello", "-n", NULL};
+	// char	*test7[] = {"echo", "-na", "hello", NULL};
 
-// 	ft_echo(test7);
-// 	return (0);
+	// 	ft_echo(test7);
+	// 	return (0);
 // }
