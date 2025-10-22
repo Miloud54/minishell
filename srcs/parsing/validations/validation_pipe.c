@@ -6,73 +6,78 @@
 /*   By: bde-la-p <bde-la-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:07:28 by bde-la-p          #+#    #+#             */
-/*   Updated: 2025/09/22 15:11:08 by bde-la-p         ###   ########.fr       */
+/*   Updated: 2025/10/10 15:21:14 by bde-la-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-static int	has_content_before(char *input, int pipe_pos)
+static int	skip_spaces_and_newline_left(char *input, int i)
 {
-	int		i;
+	int	k;
 
-	i = pipe_pos - 1;
-	while (i >= 0)
+	k = i - 1;
+	while (k >= 0 && ft_isspace(input[k]))
 	{
-		if (!ft_isspace(input[i]))
-			return (1);
-		i--;
+		if (input[k] == '\n')
+			return (-1);
+		k--;
 	}
-	return (0);
+	return (k);
 }
 
-static int	has_content_after(char *input, int pipe_pos)
+static int	skip_spaces_right(char *input, int i)
 {
-	int		i;
+	int	j;
 
-	i = pipe_pos + 1;
-	while (input[i])
+	j = i + 1;
+	while (input[j] && ft_isspace(input[j]))
+		j++;
+	return (j);
+}
+
+static char	*check_pipe_error(char *input, int i)
+{
+	int		k;
+	int		j;
+
+	k = skip_spaces_and_newline_left(input, i);
+	if (k < 0)
+		return (ft_strdup("|"));
+	j = skip_spaces_right(input, i);
+	if (!input[j])
+		return (ft_strdup("newline"));
+	if (input[j] == '|')
 	{
-		if (!ft_isspace(input[i]))
-			return (1);
-		i++;
+		k = j;
+		while (input[k] == '|')
+			k++;
+		return (ft_substr(input, j, k - j));
 	}
-	return (0);
+	return (NULL);
 }
 
-static int	has_content_around_pipe(char *input, int pipe_pos)
-{
-	return (has_content_before(input, pipe_pos)
-		&& has_content_after(input, pipe_pos));
-}
-
-static int	check_pipe_position(char *input, int i)
-{
-	int		next_non_space;
-
-	next_non_space = i + 1;
-	while (input[next_non_space] && ft_isspace(input[next_non_space]))
-		next_non_space++;
-	if (input[next_non_space] == '|')
-		return (0);
-	if (!has_content_around_pipe(input, i))
-		return (0);
-	return (1);
-}
-
-int	validate_pipe_syntax(char *input)
+/* Returns a malloc'd unexpected token string if pipe syntax is invalid,
+   otherwise NULL. This function skips quoted regions. */
+char	*validate_pipe_syntax(char *input)
 {
 	int		i;
+	char	*err;
 
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '|')
+		if (input[i] == '\'' || input[i] == '"')
+			i = skip_quotes(input, i, input[i]);
+		else if (input[i] == '|')
 		{
-			if (!check_pipe_position(input, i))
-				return (0);
+			err = check_pipe_error(input, i);
+			if (err)
+				return (err);
+			i++;
 		}
-		i++;
+		else
+			i++;
 	}
-	return (1);
+	return (NULL);
 }

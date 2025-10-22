@@ -6,13 +6,13 @@
 /*   By: edidier <edidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 14:54:30 by edidier           #+#    #+#             */
-/*   Updated: 2025/09/23 11:50:43 by edidier          ###   ########.fr       */
+/*   Updated: 2025/10/01 13:50:33 by edidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/minishell.h"
 
-/*Extracts the variable name for the input string starting at position *i. 
+/*Extracts the variable name from the input string starting at position *i.
 Handles special case for $? (exit code). Advances *i past the variable name*/
 
 char	*get_var_name(char *input, int *i)
@@ -36,8 +36,9 @@ char	*get_var_name(char *input, int *i)
 	return (ft_substr(input, start, end - start));
 }
 
-/*Returns the value of the given variable name from the environment (data). If the variable is "?", 
-returns the shell's last exit status as a string. Returns an empty string if not found*/
+/*Returns the value of the given variable name from the environment (data).
+If the variable is "?", returns the shell's last exit status
+as a string. Returns an empty string if not found*/
 
 char	*get_var_value(char *var_name, t_data *data)
 {
@@ -59,8 +60,8 @@ char	*get_var_value(char *var_name, t_data *data)
 	return (ft_strdup(""));
 }
 
-/*Returns whether variable expansion should occur, depending on 
-if we are inside signle quotes (returns false if inside signle quotes)*/
+/*Returns whether variable expansion should occur, depending on if
+we are inside single quotes (returns false if inside single quotes)*/
 
 int	should_expand_int_quotes(char *input, int i, int in_single_quotes)
 {
@@ -69,8 +70,8 @@ int	should_expand_int_quotes(char *input, int i, int in_single_quotes)
 	return (!in_single_quotes);
 }
 
-/*Copies the value of a variable (var_value) into 
-the result string at position *j, character by character*/
+/*Copies the value of a variable (var_value) into the
+result string at position *j, character by character*/
 
 void	copy_variable_value(char *var_value, char *result, int *j)
 {
